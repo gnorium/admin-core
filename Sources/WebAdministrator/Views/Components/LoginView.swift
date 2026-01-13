@@ -3,6 +3,7 @@
 import CSSBuilder
 import DesignTokens
 import HTMLBuilder
+import WebComponents
 import WebTypes
 
 /// Login form component for administrator authentication.
@@ -19,22 +20,22 @@ public struct LoginView: HTML {
 			div {
 				div {
 					h1 { "Administrator" }
-						.style {
-							fontFamily(typographyFontSerif)
-							fontSize(px(36))
-							fontWeight(.normal)
-							color(colorBase)
-							marginBottom(spacing8)
-							letterSpacing(px(-0.5))
-						}
+                    .style {
+                        fontFamily(typographyFontSans)
+                        fontSize(px(32))
+                        fontWeight(600)
+                        color(colorBase)
+                        marginBottom(spacing8)
+                        letterSpacing(px(-0.5))
+                    }
 
 					p { "Sign in to manage content" }
-						.style {
-                            fontFamily(typographyFontSans)
-							fontSize(fontSizeSmall14)
-							color(colorSubtle)
-							letterSpacing(px(0.2))
-						}
+                    .style {
+                        fontFamily(typographyFontSans)
+                        fontSize(fontSizeSmall14)
+                        color(colorSubtle)
+                        letterSpacing(px(0.2))
+                    }
 				}
 				.style {
 					textAlign(.center)
@@ -43,126 +44,62 @@ public struct LoginView: HTML {
 
 				if let error = errorMessage {
 					div { error }
-						.style {
-							backgroundColor(backgroundColorErrorSubtle)
-							color(colorError)
-							padding(spacing12, spacing16)
-							borderRadius(borderRadiusBase)
-							marginBottom(spacing24)
-							fontSize(fontSizeSmall14)
-						}
+                    .style {
+                        backgroundColor(backgroundColorErrorSubtle)
+                        color(colorError)
+                        padding(spacing12, spacing16)
+                        borderRadius(borderRadiusBase)
+                        marginBottom(spacing24)
+                        fontSize(fontSizeSmall14)
+                        fontWeight(500)
+                    }
 				}
 
 				form {
 					div {
-						label { "Username" }
-							.for("username")
-							.style {
-								display(.block)
-								fontFamily(typographyFontSans)
-								fontSize(fontSizeSmall14)
-								fontWeight(500)
-								color(colorBase)
-								marginBottom(spacing8)
-							}
-
-						input()
-							.type(.text)
-							.id("username")
-							.name("username")
-							.required(true)
-							.autofocus(true)
-							.style {
-								width(perc(100))
-								padding(spacing12, spacing16)
-								fontFamily(typographyFontSans)
-								fontSize(fontSizeMedium16)
-								color(colorBase)
-								backgroundColor(backgroundColorBase)
-								border(borderWidthBase, borderStyleBase, borderColorBase)
-								borderRadius(borderRadiusBase)
-								outline(.none)
-								transition(.borderColor, transitionDurationBase, transitionTimingFunctionSystem)
-								transition(.boxShadow, transitionDurationBase, transitionTimingFunctionSystem)
-								
-								pseudoClass(.focus) {
-									borderColor(borderColorProgressiveFocus)
-									boxShadow(.inset, 0, 0, 0, px(1), borderColorProgressiveFocus)
-								}
-							}
+                        FieldView(id: "username") {
+                            "Username"
+                        } input: {
+                            TextInputView(id: "username", name: "username", placeholder: "Enter your username", required: true)
+                        }
 					}
 					.style {
 						marginBottom(spacing24)
 					}
 
 					div {
-						label { "Password" }
-							.for("password")
-							.style {
-								fontFamily(typographyFontSans)
-								display(.block)
-								fontSize(fontSizeSmall14)
-								fontWeight(500)
-								color(colorBase)
-								marginBottom(spacing8)
-							}
-
-						input()
-							.type(.password)
-							.id("password")
-							.name("password")
-							.required(true)
-							.style {
-								width(perc(100))
-								padding(spacing12, spacing16)
-								fontFamily(typographyFontSans)
-								fontSize(fontSizeMedium16)
-								color(colorBase)
-								backgroundColor(backgroundColorBase)
-								border(borderWidthBase, borderStyleBase, borderColorBase)
-								borderRadius(borderRadiusBase)
-								outline(.none)
-								transition(.borderColor, transitionDurationBase, transitionTimingFunctionSystem)
-								transition(.boxShadow, transitionDurationBase, transitionTimingFunctionSystem)
-								
-								pseudoClass(.focus) {
-									borderColor(borderColorProgressiveFocus)
-									boxShadow(.inset, 0, 0, 0, px(1), borderColorProgressiveFocus)
-								}
-							}
+                        FieldView(id: "password") {
+                            "Password"
+                        } input: {
+                            TextInputView(id: "password", name: "password", placeholder: "Enter your password", type: .password, required: true)
+                        }
 					}
 					.style {
 						marginBottom(spacing32)
 					}
 
-					button { "Sign In" }
-						.type(.submit)
-						.style {
-							width(perc(100))
-							padding(spacing12, spacing24)
-							fontFamily(typographyFontSans)
-							fontSize(fontSizeMedium16)
-							fontWeight(500)
-							color(colorInverted)
-							backgroundColor(backgroundColorProgressive)
-							border(.none)
-							borderRadius(borderRadiusBase)
-							cursor(.pointer)
-							transition(.backgroundColor, transitionDurationBase, transitionTimingFunctionSystem)
-							transition(.boxShadow, transitionDurationBase, transitionTimingFunctionSystem)
-							
-							pseudoClass(.hover) {
-								backgroundColor(backgroundColorProgressiveHover)
-							}
-							
-							pseudoClass(.active) {
-								backgroundColor(backgroundColorProgressiveActive)
-							}
-							
-							pseudoClass(.focusVisible) {
-								boxShadow(0, 0, 0, px(2), backgroundColorProgressive)
-							}
-						}
+					ButtonView(label: "Sign In", action: .progressive, weight: .primary, type: .submit, fullWidth: true)
+
+					div {
+                        a { "← Back to Site" }
+                            .href("/")
+                            .style {
+                                display(.inlineBlock)
+                                marginTop(spacing24)
+                                fontSize(fontSizeSmall14)
+                                color(colorSubtle)
+                                textDecoration(.none)
+                                fontFamily(typographyFontSans)
+                                fontWeight(500)
+                                
+                                pseudoClass(.hover) {
+                                    color(colorBase)
+                                }
+                            }
+					}
+					.style {
+						textAlign(.center)
+					}
 				}
 				.action("/administrator/login")
 				.method(.post)
@@ -172,7 +109,7 @@ public struct LoginView: HTML {
 				maxWidth(px(400))
 				backgroundColor(backgroundColorBase)
 				border(borderWidthBase, borderStyleBase, borderColorBase)
-				borderRadius(borderRadiusSharp)
+				borderRadius(borderRadiusBase) // More modern look with standard radius
 				boxShadow(boxShadowLarge)
 				padding(spacing48)
 			}

@@ -3,6 +3,7 @@
 import CSSBuilder
 import DesignTokens
 import HTMLBuilder
+import WebComponents
 import WebTypes
 
 /// Navbar component for administrator pages.
@@ -18,53 +19,76 @@ public struct NavbarView: HTML {
 
 	public func render(indent: Int = 0) -> String {
 		nav {
-			div { siteName }
-				.style {
-					fontFamily(typographyFontSerif)
-					fontSize(fontSizeLarge18)
-					fontWeight(.normal)
-					color(colorBase)
-				}
-
 			div {
-				span { username }
-					.style {
-						fontSize(fontSizeSmall14)
-						color(colorSubtle)
-					}
-
-				a { "Logout" }
-					.href("/administrator/logout")
-					.style {
-						padding(spacing8, spacing16)
-						fontFamily(typographyFontSans)
-						fontSize(fontSizeSmall14)
-						color(colorBase)
-						backgroundColor(.transparent)
-						border(borderWidthBase, borderStyleBase, borderColorBase)
-						borderRadius(borderRadiusBase)
-						textDecoration(.none)
-						transition(.backgroundColor, transitionDurationBase, transitionTimingFunctionSystem)
-						
-						pseudoClass(.hover) {
-							backgroundColor(backgroundColorInteractive)
-						}
-					}
+				a { siteName }
+                .href("/administrator")
+                .style {
+                    fontFamily(typographyFontSans)
+                    fontSize(fontSizeLarge18)
+                    fontWeight(700)
+                    color(colorBase)
+                    textDecoration(.none)
+                    letterSpacing(px(0.5))
+                    textTransform(.uppercase)
+                }
 			}
 			.style {
 				display(.flex)
-				gap(spacing16)
+				alignItems(.center)
+			}
+
+			div {
+                // Theme Toggles
+                div {
+                    ColorSchemeToggleView()
+                    ContrastToggleView()
+                }
+                .style {
+                    display(.flex)
+                    alignItems(.center)
+                    gap(spacing16)
+                    marginRight(spacing24)
+                    paddingRight(spacing24)
+                    borderRight(borderWidthBase, borderStyleBase, borderColorSubtle)
+                }
+
+				span { "Welcome, " }
+                .style {
+                    fontSize(fontSizeSmall14)
+                    color(colorSubtle)
+                }
+				span { username }
+                .style {
+                    fontSize(fontSizeSmall14)
+                    fontWeight(600)
+                    color(colorBase)
+                }
+
+				a { ButtonView(label: "Logout", weight: .quiet, size: .small) }
+                .href("/administrator/logout")
+                .style {
+                    textDecoration(.none)
+                }
+			}
+			.style {
+				display(.flex)
+				gap(spacing8)
 				alignItems(.center)
 			}
 		}
 		.class("navbar-view")
 		.style {
 			backgroundColor(backgroundColorBase)
-			borderBottom(borderWidthBase, borderStyleBase, borderColorBase)
-			padding(spacing16, spacing24)
+			padding(spacing16, spacing32)
 			display(.flex)
 			justifyContent(.spaceBetween)
 			alignItems(.center)
+			borderBottom(borderWidthBase, borderStyleBase, borderColorSubtle)
+			position(.fixed)
+			top(0)
+			left(px(260)) // Offset for sidebar
+			right(0)
+			zIndex(zIndexSticky)
 		}
 		.render(indent: indent)
 	}
