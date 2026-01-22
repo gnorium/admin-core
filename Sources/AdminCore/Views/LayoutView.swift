@@ -43,17 +43,17 @@ public struct LayoutView: HTML {
 
     public func render(indent: Int = 0) -> String {
         div {
-            if let navbar = navbar {
-                navbar
-            } else if showNavbar {
-                NavbarView(siteName: siteName, username: username)
+            if let sidebar = sidebar {
+                sidebar
+            } else if showSidebar {
+                SidebarView()
             }
 
             div {
-                if let sidebar = sidebar {
-                    sidebar
-                } else if showSidebar {
-                    SidebarView()
+                if let navbar = navbar {
+                    navbar
+                } else if showNavbar {
+                    NavbarView(siteName: siteName, username: username)
                 }
                 
                 main {
@@ -67,12 +67,13 @@ public struct LayoutView: HTML {
             }
             .style {
                 display(.flex)
+                flexDirection(.column)
                 flex(1)
             }
         }
         .style {
             display(.flex)
-            flexDirection(.column)
+            flexDirection(.row)
             minHeight(perc(100))
         }
         .render(indent: indent)

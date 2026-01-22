@@ -19,193 +19,184 @@ public struct VerifyMFAView: HTML {
 	}
 
 	public func render(indent: Int = 0) -> String {
-		LayoutView(
-			siteName: "Two-Factor Authentication",
-			username: username
-		) {
+		div {
+			// verificationCard
 			div {
-				// verificationCard
-				div {
-					div {
-						h1 { "Two-Factor Authentication" }
-							.class("verify-mfa-title")
-							.style {
-								fontFamily(typographyFontSans)
-								fontSize(px(24))
-								fontWeight(600)
-								color(colorBase)
-								letterSpacing(px(-0.5))
-							}
+                div {
+                    h1 { "Two-Factor Authentication" }
+                        .class("verify-mfa-title")
+                        .style {
+                            fontFamily(typographyFontSans)
+                            fontSize(px(24))
+                            fontWeight(600)
+                            color(colorBase)
+                            letterSpacing(px(-0.5))
+                        }
 
-						p {
-							"Please enter the 6-digit code from your authenticator app to complete the login process for "
-							strong { username }
-								.class("verify-mfa-username")
-								.style {
-									fontFamily(typographyFontSans)
-									fontSize(fontSizeSmall14)
-									color(colorBase)
-									display(.inline)
-								}
-						}
-						.class("verify-mfa-description")
-						.style {
-							fontFamily(typographyFontSans)
-							fontSize(fontSizeSmall14)
-							lineHeight(1.5)
-							color(colorSubtle)
-						}
-					}
-					.style {
-						display(.flex)
-						flexDirection(.column)
-						gap(spacing8)
-					}
+                    p {
+                        "Please enter the 6-digit code from your authenticator app to complete the login process for "
+                        strong { username }
+                            .class("verify-mfa-username")
+                            .style {
+                                fontFamily(typographyFontSans)
+                                fontSize(fontSizeSmall14)
+                                color(colorBase)
+                                display(.inline)
+                            }
+                    }
+                    .class("verify-mfa-description")
+                    .style {
+                        fontFamily(typographyFontSans)
+                        fontSize(fontSizeSmall14)
+                        lineHeight(1.5)
+                        color(colorSubtle)
+                    }
+                }
+                .style {
+                    display(.flex)
+                    flexDirection(.column)
+                    gap(spacing8)
+                }
 
-					// Error message
-					if let error = error {
-						div {
-							p { error }
-								.class("verify-mfa-error-text")
-								.style {
-									fontFamily(typographyFontSans)
-									color(colorDestructive)
-									fontSize(fontSizeSmall14)
-									margin(0)
-								}
-						}
-						.class("verify-mfa-error-container")
-						.style {
-							backgroundColor(rgba(255, 59, 48, 0.1))
-							border(px(1), .solid, rgba(255, 59, 48, 0.2))
-							borderRadius(borderRadiusBase)
-							padding(spacing12)
-						}
-					}
+                // Error message
+                if let error = error {
+                    div {
+                        p { error }
+                            .class("verify-mfa-error-text")
+                            .style {
+                                fontFamily(typographyFontSans)
+                                color(colorDestructive)
+                                fontSize(fontSizeSmall14)
+                                margin(0)
+                            }
+                    }
+                    .class("verify-mfa-error-container")
+                    .style {
+                        backgroundColor(rgba(255, 59, 48, 0.1))
+                        border(px(1), .solid, rgba(255, 59, 48, 0.2))
+                        borderRadius(borderRadiusBase)
+                        padding(spacing12)
+                    }
+                }
 
-					// Verification form
-					form {
-						input()
-							.type(.hidden)
-							.name("username")
-							.value(username)
+                // Verification form
+                form {
+                    input()
+                        .type(.hidden)
+                        .name("username")
+                        .value(username)
 
-						div {
-							label { "Verification Code" }
-								.for("code")
-								.class("verify-mfa-label")
-								.style {
-									fontFamily(typographyFontSans)
-									fontSize(fontSizeXSmall12)
-									fontWeight(.semiBold)
-									textTransform(.uppercase)
-									letterSpacing(px(0.5))
-									marginBottom(spacing8)
-									color(colorSubtle)
-								}
+                    div {
+                        label { "Verification Code" }
+                            .for("code")
+                            .class("verify-mfa-label")
+                            .style {
+                                fontFamily(typographyFontSans)
+                                fontSize(fontSizeXSmall12)
+                                fontWeight(.semiBold)
+                                textTransform(.uppercase)
+                                letterSpacing(px(0.5))
+                                color(colorSubtle)
+                            }
 
-							input()
-								.type(.text)
-								.name("code")
-								.id("code")
-								.placeholder("000000")
-								.required(true)
-								.class("verify-mfa-input")
-								.style {
-									fontFamily(typographyFontMono)
-									width(perc(100))
-									padding(spacing12)
-									fontSize(px(24))
-									textAlign(.center)
-									letterSpacing(px(4))
-									border(borderWidthBase, borderStyleBase, borderColorBase)
-									borderRadius(borderRadiusBase)
-									backgroundColor(backgroundColorNeutralSubtle)
-									color(colorBase)
-								}
-						}
-						.class("verify-mfa-form-group")
-						.style {
-							display(.flex)
-							flexDirection(.column)
-							alignItems(.flexStart)
-						}
+                        input()
+                            .type(.text)
+                            .name("code")
+                            .id("code")
+                            .placeholder("000000")
+                            .required(true)
+                            .class("verify-mfa-input")
+                            .style {
+                                fontFamily(typographyFontMono)
+                                width(perc(100))
+                                padding(spacing12)
+                                fontSize(px(24))
+                                textAlign(.center)
+                                letterSpacing(px(4))
+                                border(borderWidthBase, borderStyleBase, borderColorBase)
+                                borderRadius(borderRadiusBase)
+                                backgroundColor(backgroundColorNeutralSubtle)
+                                color(colorBase)
+                            }
+                    }
+                    .class("verify-mfa-form-group")
+                    .style {
+                        display(.flex)
+                        flexDirection(.column)
+                        alignItems(.flexStart)
+                        gap(spacing8)
+                        width(perc(100))
+                    }
 
-						button { "Verify & Login" }
-							.type(.submit)
-							.class("verify-mfa-button")
-							.style {
-								fontFamily(typographyFontSans)
-								width(perc(100))
-								padding(spacing12)
-								backgroundColor(colorProgressive)
-								color(hex(0xFFFFFF))
-								border(.none)
-								borderRadius(borderRadiusBase)
-								fontSize(fontSizeMedium16)
-								fontWeight(.semiBold)
-								cursor(.pointer)
-								transition("background-color", ms(200))
+                    div {
+                        ButtonView(
+                            label: "Verify & Login",
+                            action: .progressive,
+                            weight: .primary,
+                            size: .large,
+                            type: .submit,
+                            fullWidth: true,
+                            class: "verify-mfa-button"
+                        )
+                    }
+                    .style {
+                        width(perc(100))
+                    }
+                }
+                .method(.post)
+                .action("\(baseRoute)/mfa/verify")
+                .style {
+                    display(.flex)
+                    flexDirection(.column)
+                    gap(spacing32)
+                    width(perc(100))
+                }
 
-								pseudoClass(.hover) {
-									backgroundColor(colorMix(in: .srgb, colorProgressive, (hex(0x000000), perc(10))))
-								}
-							}
-					}
-					.method(.post)
-					.action("\(baseRoute)/mfa/verify")
-					.style {
-						display(.flex)
-						flexDirection(.column)
-						gap(spacing24)
-					}
-
-					// Footer
-					div {
-						a { "Back to login" }
-							.href("\(baseRoute)/sign-in")
-							.class("verify-mfa-back-link")
-							.style {
-								fontFamily(typographyFontSans)
-								fontSize(fontSizeSmall14)
-								color(colorSubtle)
-								textDecoration(.none)
-							}
-					}
-					.class("verify-mfa-footer")
-					.style {
-						marginTop(spacing8)
-						borderTop(borderWidthBase, borderStyleBase, borderColorBase)
-						paddingTop(spacing24)
-					}
-				}
-				.class("verify-mfa-card")
-				.style {
-					backgroundColor(backgroundColorBase)
-					border(borderWidthBase, borderStyleBase, borderColorBase)
-					borderRadius(borderRadiusBase)
-					padding(spacing48)
-					width(px(400))
-					maxWidth(perc(100))
-					boxShadow(boxShadowLarge)
-					textAlign(.center)
-					display(.flex)
-					flexDirection(.column)
-					gap(spacing32)
-					margin(0, .auto)
-				}
-			}
-			.class("verify-mfa-view")
-			.style {
-				display(.flex)
-				justifyContent(.center)
-				alignItems(.center)
-				minHeight(vh(80))
-				padding(spacing24)
-			}
-		}
-		.render(indent: indent)
-	}
+                // Footer
+                div {
+                    a { "Back to login" }
+                        .href("\(baseRoute)/sign-in")
+                        .class("verify-mfa-back-link")
+                        .style {
+                            fontFamily(typographyFontSans)
+                            fontSize(fontSizeSmall14)
+                            color(colorSubtle)
+                            textDecoration(.none)
+                        }
+                }
+                .class("verify-mfa-footer")
+                .style {
+                    marginTop(spacing8)
+                    borderTop(borderWidthBase, borderStyleBase, borderColorBase)
+                    paddingTop(spacing24)
+                }
+            }
+            .class("verify-mfa-card")
+            .style {
+                backgroundColor(backgroundColorBase)
+                border(borderWidthBase, borderStyleBase, borderColorBase)
+                borderRadius(borderRadiusBase)
+                padding(spacing48)
+                width(px(400))
+                maxWidth(perc(100))
+                boxShadow(boxShadowLarge)
+                textAlign(.center)
+                display(.flex)
+                flexDirection(.column)
+                gap(spacing32)
+                margin(0, .auto)
+            }
+        }
+        .class("verify-mfa-view")
+        .style {
+            display(.flex)
+            justifyContent(.center)
+            alignItems(.center)
+            minHeight(vh(80))
+            padding(spacing24)
+        }
+        .render(indent: indent)
+    }
 }
 
 #endif
