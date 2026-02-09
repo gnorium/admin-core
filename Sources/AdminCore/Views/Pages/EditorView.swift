@@ -7,12 +7,12 @@ import WebComponents
 import WebTypes
 
 /// A generic editor view that dynamically build forms from FieldConfig
-public struct EditorView: HTML {
-    let admin: AnyModelAdmin
+public struct EditorView: HTMLProtocol {
+    let admin: AnyModelAdminProtocol
     let data: FormData
     let isNew: Bool
     
-    public init(admin: AnyModelAdmin, data: FormData, isNew: Bool = true) {
+    public init(admin: AnyModelAdminProtocol, data: FormData, isNew: Bool = true) {
         self.admin = admin
         self.data = data
         self.isNew = isNew
@@ -75,13 +75,13 @@ public struct EditorView: HTML {
                 div {
                     ButtonView(
                         label: isNew ? "Create" : "Update",
-                        action: .progressive,
-                        weight: .primary,
+                        buttonColor: .blue,
+                        weight: .solid,
                         size: .large,
                         type: .submit
                     )
 
-                    a { ButtonView(label: "Cancel", weight: .normal, size: .large) }
+                    a { ButtonView(label: "Cancel", weight: .subtle, size: .large) }
                         .href("/admin/\(admin.urlPath)")
                         .style {
                             textDecoration(.none)
@@ -112,7 +112,7 @@ public struct EditorView: HTML {
     }
     
     @HTMLBuilder
-    private func renderField(_ field: FieldConfig) -> HTML {
+    private func renderField(_ field: FieldConfig) -> HTMLProtocol {
         let value = data.values[field.name] ?? field.defaultValue ?? ""
         
         switch field.fieldType {
@@ -237,21 +237,21 @@ public struct EditorView: HTML {
     }
 
     @CSSBuilder
-    private func formGroupStyle() -> [any CSS] {
+    private func formGroupStyle() -> [any CSSProtocol] {
         display(.flex)
         flexDirection(.column)
         gap(spacing8)
     }
 
     @CSSBuilder
-    private func formLabelStyle() -> [any CSS] {
+    private func formLabelStyle() -> [any CSSProtocol] {
         fontSize(fontSizeMedium16)
         fontWeight(500)
         color(colorBase)
     }
 
     @CSSBuilder
-    private func formInputStyle() -> [any CSS] {
+    private func formInputStyle() -> [any CSSProtocol] {
         width(perc(100))
         padding(spacing12, spacing16)
         fontFamily(typographyFontSans)

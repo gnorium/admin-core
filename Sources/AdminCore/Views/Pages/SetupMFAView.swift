@@ -10,17 +10,19 @@ private let baseRoute = Configuration.shared.baseRoute
 
 /// MFA Setup View with QR code for authenticator app configuration
 /// Uses LayoutView for consistent admin panel structure
-public struct SetupMFAView: HTML {
+public struct SetupMFAView: HTMLProtocol {
 	public let secret: String
 	public let otpauthURL: String
 	public let accountName: String
 	public let issuer: String
+	public let username: String
 
-	public init(secret: String, otpauthURL: String, accountName: String, issuer: String = "Gnorium") {
+	public init(secret: String, otpauthURL: String, accountName: String, issuer: String = "Gnorium", username: String) {
 		self.secret = secret
 		self.otpauthURL = otpauthURL
 		self.accountName = accountName
 		self.issuer = issuer
+		self.username = username
 	}
 
 	public func render(indent: Int = 0) -> String {
@@ -28,18 +30,7 @@ public struct SetupMFAView: HTML {
             // setupCard
             div {
                 div {
-                    h1 { "Secure Your Account" }
-                        .class("setup-mfa-title")
-                        .style {
-                            fontFamily(typographyFontSans)
-                            fontSize(px(32))
-                            fontWeight(600)
-                            color(colorBase)
-                            textAlign(.center)
-                            letterSpacing(px(-0.5))
-                        }
-
-                    p { "Multi-factor authentication (MFA) adds an extra layer of security to your admin account." }
+                    p { "Setting up multi-factor authentication for @\(username). MFA adds an extra layer of security to your admin account." }
                         .class("setup-mfa-subtitle")
                         .style {
                             fontFamily(typographyFontSans)
@@ -82,58 +73,58 @@ public struct SetupMFAView: HTML {
                         // Instructions
                         div {
                             h3 { "Step 1: Scan QR Code" }
-                                .class("setup-mfa-step-heading")
-                                .style {
-                                    fontFamily(typographyFontSans)
-                                    fontSize(fontSizeMedium16)
-                                    fontWeight(.semiBold)
-                                    color(colorBase)
-                                    marginBottom(spacing8)
-                                    marginTop(spacing24)
-                                }
+							.class("setup-mfa-step-heading")
+							.style {
+								fontFamily(typographyFontSans)
+								fontSize(fontSizeMedium16)
+								fontWeight(fontWeightNormal)
+								color(colorBase)
+								marginBottom(spacing8)
+								marginTop(spacing24)
+							}
                             p { "Open your authenticator app (Google Authenticator, 1Password, Authy) and scan this QR code." }
-                                .class("setup-mfa-step-text")
-                                .style {
-                                    fontFamily(typographyFontSans)
-                                    fontSize(fontSizeSmall14)
-                                    lineHeight(1.5)
-                                    color(colorSubtle)
-                                    margin(0)
-                                }
+							.class("setup-mfa-step-text")
+							.style {
+								fontFamily(typographyFontSans)
+								fontSize(fontSizeSmall14)
+								lineHeight(1.5)
+								color(colorSubtle)
+								margin(0)
+							}
 
                             h3 { "Step 2: Backup Secret" }
-                                .class("setup-mfa-step-heading")
-                                .style {
-                                    fontFamily(typographyFontSans)
-                                    fontSize(fontSizeMedium16)
-                                    fontWeight(.semiBold)
-                                    color(colorBase)
-                                    marginBottom(spacing8)
-                                    marginTop(spacing24)
-                                }
+							.class("setup-mfa-step-heading")
+							.style {
+								fontFamily(typographyFontSans)
+								fontSize(fontSizeMedium16)
+								fontWeight(fontWeightNormal)
+								color(colorBase)
+								marginBottom(spacing8)
+								marginTop(spacing24)
+							}
                             p { "If you can't scan the QR code, enter this secret manually:" }
-                                .class("setup-mfa-step-text")
-                                .style {
-                                    fontFamily(typographyFontSans)
-                                    fontSize(fontSizeSmall14)
-                                    lineHeight(1.5)
-                                    color(colorSubtle)
-                                    margin(0)
-                                }
+							.class("setup-mfa-step-text")
+							.style {
+								fontFamily(typographyFontSans)
+								fontSize(fontSizeSmall14)
+								lineHeight(1.5)
+								color(colorSubtle)
+								margin(0)
+							}
 
                             // Secret display
                             div {
                                 code { secret }
-                                    .class("setup-mfa-secret-text")
-                                    .style {
-                                        fontFamily(typographyFontMono)
-                                        fontSize(fontSizeSmall14)
-                                        color(colorProgressive)
-                                        flexGrow(1)
-                                        wordBreak(.breakAll)
-                                        overflowWrap(.anywhere)
-                                        marginRight(spacing8)
-                                    }
+								.class("setup-mfa-secret-text")
+								.style {
+									fontFamily(typographyFontMono)
+									fontSize(fontSizeSmall14)
+									color(colorBlue)
+									flexGrow(1)
+									wordBreak(.breakAll)
+									overflowWrap(.anywhere)
+									marginRight(spacing8)
+								}
                                 button {
                                     span {
                                         IconView { CopyIconView() }
@@ -179,10 +170,10 @@ public struct SetupMFAView: HTML {
                     }
                     .class("setup-mfa-grid")
                     .style {
-                        display(.grid)
-                        gridTemplateColumns(px(240), fr(1))
+                        display(.flex)
+                        flexDirection(.column)
                         gap(spacing48)
-                        alignItems(.flexStart)
+                        alignItems(.center)
                     }
 
                     // Verification form
@@ -194,7 +185,7 @@ public struct SetupMFAView: HTML {
                                 .style {
                                     fontFamily(typographyFontSans)
                                     fontSize(fontSizeMedium16)
-                                    fontWeight(.semiBold)
+                                    fontWeight(fontWeightNormal)
                                     color(colorBase)
                                     display(.block)
                                 }
@@ -233,8 +224,8 @@ public struct SetupMFAView: HTML {
                             div {
                                 ButtonView(
                                     label: "Enable MFA",
-                                    action: .progressive,
-                                    weight: .primary,
+                                    buttonColor: .blue,
+                                    weight: .solid,
                                     size: .large,
                                     type: .submit,
                                     class: "setup-mfa-enable-button"

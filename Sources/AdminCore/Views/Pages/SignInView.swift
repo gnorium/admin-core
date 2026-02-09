@@ -10,7 +10,7 @@ private let baseRoute = Configuration.shared.baseRoute
 
 /// Sign in form component for admin authentication.
 /// Use with AdminCore.LayoutView for the full page.
-public struct SignInView: HTML {
+public struct SignInView: HTMLProtocol {
 	let errorMessage: String?
 
 	public init(errorMessage: String? = nil) {
@@ -51,13 +51,13 @@ public struct SignInView: HTML {
 						.style {
 							margin(0)
 							fontSize(fontSizeSmall14)
-							color(colorError)
+							color(colorRed)
 						}
 					}
 					.class("error-banner")
 					.style {
-						backgroundColor(backgroundColorErrorSubtle)
-						border(borderWidthBase, .solid, borderColorError)
+						backgroundColor(backgroundColorRedSubtle)
+						border(borderWidthBase, .solid, borderColorRed)
 						borderRadius(borderRadiusBase)
 						padding(spacing12, spacing16)
 					}
@@ -80,7 +80,7 @@ public struct SignInView: HTML {
                         }
 					}
 
-					ButtonView(label: "Sign In", action: .progressive, weight: .primary, size: .large, type: .submit, fullWidth: true)
+					ButtonView(label: "Sign In", buttonColor: .blue, weight: .solid, size: .large, type: .submit, fullWidth: true)
 
 					div {
                         a { "← Back to Site" }

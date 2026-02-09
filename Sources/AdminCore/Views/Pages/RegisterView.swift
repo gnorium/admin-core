@@ -6,7 +6,7 @@ import HTMLBuilder
 import WebComponents
 import WebTypes
 
-public struct RegisterView: HTML {
+public struct RegisterView: HTMLProtocol {
     let token: String
     let errorMessage: String?
 
@@ -31,8 +31,8 @@ public struct RegisterView: HTML {
                 if let error = errorMessage {
                     div { error }
                         .style {
-                            color(colorError)
-                            backgroundColor(backgroundColorErrorSubtle)
+                            color(colorRed)
+                            backgroundColor(backgroundColorRedSubtle)
                             padding(spacing12, spacing16)
                             borderRadius(borderRadiusBase)
                             marginBottom(spacing24)
@@ -70,7 +70,7 @@ public struct RegisterView: HTML {
                     }
                     .style { marginBottom(spacing32) }
 
-                    ButtonView(label: "Complete Registration", action: .progressive, weight: .primary, type: .submit, fullWidth: true)
+                    ButtonView(label: "Complete Registration", buttonColor: .blue, weight: .solid, type: .submit, fullWidth: true)
                 }
                 .action("/admin/register/\(token)")
                 .method(.post)

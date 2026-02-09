@@ -11,16 +11,16 @@ private let baseRoute = Configuration.shared.baseRoute
 public struct SidebarItem: Sendable {
     public let label: String
     public let url: String
-    public let icon: (@Sendable (Length) -> [HTML])?
+    public let icon: (@Sendable (Length) -> [HTMLProtocol])?
     
-    public init(label: String, url: String, icon: (@Sendable (Length) -> [HTML])? = nil) {
+    public init(label: String, url: String, icon: (@Sendable (Length) -> [HTMLProtocol])? = nil) {
         self.label = label
         self.url = url
         self.icon = icon
     }
 }
 
-public struct SidebarView: HTML {
+public struct SidebarView: HTMLProtocol {
     let items: [SidebarItem]
     let bottomItems: [SidebarItem]
 
@@ -28,7 +28,7 @@ public struct SidebarView: HTML {
         self.items = items ?? [
             SidebarItem(label: "Dashboard", url: baseRoute),
             SidebarItem(label: "Invites", url: "\(baseRoute)/invites"),
-            SidebarItem(label: "Account Security", url: "\(baseRoute)/mfa/setup")
+            SidebarItem(label: "Security", url: "\(baseRoute)/mfa/setup")
         ]
         self.bottomItems = bottomItems ?? [
             SidebarItem(label: "Back to site", url: "/", icon: { size in
@@ -42,20 +42,38 @@ public struct SidebarView: HTML {
             div {
                 nav {
                     ul {
+                        // Section header
+                        li {
+                            h6 { "Admin Console" }
+                            .style {
+                                fontSize(fontSizeXSmall12)
+                                fontFamily(typographyFontSans)
+                                fontWeight(fontWeightBold)
+                                color(colorSubtle)
+                                textTransform(.uppercase)
+                                letterSpacing(em(0.05))
+                                margin(0)
+                                paddingBlock(spacing12)
+                            }
+                        }
+                        .style {
+                            paddingBlockStart(spacing8)
+                        }
+
                         for item in items {
                             renderItem(item)
                         }
 
-                        li {
-                            div { "" }
-                                .style {
-                                    borderTop(borderWidthBase, borderStyleBase, borderColorSubtle)
-                                    paddingTop(spacing8)
-                                }
+                        if !bottomItems.isEmpty {
+                            li {}
+                            .ariaHidden(true)
+                            .style {
+                                borderBlockStart(borderWidthBase, borderStyleBase, borderColorSubtle)
+                            }
                         }
 
                         for item in bottomItems {
-                            renderItem(item)
+                            renderItem(item, linkClass: "sidebar-link sidebar-back-link")
                         }
                     }
                     .style {
@@ -65,67 +83,54 @@ public struct SidebarView: HTML {
                         display(.flex)
                         flexDirection(.column)
                         gap(spacing4)
+
+                        descendant(".sidebar-back-link") {
+                            paddingInline(0).important()
+                        }
                     }
                 }
             }
             .style {
-                padding(spacing16)
+                padding(0)
             }
         }
         .class("sidebar-view")
+        .data("sidebar", true)
         .style {
-            width(px(260))
-            minWidth(px(260))
-            height(vh(100))
-            position(.sticky)
-            top(0)
-            left(0)
-            backgroundColor(backgroundColorBase)
-            borderRight(borderWidthBase, borderStyleBase, borderColorSubtle)
-            display(.flex)
-            flexDirection(.column)
-            overflow(.auto)
+            // Mobile: hidden (content is cloned to navbar mobile menu by hydration)
+            display(.none)
+
+            // Desktop: visible as sidebar
+            media(minWidth(minWidthBreakpointTablet)) {
+                display(.flex).important()
+                flexDirection(.column)
+                width(px(260))
+                minWidth(px(260))
+                height(vh(100))
+                position(.sticky)
+                top(0)
+                left(0)
+                backgroundColor(backgroundColorBase)
+                borderRight(borderWidthBase, borderStyleBase, borderColorSubtle)
+                overflow(.auto)
+            }
         }
         .render(indent: indent)
     }
 
     @HTMLBuilder
-    private func renderItem(_ item: SidebarItem) -> HTML {
+    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> HTMLProtocol {
         li {
-            a {
-                div {
-                    if let icon = item.icon {
-                        IconView(icon: { size in icon(size) }, size: .small)
-                    }
+            if let icon = item.icon {
+                LinkView(url: item.url, weight: .plain, class: linkClass) {
+                    icon(px(20))
                     span { item.label }
                 }
-                .style {
-                    display(.flex)
-                    alignItems(.center)
-                    gap(spacing8)
+            } else {
+                LinkView(url: item.url, weight: .plain, class: linkClass) {
+                    item.label
                 }
             }
-            .href(item.url)
-            .class("sidebar-link")
-            .style { sidebarLinkStyle() }
-        }
-    }
-
-    @CSSBuilder
-    private func sidebarLinkStyle() -> [any CSS] {
-        display(.block)
-        padding(spacing12, spacing16)
-        fontFamily(typographyFontSans)
-        fontSize(fontSizeSmall14)
-        fontWeight(500)
-        color(colorBase)
-        textDecoration(.none)
-        borderRadius(borderRadiusBase)
-        transition(transitionPropertyBase, transitionDurationBase, transitionTimingFunctionSystem)
-        
-        pseudoClass(.hover) {
-            backgroundColor(backgroundColorInteractiveSubtleHover)
-            color(colorBase)
         }
     }
 }

@@ -8,11 +8,11 @@ import WebTypes
 
 /// Admin index view for listing model records with selection and bulk actions.
 /// Uses TableView with row selection for consistent component usage.
-public struct IndexView: HTML {
-    let admin: AnyModelAdmin
+public struct IndexView: HTMLProtocol {
+    let admin: AnyModelAdminProtocol
     let rows: [ListRow]
     
-    public init(admin: AnyModelAdmin, rows: [ListRow]) {
+    public init(admin: AnyModelAdminProtocol, rows: [ListRow]) {
         self.admin = admin
         self.rows = rows
     }
@@ -34,7 +34,7 @@ public struct IndexView: HTML {
                     cells: row.values
                 )
             },
-            useRowSelection: true,
+            selectionMode: TableView.SelectionMode.multiple,
             class: "index-view"
         ) {
             // Custom header with title and action buttons
@@ -43,10 +43,10 @@ public struct IndexView: HTML {
                     // Bulk action buttons
                     ButtonView(label: "Edit", weight: .quiet, size: .large, disabled: true, class: "bulk-edit-btn")
                     
-                    ButtonView(label: "Delete", action: .destructive, weight: .quiet, size: .large, disabled: true, class: "bulk-delete-btn")
+                    ButtonView(label: "Delete", buttonColor: .red, weight: .quiet, size: .large, disabled: true, class: "bulk-delete-btn")
 
                     a {
-                        ButtonView(label: "Add \(admin.modelName)", action: .progressive, weight: .primary, size: .large)
+                        ButtonView(label: "Add \(admin.modelName)", buttonColor: .blue, weight: .solid, size: .large)
                     }
                     .href("/admin/\(admin.urlPath)/new")
                     .style { textDecoration(.none) }

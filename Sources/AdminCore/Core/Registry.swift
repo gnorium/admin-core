@@ -3,31 +3,31 @@
 import Foundation
 
 /// Central registry for admin models.
-/// Register your ModelAdmin implementations to make them available in the admin interface.
+/// Register your ModelAdminProtocol implementations to make them available in the admin interface.
 public final class Registry: @unchecked Sendable {
 	public static let shared = Registry()
 	
-	private var admins: [String: AnyModelAdmin] = [:]
+	private var admins: [String: AnyModelAdminProtocol] = [:]
 	private let lock = NSLock()
 	
 	private init() {}
 	
 	/// Register a model admin
-	public func register<T: ModelAdmin>(_ admin: T) {
+	public func register<T: ModelAdminProtocol>(_ admin: T) {
 		lock.lock()
 		defer { lock.unlock() }
-		admins[admin.urlPath] = AnyModelAdmin(admin)
+		admins[admin.urlPath] = AnyModelAdminProtocol(admin)
 	}
 	
 	/// Get all registered model admins
-	public func allAdmins() -> [AnyModelAdmin] {
+	public func allAdmins() -> [AnyModelAdminProtocol] {
 		lock.lock()
 		defer { lock.unlock() }
 		return Array(admins.values).sorted { $0.modelNamePlural < $1.modelNamePlural }
 	}
 	
 	/// Get model admin by URL path
-	public func admin(for urlPath: String) -> AnyModelAdmin? {
+	public func admin(for urlPath: String) -> AnyModelAdminProtocol? {
 		lock.lock()
 		defer { lock.unlock() }
 		return admins[urlPath]

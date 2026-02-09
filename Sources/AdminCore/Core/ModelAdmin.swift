@@ -4,7 +4,7 @@ import Foundation
 
 /// Protocol defining how a model is displayed and edited in the admin interface.
 /// Implement this for each model you want to manage in the admin panel.
-public protocol ModelAdmin: Sendable {
+public protocol ModelAdminProtocol: Sendable {
 	/// Singular model name (e.g., "Article")
 	var modelName: String { get }
 	
@@ -38,7 +38,7 @@ public protocol ModelAdmin: Sendable {
 
 // MARK: - Default Implementations
 
-extension ModelAdmin {
+extension ModelAdminProtocol {
 	public var urlPath: String {
 		modelNamePlural.lowercased().replacingOccurrences(of: " ", with: "-")
 	}
@@ -56,8 +56,8 @@ extension ModelAdmin {
 	}
 }
 
-/// Type-erased container for ModelAdmin to allow heterogeneous storage
-public struct AnyModelAdmin: Sendable {
+/// Type-erased container for ModelAdminProtocol to allow heterogeneous storage
+public struct AnyModelAdminProtocol: Sendable {
 	public let modelName: String
 	public let modelNamePlural: String
 	public let urlPath: String
@@ -69,7 +69,7 @@ public struct AnyModelAdmin: Sendable {
 	public let itemsPerPage: Int
 	public let listHeaders: [String: String]
 	
-	public init<T: ModelAdmin>(_ admin: T) {
+	public init<T: ModelAdminProtocol>(_ admin: T) {
 		self.modelName = admin.modelName
 		self.modelNamePlural = admin.modelNamePlural
 		self.urlPath = admin.urlPath

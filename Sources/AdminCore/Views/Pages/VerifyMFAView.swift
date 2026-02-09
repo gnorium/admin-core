@@ -9,7 +9,7 @@ import WebTypes
 private let baseRoute = Configuration.shared.baseRoute
 
 /// MFA Verification View for login flow
-public struct VerifyMFAView: HTML {
+public struct VerifyMFAView: HTMLProtocol {
 	public let username: String
 	public let error: String?
 
@@ -23,33 +23,23 @@ public struct VerifyMFAView: HTML {
 			// verificationCard
 			div {
                 div {
-                    h1 { "Two-Factor Authentication" }
-                        .class("verify-mfa-title")
-                        .style {
-                            fontFamily(typographyFontSans)
-                            fontSize(px(24))
-                            fontWeight(600)
-                            color(colorBase)
-                            letterSpacing(px(-0.5))
-                        }
-
                     p {
-                        "Please enter the 6-digit code from your authenticator app to complete the login process for "
-                        strong { username }
-                            .class("verify-mfa-username")
-                            .style {
-                                fontFamily(typographyFontSans)
-                                fontSize(fontSizeSmall14)
-                                color(colorBase)
-                                display(.inline)
-                            }
+                        "Enter the 6-digit code from your authenticator app to verify your identity."
                     }
                     .class("verify-mfa-description")
                     .style {
                         fontFamily(typographyFontSans)
-                        fontSize(fontSizeSmall14)
+                        fontSize(fontSizeMedium16)
                         lineHeight(1.5)
                         color(colorSubtle)
+                    }
+
+                    p { "Logging in as @\(username)" }
+                    .style {
+                        fontFamily(typographyFontSans)
+                        fontSize(fontSizeSmall14)
+                        color(colorBase)
+                        fontWeight(fontWeightNormal)
                     }
                 }
                 .style {
@@ -62,18 +52,18 @@ public struct VerifyMFAView: HTML {
                 if let error = error {
                     div {
                         p { error }
-                            .class("verify-mfa-error-text")
-                            .style {
-                                fontFamily(typographyFontSans)
-                                color(colorDestructive)
-                                fontSize(fontSizeSmall14)
-                                margin(0)
-                            }
+						.class("verify-mfa-error-text")
+						.style {
+							fontFamily(typographyFontSans)
+							color(colorRed)
+							fontSize(fontSizeSmall14)
+							margin(0)
+						}
                     }
                     .class("verify-mfa-error-container")
                     .style {
-                        backgroundColor(rgba(255, 59, 48, 0.1))
-                        border(px(1), .solid, rgba(255, 59, 48, 0.2))
+                        backgroundColor(backgroundColorRedSubtle)
+                        border(borderWidthBase, .solid, borderColorRed)
                         borderRadius(borderRadiusBase)
                         padding(spacing12)
                     }
@@ -93,7 +83,7 @@ public struct VerifyMFAView: HTML {
                             .style {
                                 fontFamily(typographyFontSans)
                                 fontSize(fontSizeXSmall12)
-                                fontWeight(.semiBold)
+                                fontWeight(fontWeightNormal)
                                 textTransform(.uppercase)
                                 letterSpacing(px(0.5))
                                 color(colorSubtle)
@@ -131,8 +121,8 @@ public struct VerifyMFAView: HTML {
                     div {
                         ButtonView(
                             label: "Verify & Login",
-                            action: .progressive,
-                            weight: .primary,
+                            buttonColor: .blue,
+                            weight: .solid,
                             size: .large,
                             type: .submit,
                             fullWidth: true,
@@ -166,7 +156,6 @@ public struct VerifyMFAView: HTML {
                 }
                 .class("verify-mfa-footer")
                 .style {
-                    marginTop(spacing8)
                     borderTop(borderWidthBase, borderStyleBase, borderColorBase)
                     paddingTop(spacing24)
                 }
@@ -177,7 +166,7 @@ public struct VerifyMFAView: HTML {
                 border(borderWidthBase, borderStyleBase, borderColorBase)
                 borderRadius(borderRadiusBase)
                 padding(spacing48)
-                width(px(400))
+                width(px(480))
                 maxWidth(perc(100))
                 boxShadow(boxShadowLarge)
                 textAlign(.center)
