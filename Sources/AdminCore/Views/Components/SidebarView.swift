@@ -104,8 +104,8 @@ public struct SidebarView: HTMLProtocol {
             media(minWidth(minWidthBreakpointTablet)) {
                 display(.flex).important()
                 flexDirection(.column)
-                width(px(260))
-                minWidth(px(260))
+                width(px(256))
+                minWidth(px(256))
                 height(vh(100))
                 position(.sticky)
                 top(0)

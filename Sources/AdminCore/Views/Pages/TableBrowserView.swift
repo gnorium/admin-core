@@ -437,7 +437,7 @@ private class TableBrowserInstance: @unchecked Sendable {
 						}
 					}
 				}
-				row.style.setProperty("background-color", isSelected ? "var(--background-color-progressive-subtle)" : "")
+				row.style.setProperty("background-color", isSelected ? "var(--background-color-blue-subtle)" : "")
 			}
 
 			_ = row.addEventListener(.click) { [self] event in
@@ -521,7 +521,7 @@ private class TableBrowserInstance: @unchecked Sendable {
 						break
 					}
 				}
-				row.style.setProperty("background-color", isSelected ? "var(--background-color-progressive-subtle)" : "")
+				row.style.setProperty("background-color", isSelected ? "var(--background-color-blue-subtle)" : "")
 			}
 		}
 	}
