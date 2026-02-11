@@ -40,15 +40,15 @@ public struct NavbarView: HTMLProtocol {
 			}
 
 			div {
-                // Theme Toggles
+                // Theme Settings
                 div {
-                    ColorSchemeToggleButtonView()
-                    ContrastToggleButtonView()
+                    ColorSchemeButtonGroupView()
+                    ContrastButtonGroupView()
                 }
                 .style {
                     display(.flex)
-                    alignItems(.center)
-                    gap(spacing16)
+                    flexDirection(.column)
+                    gap(spacing8)
                     paddingRight(spacing24)
                     borderRight(borderWidthBase, borderStyleBase, borderColorSubtle)
                 }

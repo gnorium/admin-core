@@ -45,6 +45,7 @@ public struct SidebarView: HTMLProtocol {
                         // Section header
                         li {
                             h6 { "Admin Console" }
+							.class("sidebar-title")
                             .style {
                                 fontSize(fontSizeXSmall12)
                                 fontFamily(typographyFontSans)
@@ -53,11 +54,10 @@ public struct SidebarView: HTMLProtocol {
                                 textTransform(.uppercase)
                                 letterSpacing(em(0.05))
                                 margin(0)
-                                paddingBlock(spacing12)
+								media(minWidth(minWidthBreakpointTablet)) {
+									paddingBlockStart(spacing16)
+								}
                             }
-                        }
-                        .style {
-                            paddingBlockStart(spacing8)
                         }
 
                         for item in items {
@@ -82,7 +82,7 @@ public struct SidebarView: HTMLProtocol {
                         margin(0)
                         display(.flex)
                         flexDirection(.column)
-                        gap(spacing4)
+                        gap(spacing8)
 
                         descendant(".sidebar-back-link") {
                             paddingInline(0).important()
@@ -97,10 +97,10 @@ public struct SidebarView: HTMLProtocol {
         .class("sidebar-view")
         .data("sidebar", true)
         .style {
-            // Mobile: hidden (content is cloned to navbar mobile menu by hydration)
+            // Mobile: hidden — content cloned into navbar slide menu by NavbarHydration
             display(.none)
 
-            // Desktop: visible as sidebar
+            // Desktop: visible as sticky sidebar column
             media(minWidth(minWidthBreakpointTablet)) {
                 display(.flex).important()
                 flexDirection(.column)
@@ -111,8 +111,8 @@ public struct SidebarView: HTMLProtocol {
                 top(0)
                 left(0)
                 backgroundColor(backgroundColorBase)
-                borderRight(borderWidthBase, borderStyleBase, borderColorSubtle)
-                overflow(.auto)
+                borderInlineEnd(borderWidthBase, .solid, borderColorSubtle)
+                overflowY(.auto)
             }
         }
         .render(indent: indent)
