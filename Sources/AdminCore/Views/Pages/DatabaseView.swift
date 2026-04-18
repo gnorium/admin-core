@@ -36,7 +36,7 @@ public struct TableDisplayInfo: Sendable {
 
 /// Generic Database explorer view for admin consoles
 /// Displays a grid of database tables with index numbers and navigation
-public struct DatabaseView: HTMLProtocol {
+public struct DatabaseView: HTMLContent {
 	let tables: [TableDisplayInfo]
 	let config: DatabaseViewConfig
 
@@ -161,7 +161,7 @@ public struct DatabaseView: HTMLProtocol {
 	}
 
 	@HTMLBuilder
-	private func renderStatBadge(_ label: String, _ value: Int) -> HTMLProtocol {
+	private func renderStatBadge(_ label: String, _ value: Int) -> [AnyHTMLContent] {
 		div {
 			span { label }
 			.style {

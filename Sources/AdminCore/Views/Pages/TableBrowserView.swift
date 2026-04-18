@@ -40,7 +40,7 @@ public struct TableRowData: Sendable {
 
 /// Generic Table browser view for admin consoles
 /// Displays rows from a database table with pagination
-public struct TableBrowserView: HTMLProtocol {
+public struct TableBrowserView: HTMLContent {
 	let tableName: String
 	let columns: [String]
 	let rows: [TableRowData]
@@ -69,18 +69,18 @@ public struct TableBrowserView: HTMLProtocol {
 
 	public func render(indent: Int = 0) -> String {
 		let tableColumns: [TableView.Column] = [
-			TableView.Column(id: "#", label: "#", width: "50px")
+			TableView.Column(id: "#", label: "#", width: px(50))
 		] + columns.map { column in
 			TableView.Column(id: column, label: column)
 		}
 
 		let tableRows: [TableView.Row] = rows.enumerated().map { (index, row) in
-			let rowId = row.cells[config.primaryKey] ?? "\(index)"
+			let rowID = row.cells[config.primaryKey] ?? "\(index)"
 			var cells: [String: String] = ["#": "\((currentPage - 1) * 50 + index + 1)"]
 			for column in columns {
 				cells[column] = truncateValue(row.cells[column] ?? "")
 			}
-			return TableView.Row(id: rowId, cells: cells)
+			return TableView.Row(id: rowID, cells: cells)
 		}
 
 		return section {
@@ -182,9 +182,7 @@ public struct TableBrowserView: HTMLProtocol {
 			// Pagination
 			if totalPages > 1 {
 				PaginationView(
-					previousLabel: currentPage > 1 ? "\u{2190} Previous" : nil,
 					previousUrl: currentPage > 1 ? "\(config.baseURL)/\(tableName)?page=\(currentPage - 1)" : nil,
-					nextLabel: currentPage < totalPages ? "Next \u{2192}" : nil,
 					nextUrl: currentPage < totalPages ? "\(config.baseURL)/\(tableName)?page=\(currentPage + 1)" : nil,
 					pageNumbers: buildPageNumbers(),
 					class: "table-browser-pagination"
@@ -251,7 +249,7 @@ public class TableBrowserHydration: @unchecked Sendable {
 	private var selectionCountEl: Element?
 	private var editButton: Element?
 	private var deleteButton: Element?
-	private var selectedRowIds: [String] = []
+	private var selectedRowIDs: [String] = []
 	private var tableName: String = ""
 	private var baseURL: String = ""
 
@@ -276,9 +274,9 @@ public class TableBrowserHydration: @unchecked Sendable {
 		_ = tableView.addEventListener("table-selection-change") { [self] event in
 			let detail = event.detail
 			if detail.isEmpty {
-				self.selectedRowIds = []
+				self.selectedRowIDs = []
 			} else {
-				self.selectedRowIds = stringSplit(detail, separator: ",")
+				self.selectedRowIDs = stringSplit(detail, separator: ",")
 			}
 			self.updateButtonStates()
 		}
@@ -286,21 +284,21 @@ public class TableBrowserHydration: @unchecked Sendable {
 		// Edit button
 		if let editBtn = editButton {
 			_ = editBtn.addEventListener(.click) { [self] _ in
-				guard self.selectedRowIds.count == 1, let rowId = self.selectedRowIds.first else { return }
-				window.location.href = "\(self.baseURL)/\(self.tableName)/\(rowId)/edit"
+				guard self.selectedRowIDs.count == 1, let rowID = self.selectedRowIDs.first else { return }
+				window.location.href = "\(self.baseURL)/\(self.tableName)/\(rowID)/edit"
 			}
 		}
 
 		// Delete button
 		if let deleteBtn = deleteButton {
 			_ = deleteBtn.addEventListener(.click) { [self] _ in
-				guard !self.selectedRowIds.isEmpty else { return }
-				let count = self.selectedRowIds.count
+				guard !self.selectedRowIDs.isEmpty else { return }
+				let count = self.selectedRowIDs.count
 				let message = count == 1
 					? "Are you sure you want to delete this row?"
 					: "Are you sure you want to delete \(count) rows?"
 				if window.confirm(message) {
-					let idsParam = stringJoin(self.selectedRowIds, separator: ",")
+					let idsParam = stringJoin(self.selectedRowIDs, separator: ",")
 					window.location.href = "\(self.baseURL)/\(self.tableName)/delete?ids=\(idsParam)"
 				}
 			}
@@ -317,22 +315,32 @@ public class TableBrowserHydration: @unchecked Sendable {
 						return
 					}
 				}
-				if let rowId = row.getAttribute("data-row-id") {
-					window.location.href = "\(self.baseURL)/\(self.tableName)/\(rowId)"
+				if let rowID = row.getAttribute("data-row-id") {
+					window.location.href = "\(self.baseURL)/\(self.tableName)/\(rowID)"
 				}
 			}
 		}
 	}
 
 	private func updateButtonStates() {
-		let count = selectedRowIds.count
+		let count = selectedRowIDs.count
 
-		if let countEl = selectionCountEl {
-			countEl.textContent = "\(count) selected"
+		// Re-query ensuring we have the latest elements from the DOM
+		let countEl = document.querySelector(".selection-count")
+		let editBtn = document.querySelector(".action-edit")
+		let deleteBtn = document.querySelector(".action-delete")
+
+		if let el = countEl {
+			el.textContent = "\(count) selected"
 		}
 
-		editButton?.setDisabled(count != 1)
-		deleteButton?.setDisabled(count == 0)
+		if let btn = editBtn {
+			(btn as? HTMLButtonElement)?.disabled = (count != 1)
+		}
+
+		if let btn = deleteBtn {
+			(btn as? HTMLButtonElement)?.disabled = (count == 0)
+		}
 	}
 }
 

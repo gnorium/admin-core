@@ -11,16 +11,16 @@ private let baseRoute = Configuration.shared.baseRoute
 public struct SidebarItem: Sendable {
     public let label: String
     public let url: String
-    public let icon: (@Sendable (Length) -> [HTMLProtocol])?
+    public let icon: (@Sendable (Length) -> [AnyHTMLContent])?
     
-    public init(label: String, url: String, icon: (@Sendable (Length) -> [HTMLProtocol])? = nil) {
+    public init(label: String, url: String, icon: (@Sendable (Length) -> [AnyHTMLContent])? = nil) {
         self.label = label
         self.url = url
         self.icon = icon
     }
 }
 
-public struct SidebarView: HTMLProtocol {
+public struct SidebarView: HTMLContent {
     let items: [SidebarItem]
     let bottomItems: [SidebarItem]
 
@@ -34,7 +34,7 @@ public struct SidebarView: HTMLProtocol {
         ]
         self.bottomItems = bottomItems ?? [
             SidebarItem(label: "Back to site", url: "/", icon: { size in
-                [PreviousIconView(width: size, height: size)]
+                [AnyHTMLContent(PreviousIconView(width: size, height: size))]
             })
         ]
     }
@@ -120,7 +120,7 @@ public struct SidebarView: HTMLProtocol {
     }
 
     @HTMLBuilder
-    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> HTMLProtocol {
+    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> [AnyHTMLContent] {
         li {
             if let icon = item.icon {
                 LinkView(url: item.url, weight: .plain, class: linkClass) {

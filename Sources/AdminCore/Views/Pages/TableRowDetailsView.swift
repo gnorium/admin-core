@@ -7,24 +7,24 @@ import WebComponents
 import WebTypes
 
 /// Read-only detail view for a single database table row
-public struct TableRowDetailsView: HTMLProtocol {
+public struct TableRowDetailsView: HTMLContent {
 	let tableName: String
 	let columns: [String]
 	let rowData: [String: String]
-	let rowId: String
+	let rowID: String
 	let config: TableBrowserConfig
 
 	public init(
 		tableName: String,
 		columns: [String],
 		rowData: [String: String],
-		rowId: String,
+		rowID: String,
 		config: TableBrowserConfig = TableBrowserConfig()
 	) {
 		self.tableName = tableName
 		self.columns = columns
 		self.rowData = rowData
-		self.rowId = rowId
+		self.rowID = rowID
 		self.config = config
 	}
 
@@ -41,7 +41,7 @@ public struct TableRowDetailsView: HTMLProtocol {
 						margin(0)
 					}
 
-					p { "Row \(rowId)" }
+					p { "Row \(rowID)" }
 					.style {
 						fontFamily(typographyFontMono)
 						fontSize(fontSizeSmall14)
@@ -62,7 +62,7 @@ public struct TableRowDetailsView: HTMLProtocol {
 						buttonColor: .gray,
 						weight: .subtle,
 						size: .large,
-						url: "\(config.baseURL)/\(tableName)/\(rowId)/edit",
+						url: "\(config.baseURL)/\(tableName)/\(rowID)/edit",
 						class: "btn-edit-row"
 					)
 
@@ -76,7 +76,7 @@ public struct TableRowDetailsView: HTMLProtocol {
 				}
 				.class("row-detail-actions")
 				.data("table", tableName)
-				.data("row-id", rowId)
+				.data("row-id", rowID)
 				.data("base-url", config.baseURL)
 				.style {
 					display(.flex)
@@ -127,7 +127,7 @@ public struct TableRowDetailsView: HTMLProtocol {
 								borderRadius(borderRadiusBase)
 								fontFamily(typographyFontMono)
 								fontSize(fontSizeSmall14)
-								lineHeight(1.6)
+								lineHeight(1.618)
 								whiteSpace(.preWrap)
 								wordBreak(.breakAll)
 								maxHeight(px(400))
@@ -180,7 +180,7 @@ import EmbeddedSwiftUtilities
 private class TableRowDetailInstance: @unchecked Sendable {
 	private var container: Element
 	private var tableName: String = ""
-	private var rowId: String = ""
+	private var rowID: String = ""
 	private var baseURL: String = ""
 
 	init(container: Element) {
@@ -188,7 +188,7 @@ private class TableRowDetailInstance: @unchecked Sendable {
 
 		if let actions = container.querySelector(".row-detail-actions") {
 			tableName = actions.getAttribute("data-table") ?? ""
-			rowId = actions.getAttribute("data-row-id") ?? ""
+			rowID = actions.getAttribute("data-row-id") ?? ""
 			baseURL = actions.getAttribute("data-base-url") ?? ""
 		}
 
@@ -199,7 +199,7 @@ private class TableRowDetailInstance: @unchecked Sendable {
 		if let deleteBtn = container.querySelector(".btn-delete-row") {
 			_ = deleteBtn.addEventListener(.click) { [self] _ in
 				if window.confirm("Are you sure you want to delete this row?") {
-					window.location.href = "\(self.baseURL)/\(self.tableName)/delete?ids=\(self.rowId)"
+					window.location.href = "\(self.baseURL)/\(self.tableName)/delete?ids=\(self.rowID)"
 				}
 			}
 		}

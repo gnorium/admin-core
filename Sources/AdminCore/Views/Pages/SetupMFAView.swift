@@ -10,7 +10,7 @@ private let baseRoute = Configuration.shared.baseRoute
 
 /// MFA Setup View with QR code for authenticator app configuration
 /// Uses LayoutView for consistent admin panel structure
-public struct SetupMFAView: HTMLProtocol {
+public struct SetupMFAView: HTMLContent {
 	public let secret: String
 	public let otpauthURL: String
 	public let accountName: String

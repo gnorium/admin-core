@@ -10,7 +10,7 @@ import WebTypes
 /// Shows the site name, username, and sign out link.
 private let baseRoute = Configuration.shared.baseRoute
 
-public struct NavbarView: HTMLProtocol {
+public struct NavbarView: HTMLContent {
 	let siteName: String
 	let username: String
 

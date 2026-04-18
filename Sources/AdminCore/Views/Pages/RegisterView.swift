@@ -8,7 +8,7 @@ import WebTypes
 
 private let baseRoute = Configuration.shared.baseRoute
 
-public struct RegisterView: HTMLProtocol {
+public struct RegisterView: HTMLContent {
     let token: String
     let errorMessage: String?
 

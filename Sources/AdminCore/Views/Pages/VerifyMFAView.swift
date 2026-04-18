@@ -9,7 +9,7 @@ import WebTypes
 private let baseRoute = Configuration.shared.baseRoute
 
 /// MFA Verification View for login flow
-public struct VerifyMFAView: HTMLProtocol {
+public struct VerifyMFAView: HTMLContent {
 	public let username: String
 	public let error: String?
 

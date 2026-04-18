@@ -11,25 +11,25 @@ private let baseRoute = Configuration.shared.baseRoute
 /// Shared layout fragment for the admin panel.
 /// Provides the Sidebar + Navbar + Content structure.
 /// Designed to be nested inside an app-level LayoutView.
-public struct LayoutView: HTMLProtocol {
+public struct LayoutView: HTMLContent {
     let siteName: String
     let username: String
     let showNavbar: Bool
     let showSidebar: Bool
     let showFooter: Bool
-    let navbar: HTMLProtocol?
-    let sidebar: HTMLProtocol?
-    let content: HTMLProtocol
+    let navbar: [AnyHTMLContent]?
+    let sidebar: [AnyHTMLContent]?
+    let content: [AnyHTMLContent]
 
     public init(
         siteName: String = "Admin Console",
         username: String = "",
-        navbar: HTMLProtocol? = nil,
-        sidebar: HTMLProtocol? = nil,
+        navbar: [AnyHTMLContent]? = nil,
+        sidebar: [AnyHTMLContent]? = nil,
         showNavbar: Bool = false,
         showSidebar: Bool = false,
         showFooter: Bool = false,
-        @HTMLBuilder content: () -> HTMLProtocol
+        @HTMLBuilder content: () -> [AnyHTMLContent]
     ) {
         self.siteName = siteName
         self.username = username
@@ -88,7 +88,7 @@ public struct LayoutView: HTMLProtocol {
 }
 
 @CSSBuilder
-public func tableHeaderCSS() -> [any CSSProtocol] {
+public func tableHeaderCSS() -> [any CSSContent] {
     backgroundColor(backgroundColorNeutralSubtle)
     color(colorBase)
     textTransform(.uppercase)
@@ -105,7 +105,7 @@ public func tableHeaderCSS() -> [any CSSProtocol] {
 }
 
 @CSSBuilder
-public func tableRowCSS() -> [any CSSProtocol] {
+public func tableRowCSS() -> [any CSSContent] {
     selector("td") {
         padding(spacing16, px(20))
         verticalAlign(.middle)

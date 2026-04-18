@@ -6,7 +6,8 @@ import HTMLBuilder
 import WebComponents
 import WebTypes
 
-public struct TableRowEditorView: HTMLContent {
+/// View for creating a new database table row
+public struct TableRowCreatorView: HTMLContent {
 	let tableName: String
 	let data: FormData
 	let columns: [String]
@@ -28,12 +29,10 @@ public struct TableRowEditorView: HTMLContent {
 	}
 
 	public func render(indent: Int = 0) -> String {
-		let rowID = data.id ?? ""
-		
-		return section {
+		section {
 			// Header
 			header {
-				h1 { "Edit Row" }
+				h1 { "New Row" }
 				.style {
 					fontFamily(typographyFontSans)
 					fontSize(fontSizeXXLarge24)
@@ -42,7 +41,7 @@ public struct TableRowEditorView: HTMLContent {
 					margin(0)
 				}
 
-				p { "Editing row \(rowID) in \(tableName)" }
+				p { "Creating a new row in \(tableName)" }
 				.style {
 					fontFamily(typographyFontMono)
 					fontSize(fontSizeSmall14)
@@ -59,14 +58,8 @@ public struct TableRowEditorView: HTMLContent {
 				borderBottom(borderWidthBase, .solid, borderColorSubtle)
 			}
 
-			// Edit form
+			// Creation form
 			form {
-				// Hidden field for row ID
-				input()
-				.type(.hidden)
-				.name("_id")
-				.value(rowID)
-
 				// Fields
 				if let admin = admin {
 					// Managed mode — use FieldConfig but keep it simple
@@ -75,7 +68,7 @@ public struct TableRowEditorView: HTMLContent {
 					}
 				} else {
 					// Raw mode — loop through columns
-					let systemFields = Set(["submission_schema_version", "content_hash", "created_at", "updated_at"])
+					let systemFields = Set(["id", "submission_schema_version", "content_hash", "created_at", "updated_at"])
 					let editableColumns = columns.filter { !systemFields.contains($0) }
 
 					for column in editableColumns {
@@ -86,7 +79,7 @@ public struct TableRowEditorView: HTMLContent {
 				// Action buttons
 				div {
 					ButtonView(
-						label: "Save Changes",
+						label: "Create",
 						buttonColor: .blue,
 						weight: .solid,
 						size: .large,
@@ -99,7 +92,7 @@ public struct TableRowEditorView: HTMLContent {
 						buttonColor: .gray,
 						weight: .subtle,
 						size: .large,
-						url: "\(config.baseURL)/\(tableName)/\(rowID)",
+						url: "\(config.baseURL)/\(tableName)",
 						class: "btn-cancel"
 					)
 				}
@@ -111,7 +104,7 @@ public struct TableRowEditorView: HTMLContent {
 					borderTop(borderWidthBase, .solid, borderColorSubtle)
 				}
 			}
-			.action("\(config.baseURL)/\(tableName)/\(rowID)")
+			.action("\(config.baseURL)/\(tableName)")
 			.method(.post)
 			.class("table-editor-form")
 			.style {
@@ -146,16 +139,15 @@ public struct TableRowEditorView: HTMLContent {
 				marginBottom(spacing8)
 			}
 
-			let isLongText = value.count > 100 || name == "content" || name == "description"
-			let isJSON = value.hasPrefix("[") || value.hasPrefix("{")
-
-			if isLongText || isJSON {
+			let isLongText = name == "content" || name == "description"
+			
+			if isLongText {
 				TextAreaView(
 					id: "field-\(name)",
 					name: name,
 					placeholder: "Enter \(labelText.lowercased())...",
 					value: value,
-					rows: isJSON ? 8 : 12,
+					rows: 12,
 					autosize: true,
 					class: "field-input"
 				)

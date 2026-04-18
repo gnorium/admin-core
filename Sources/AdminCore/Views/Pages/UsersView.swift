@@ -86,7 +86,7 @@ public struct UsersViewConfig: Sendable {
 
 /// Generic Users management view for admin consoles
 /// Uses TableView with row selection for bulk actions
-public struct UsersView: HTMLProtocol {
+public struct UsersView: HTMLContent {
 	let users: [UserRow]
 	let stats: UserStats
 	let config: UsersViewConfig
@@ -253,7 +253,7 @@ public struct UsersView: HTMLProtocol {
 	}
 
 	@HTMLBuilder
-	private func renderStatBadge(_ label: String, _ value: Int) -> HTMLProtocol {
+	private func renderStatBadge(_ label: String, _ value: Int) -> [AnyHTMLContent] {
 		div {
 			span { label }
 			.style {
@@ -330,8 +330,8 @@ public class UsersHydration: @unchecked Sendable {
 						return
 					}
 				}
-				if let rowId = row.getAttribute("data-row-id") {
-					window.location.href = "\(self.baseURL)/\(rowId)"
+				if let rowID = row.getAttribute("data-row-id") {
+					window.location.href = "\(self.baseURL)/\(rowID)"
 				}
 			}
 		}
@@ -339,11 +339,11 @@ public class UsersHydration: @unchecked Sendable {
 
 	private func updateButtonStates() {
 		let checkboxes = document.querySelectorAll("[name='row-selection']")
-		let selectedCount = checkboxes.filter { $0.checked }.count
+		let selectedCount = checkboxes.filter { ($0 as? HTMLInputElement)?.checked ?? false }.count
 		let hasSelection = selectedCount > 0
 
 		for button in actionButtons {
-			button.setDisabled(!hasSelection)
+			(button as? HTMLButtonElement)?.disabled = !hasSelection
 		}
 	}
 }

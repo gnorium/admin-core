@@ -10,7 +10,7 @@ private let baseRoute = Configuration.shared.baseRoute
 
 /// Sign in form component for admin authentication.
 /// Use with AdminCore.LayoutView for the full page.
-public struct SignInView: HTMLProtocol {
+public struct SignInView: HTMLContent {
 	let errorMessage: String?
 
 	public init(errorMessage: String? = nil) {
@@ -49,6 +49,7 @@ public struct SignInView: HTMLProtocol {
 					div {
 						p { error }
 						.style {
+							fontFamily(typographyFontSans)
 							margin(0)
 							fontSize(fontSizeSmall14)
 							color(colorRed)

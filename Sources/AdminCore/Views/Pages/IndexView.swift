@@ -10,11 +10,11 @@ private let baseRoute = Configuration.shared.baseRoute
 
 /// Admin index view for listing model records with selection and bulk actions.
 /// Uses TableView with row selection for consistent component usage.
-public struct IndexView: HTMLProtocol {
-    let admin: AnyModelAdminProtocol
+public struct IndexView: HTMLContent {
+    let admin: AnyModelAdmin
     let rows: [ListRow]
     
-    public init(admin: AnyModelAdminProtocol, rows: [ListRow]) {
+    public init(admin: AnyModelAdmin, rows: [ListRow]) {
         self.admin = admin
         self.rows = rows
     }
@@ -137,29 +137,29 @@ public class IndexHydration: @unchecked Sendable {
 
     private func updateButtonStates() {
         let checkboxes = document.querySelectorAll("[name='row-selection']")
-        let selectedCount = checkboxes.filter { $0.checked }.count
+        let selectedCount = checkboxes.filter { ($0 as? HTMLInputElement)?.checked ?? false }.count
         let hasSelection = selectedCount > 0
         let singleSelection = selectedCount == 1
 
-        editBtn?.setDisabled(!singleSelection)
-        deleteBtn?.setDisabled(!hasSelection)
+        (editBtn as? HTMLButtonElement)?.disabled = !singleSelection
+        (deleteBtn as? HTMLButtonElement)?.disabled = !hasSelection
     }
 
-    private func getSelectedIds() -> [String] {
+    private func getSelectedIDs() -> [String] {
         let checkboxes = document.querySelectorAll("[name='row-selection']")
         return checkboxes.compactMap { checkbox in
-            checkbox.checked ? checkbox.getValue() : nil
+            (checkbox as? HTMLInputElement)?.checked == true ? (checkbox as? HTMLInputElement)?.value : nil
         }
     }
 
     private func handleBulkEdit() {
-        let ids = getSelectedIds()
-        guard let firstId = ids.first else { return }
-        window.location.href = "\(baseRoute)/\(urlPath)/\(firstId)/edit"
+        let ids = getSelectedIDs()
+        guard let firstID = ids.first else { return }
+        window.location.href = "\(baseRoute)/\(urlPath)/\(firstID)/edit"
     }
 
     private func handleBulkDelete() {
-        let ids = getSelectedIds()
+        let ids = getSelectedIDs()
         guard !ids.isEmpty else { return }
         
         let count = ids.count
