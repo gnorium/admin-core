@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -19,7 +20,7 @@ public struct NavbarView: HTMLContent {
 		self.username = username
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		div {
 			nav {
 				div {
@@ -111,7 +112,7 @@ public struct NavbarView: HTMLContent {
 			display(.flex)
 			flexDirection(.column)
 		}
-		.render(indent: indent)
+		.render()
 	}
 }
 

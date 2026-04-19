@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -28,7 +29,7 @@ public struct TableRowCreatorView: HTMLContent {
 		self.config = config
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		section {
 			// Header
 			header {
@@ -122,11 +123,11 @@ public struct TableRowCreatorView: HTMLContent {
 			margin(0, .auto)
 			padding(spacing48, spacing24)
 		}
-		.render(indent: indent)
+		.render()
 	}
 
 	@HTMLBuilder
-	private func renderFieldGroup(labelText: String, name: String, value: String) -> [AnyHTMLContent] {
+	private func renderFieldGroup(labelText: String, name: String, value: String) -> [DOMNode] {
 		div {
 			label { labelText }
 			.for("field-\(name)")
@@ -162,6 +163,7 @@ public struct TableRowCreatorView: HTMLContent {
 			}
 		}
 		.class("field-group")
+        .render()
 	}
 }
 

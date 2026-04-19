@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -11,9 +12,9 @@ private let baseRoute = Configuration.shared.baseRoute
 public struct SidebarItem: Sendable {
     public let label: String
     public let url: String
-    public let icon: (@Sendable (Length) -> [AnyHTMLContent])?
+    public let icon: (@Sendable (Length) -> [DOMNode])?
     
-    public init(label: String, url: String, icon: (@Sendable (Length) -> [AnyHTMLContent])? = nil) {
+    public init(label: String, url: String, icon: (@Sendable (Length) -> [DOMNode])? = nil) {
         self.label = label
         self.url = url
         self.icon = icon
@@ -34,12 +35,12 @@ public struct SidebarView: HTMLContent {
         ]
         self.bottomItems = bottomItems ?? [
             SidebarItem(label: "Back to site", url: "/", icon: { size in
-                [AnyHTMLContent(PreviousIconView(width: size, height: size))]
+                [PreviousIconView(width: size, height: size).render()]
             })
         ]
     }
 
-    public func render(indent: Int = 0) -> String {
+    public func render() -> DOMNode {
         aside {
             div {
                 nav {
@@ -116,11 +117,11 @@ public struct SidebarView: HTMLContent {
                 overflowY(.auto)
             }
         }
-        .render(indent: indent)
+        .render()
     }
 
     @HTMLBuilder
-    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> [AnyHTMLContent] {
+    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> [DOMNode] {
         li {
             if let icon = item.icon {
                 LinkView(url: item.url, weight: .plain, class: linkClass) {

@@ -1,8 +1,9 @@
-#if !os(WASI)
+#if SERVER
 
-import HTMLBuilder
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
+import HTMLBuilder
 import WebComponents
 import WebTypes
 
@@ -18,7 +19,7 @@ public struct VerifyMFAView: HTMLContent {
 		self.error = error
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		div {
 			// verificationCard
 			div {
@@ -184,16 +185,18 @@ public struct VerifyMFAView: HTMLContent {
             minHeight(vh(80))
             padding(spacing24)
         }
-        .render(indent: indent)
+        .render()
     }
 }
 
 #endif
 
-#if os(WASI)
- 
- import WebAPIs
- import EmbeddedSwiftUtilities
+#if CLIENT
+
+import DesignTokens
+import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
  
  /// WASM Hydration for VerifyMFAView
  public class VerifyMFAHydration: @unchecked Sendable {
@@ -208,5 +211,5 @@ public struct VerifyMFAView: HTMLContent {
  		}
  	}
  }
- 
+
  #endif

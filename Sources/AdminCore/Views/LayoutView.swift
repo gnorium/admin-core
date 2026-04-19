@@ -1,7 +1,9 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
+import CSSOMBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -17,19 +19,19 @@ public struct LayoutView: HTMLContent {
     let showNavbar: Bool
     let showSidebar: Bool
     let showFooter: Bool
-    let navbar: [AnyHTMLContent]?
-    let sidebar: [AnyHTMLContent]?
-    let content: [AnyHTMLContent]
+    let navbar: [DOMNode]?
+    let sidebar: [DOMNode]?
+    let content: [DOMNode]
 
     public init(
         siteName: String = "Admin Console",
         username: String = "",
-        navbar: [AnyHTMLContent]? = nil,
-        sidebar: [AnyHTMLContent]? = nil,
+        navbar: [DOMNode]? = nil,
+        sidebar: [DOMNode]? = nil,
         showNavbar: Bool = false,
         showSidebar: Bool = false,
         showFooter: Bool = false,
-        @HTMLBuilder content: () -> [AnyHTMLContent]
+        @HTMLBuilder content: () -> [DOMNode]
     ) {
         self.siteName = siteName
         self.username = username
@@ -41,7 +43,7 @@ public struct LayoutView: HTMLContent {
         self.content = content()
     }
 
-    public func render(indent: Int = 0) -> String {
+    public func render() -> DOMNode {
         div {
             if let sidebar = sidebar {
                 sidebar
@@ -83,12 +85,12 @@ public struct LayoutView: HTMLContent {
             overflow(.hidden)
             fontFamily(typographyFontSans)
         }
-        .render(indent: indent)
+        .render()
     }
 }
 
 @CSSBuilder
-public func tableHeaderCSS() -> [any CSSContent] {
+public func tableHeaderCSS() -> [CSSRule] {
     backgroundColor(backgroundColorNeutralSubtle)
     color(colorBase)
     textTransform(.uppercase)
@@ -105,7 +107,7 @@ public func tableHeaderCSS() -> [any CSSContent] {
 }
 
 @CSSBuilder
-public func tableRowCSS() -> [any CSSContent] {
+public func tableRowCSS() -> [CSSRule] {
     selector("td") {
         padding(spacing16, px(20))
         verticalAlign(.middle)

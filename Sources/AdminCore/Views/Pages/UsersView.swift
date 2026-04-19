@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -111,7 +112,7 @@ public struct UsersView: HTMLContent {
 		self.totalPages = totalPages
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		section {
 			// Header
 			header {
@@ -217,13 +218,13 @@ public struct UsersView: HTMLContent {
 				}
 			}
 		}
-		.class("users-container")
+		.class("users-view")
 		.style {
 			display(.flex)
 			flexDirection(.column)
 			gap(spacing32)
 		}
-		.render(indent: indent)
+		.render()
 	}
 
 	private func buildColumns() -> [TableView.Column] {
@@ -253,7 +254,7 @@ public struct UsersView: HTMLContent {
 	}
 
 	@HTMLBuilder
-	private func renderStatBadge(_ label: String, _ value: Int) -> [AnyHTMLContent] {
+	private func renderStatBadge(_ label: String, _ value: Int) -> [DOMNode] {
 		div {
 			span { label }
 			.style {
@@ -282,11 +283,12 @@ public struct UsersView: HTMLContent {
 
 #endif
 
-#if os(WASI)
+#if CLIENT
 
-import WebAPIs
 import DesignTokens
 import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
 
 /// Hydration for UsersView - enables bulk action buttons based on selection
 public class UsersHydration: @unchecked Sendable {

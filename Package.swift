@@ -26,12 +26,19 @@ let package = Package(
                 .product(name: "DesignTokens", package: "design-tokens"),
                 .product(name: "EmbeddedSwiftUtilities", package: "embedded-swift-utilities"),
                 .product(name: "HTMLBuilder", package: "web-builders"),
+                .product(name: "DOMBuilder", package: "web-builders"),
+                .product(name: "CSSOMBuilder", package: "web-builders"),
                 .product(name: "JSBuilder", package: "web-builders"),
                 .product(name: "WebAPIs", package: "web-apis"),
                 .product(name: "WebComponents", package: "web-components"),
                 .product(name: "WebTypes", package: "web-types")
             ],
-            path: "Sources/AdminCore"
+            path: "Sources/AdminCore",
+            swiftSettings: [
+                .enableExperimentalFeature("Embedded", .when(platforms: [.wasi])),
+                .define("CLIENT", .when(platforms: [.wasi])),
+                .define("SERVER", .when(platforms: [.macOS, .linux, .windows]))
+            ]
         )
     ]
 )

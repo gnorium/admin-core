@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -17,7 +18,7 @@ public struct RegisterView: HTMLContent {
         self.errorMessage = errorMessage
     }
 
-    public func render(indent: Int = 0) -> String {
+    public func render() -> DOMNode {
         div {
             div {
                 h1 { "Create Admin Account" }
@@ -94,7 +95,7 @@ public struct RegisterView: HTMLContent {
             backgroundColor(backgroundColorNeutralSubtle)
             fontFamily(typographyFontSans)
         }
-        .render(indent: indent)
+        .render()
     }
 }
 

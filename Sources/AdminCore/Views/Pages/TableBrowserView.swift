@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -67,7 +68,7 @@ public struct TableBrowserView: HTMLContent {
 		self.config = config
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		let tableColumns: [TableView.Column] = [
 			TableView.Column(id: "#", label: "#", width: px(50))
 		] + columns.map { column in
@@ -195,7 +196,7 @@ public struct TableBrowserView: HTMLContent {
 			flexDirection(.column)
 			gap(spacing24)
 		}
-		.render(indent: indent)
+		.render()
 	}
 
 	private func buildPageNumbers() -> [PaginationView.PageNumber] {
@@ -238,10 +239,12 @@ public struct TableBrowserView: HTMLContent {
 
 #endif
 
-#if os(WASI)
+#if CLIENT
 
-import WebAPIs
+import DesignTokens
 import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
 
 /// Hydration for TableBrowserView — extends TableView's built-in selection with
 /// bulk action buttons, row click navigation, and selection count display.

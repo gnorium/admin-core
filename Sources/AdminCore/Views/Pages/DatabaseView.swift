@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -48,7 +49,7 @@ public struct DatabaseView: HTMLContent {
 		self.config = config
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		section {
 			// Header
 			header {
@@ -157,11 +158,11 @@ public struct DatabaseView: HTMLContent {
 			flexDirection(.column)
 			gap(spacing32)
 		}
-		.render(indent: indent)
+		.render()
 	}
 
 	@HTMLBuilder
-	private func renderStatBadge(_ label: String, _ value: Int) -> [AnyHTMLContent] {
+	private func renderStatBadge(_ label: String, _ value: Int) -> [DOMNode] {
 		div {
 			span { label }
 			.style {

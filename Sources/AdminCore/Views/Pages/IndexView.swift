@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -19,7 +20,7 @@ public struct IndexView: HTMLContent {
         self.rows = rows
     }
     
-    public func render(indent: Int = 0) -> String {
+    public func render() -> DOMNode {
         TableView(
             captionContent: "",
             hideCaption: true,
@@ -87,16 +88,17 @@ public struct IndexView: HTMLContent {
                 color(colorSubtle)
             }
         }
-        .render(indent: indent)
+        .render()
     }
 }
 
 #endif
 
-#if os(WASI)
+#if CLIENT
 
-import WebAPIs
 import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
 
 /// Hydration for IndexView - extends TableView's selection with bulk action buttons
 public class IndexHydration: @unchecked Sendable {

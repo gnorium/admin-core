@@ -1,8 +1,9 @@
-#if !os(WASI)
+#if SERVER
 
-import HTMLBuilder
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
+import HTMLBuilder
 import WebComponents
 import WebTypes
 
@@ -25,7 +26,7 @@ public struct SetupMFAView: HTMLContent {
 		self.username = username
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
         div {
             // setupCard
             div {
@@ -299,16 +300,18 @@ public struct SetupMFAView: HTMLContent {
             alignItems(.center)
             minHeight(vh(80))
         }
-        .render(indent: indent)
+        .render()
     }
 }
 
 #endif
 
-#if os(WASI)
+#if CLIENT
 
-import WebAPIs
+import DesignTokens
 import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
 
 /// WASM Hydration for SetupMFAView
 public class SetupMFAHydration: @unchecked Sendable {

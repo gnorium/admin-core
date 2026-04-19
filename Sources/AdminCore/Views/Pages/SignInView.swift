@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -17,7 +18,7 @@ public struct SignInView: HTMLContent {
 		self.errorMessage = errorMessage
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		div {
 			div {
 				div {
@@ -130,7 +131,7 @@ public struct SignInView: HTMLContent {
 			alignItems(.center)
 			flex(1)
 		}
-		.render(indent: indent)
+		.render()
 	}
 }
 

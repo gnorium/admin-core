@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -28,7 +29,7 @@ public struct TableRowDetailsView: HTMLContent {
 		self.config = config
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		return section {
 			// Header
 			header {
@@ -157,25 +158,25 @@ public struct TableRowDetailsView: HTMLContent {
 				flexDirection(.column)
 			}
 		}
-		.class("table-row-detail-container")
+		.class("table-row-detail-view")
 		.data("hydrate", "table-row-detail")
 		.style {
 			display(.flex)
 			flexDirection(.column)
 			gap(spacing24)
 		}
-		.render(indent: indent)
+		.render()
 	}
 }
 
 #endif
 
-#if os(WASI)
+#if CLIENT
 
-import WebAPIs
 import DesignTokens
-import WebTypes
 import EmbeddedSwiftUtilities
+import WebAPIs
+import WebTypes
 
 private class TableRowDetailInstance: @unchecked Sendable {
 	private var container: Element
@@ -214,7 +215,7 @@ public class TableRowDetailHydration: @unchecked Sendable {
 	}
 
 	private func hydrateAll() {
-		let containers = document.querySelectorAll(".table-row-detail-container")
+		let containers = document.querySelectorAll(".table-row-detail-view")
 		for container in containers {
 			let instance = TableRowDetailInstance(container: container)
 			instances.append(instance)

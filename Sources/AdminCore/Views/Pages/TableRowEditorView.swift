@@ -1,7 +1,8 @@
-#if !os(WASI)
+#if SERVER
 
 import CSSBuilder
 import DesignTokens
+import DOMBuilder
 import HTMLBuilder
 import WebComponents
 import WebTypes
@@ -27,7 +28,7 @@ public struct TableRowEditorView: HTMLContent {
 		self.config = config
 	}
 
-	public func render(indent: Int = 0) -> String {
+	public func render() -> DOMNode {
 		let rowID = data.id ?? ""
 		
 		return section {
@@ -129,11 +130,11 @@ public struct TableRowEditorView: HTMLContent {
 			margin(0, .auto)
 			padding(spacing48, spacing24)
 		}
-		.render(indent: indent)
+		.render()
 	}
 
 	@HTMLBuilder
-	private func renderFieldGroup(labelText: String, name: String, value: String) -> [AnyHTMLContent] {
+	private func renderFieldGroup(labelText: String, name: String, value: String) -> [DOMNode] {
 		div {
 			label { labelText }
 			.for("field-\(name)")
