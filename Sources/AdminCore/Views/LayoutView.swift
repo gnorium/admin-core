@@ -1,96 +1,99 @@
 #if SERVER
+  import CSSBuilder
+  import CSSOMBuilder
+  import DesignTokens
+  import DOMBuilder
+  import HTMLBuilder
+  import WebComponents
+  import WebTypes
 
-import CSSBuilder
-import CSSOMBuilder
-import DesignTokens
-import DOMBuilder
-import HTMLBuilder
-import WebComponents
-import WebTypes
+  private let baseRoute = Configuration.shared.baseRoute
 
-private let baseRoute = Configuration.shared.baseRoute
-
-/// Shared layout fragment for the admin panel.
-/// Provides the Sidebar + Navbar + Content structure.
-/// Designed to be nested inside an app-level LayoutView.
-public struct LayoutView: HTMLContent {
+  /// Shared layout fragment for the admin panel.
+  /// Provides the Sidebar + Navbar + Content structure.
+  /// Designed to be nested inside an app-level LayoutView.
+  public struct LayoutView: HTMLContent {
     let siteName: String
     let username: String
     let showNavbar: Bool
     let showSidebar: Bool
     let showFooter: Bool
-    let navbar: [DOMNode]?
-    let sidebar: [DOMNode]?
-    let content: [DOMNode]
+    let navbar: [Node]?
+    let sidebar: [Node]?
+    let content: [Node]
 
     public init(
-        siteName: String = "Admin Console",
-        username: String = "",
-        navbar: [DOMNode]? = nil,
-        sidebar: [DOMNode]? = nil,
-        showNavbar: Bool = false,
-        showSidebar: Bool = false,
-        showFooter: Bool = false,
-        @HTMLBuilder content: () -> [DOMNode]
+      siteName: String = "Admin Console",
+      username: String = "",
+      navbar: [Node]? = nil,
+      sidebar: [Node]? = nil,
+      showNavbar: Bool = false,
+      showSidebar: Bool = false,
+      showFooter: Bool = false,
+      @HTMLBuilder content: () -> [Node]
     ) {
-        self.siteName = siteName
-        self.username = username
-        self.navbar = navbar
-        self.sidebar = sidebar
-        self.showNavbar = showNavbar
-        self.showSidebar = showSidebar
-        self.showFooter = showFooter
-        self.content = content()
+      self.siteName = siteName
+      self.username = username
+      self.navbar = navbar
+      self.sidebar = sidebar
+      self.showNavbar = showNavbar
+      self.showSidebar = showSidebar
+      self.showFooter = showFooter
+      self.content = content()
     }
 
-    public func render() -> DOMNode {
+    public func render() -> Node {
+      div {
+        if let sidebar = sidebar {
+          sidebar
+        } else if showSidebar {
+          SidebarView()
+        }
+
         div {
-            if let sidebar = sidebar {
-                sidebar
-            } else if showSidebar {
-                SidebarView()
-            }
+          if let navbar = navbar {
+            navbar
+          } else if showNavbar {
+            NavbarView(siteName: siteName, username: username)
+          }
 
-            div {
-                if let navbar = navbar {
-                    navbar
-                } else if showNavbar {
-                    NavbarView(siteName: siteName, username: username)
-                }
-                
-                main {
-                    content
-                }
-                .style {
-                    flex(1)
-                    overflow(.auto)
-                    minWidth(0)
-                    padding(spacing32, spacing32, spacing32, spacing48)
-                    boxSizing(.borderBox)
-                }
-            }
-            .style {
-                display(.flex)
-                flexDirection(.column)
-                flex(1)
-                minWidth(0)
-                borderInlineStart(borderWidthBase, .solid, borderColorSubtle)
-            }
+          main {
+            content
+          }
+          .style {
+            flex(1)
+            overflow(.auto)
+            minWidth(0)
+            padding(spacing32, spacing32, spacing32, spacing48)
+            boxSizing(.borderBox)
+          }
         }
+        .class("admin-core layout-inner-div")
         .style {
-            display(.flex)
-            flexDirection(.row)
-            minHeight(perc(100))
-            width(perc(100))
-            overflow(.hidden)
-            fontFamily(typographyFontSans)
+          display(.flex)
+          flexDirection(.column)
+          flex(1)
+          minWidth(0)
+          media(minWidth(minWidthBreakpointTablet)) {
+            borderInlineStart(borderWidthBase, borderStyleBase, borderColorSubtle)
+          }
         }
-        .render()
-    }
-}
+      }
+      .class("admin-core layout-view")
+      .style {
+        display(.flex)
+        flexDirection(.row)
+        minHeight(perc(100))
+        width(perc(100))
+        overflow(.hidden)
+        fontFamily(typographyFontSans)
+      }
 
-@CSSBuilder
-public func tableHeaderCSS() -> [CSSRule] {
+    }
+  }
+
+  @CSSBuilder
+  public func tableHeaderCSS() -> [CSSRule] {
     backgroundColor(backgroundColorNeutralSubtle)
     color(colorBase)
     textTransform(.uppercase)
@@ -99,19 +102,18 @@ public func tableHeaderCSS() -> [CSSRule] {
     fontWeight(fontWeightBold)
     padding(px(14), px(20)).important()
     borderBottom(px(1), .solid, rgba(0, 0, 0, 0.05))
-    
+
     selector("a") {
-        color(colorBase).important()
-        textDecoration(.none)
+      color(colorBase).important()
+      textDecoration(.none)
     }
-}
+  }
 
-@CSSBuilder
-public func tableRowCSS() -> [CSSRule] {
+  @CSSBuilder
+  public func tableRowCSS() -> [CSSRule] {
     selector("td") {
-        padding(spacing16, px(20))
-        verticalAlign(.middle)
+      padding(spacing16, px(20))
+      verticalAlign(.middle)
     }
-}
-
+  }
 #endif
