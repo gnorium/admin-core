@@ -96,7 +96,7 @@
               buttonColor: .gray,
               weight: .subtle,
               size: .large,
-              url: "\(config.baseURL)/\(tableName)",
+              url: config.backURL,
               class: "btn-cancel"
             )
           }
