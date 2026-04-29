@@ -13,10 +13,16 @@
   public struct NavbarView: HTMLContent {
     let siteName: String
     let username: String
+    let signOutUrl: String?
 
-    public init(siteName: String = "Admin Console", username: String) {
+    public init(
+      siteName: String = "Admin Console",
+      username: String,
+      signOutUrl: String? = nil
+    ) {
       self.siteName = siteName
       self.username = username
+      self.signOutUrl = signOutUrl ?? "\(Configuration.shared.baseRoute)/sign-out"
     }
 
     public func render() -> Node {
@@ -62,9 +68,6 @@
 
             // Ellipsis settings button
             EllipsisMenuButtonView()
-
-            ButtonView(
-              label: "Sign Out", weight: .quiet, size: .large, url: "\(baseRoute)/sign-out")
           }
           .style {
             display(.flex)
@@ -105,6 +108,34 @@
           }
           .class("ellipsis-section")
           .style { EllipsisMenuView.sectionCSS() }
+
+          if let signOutUrl = signOutUrl {
+            div {}
+              .class("ellipsis-divider")
+              .style { EllipsisMenuView.dividerCSS() }
+
+            div {
+              a {
+                ButtonView(
+                  label: "Sign Out",
+                  icon: IconView(icon: { s in LogOutIconView(width: s, height: s) }, size: .medium),
+                  weight: .subtle,
+                  size: .large,
+                  fullWidth: true,
+                  labelFontWeight: fontWeightNormal,
+                  contentJustifyContent: .flexStart
+                )
+              }
+              .href(signOutUrl)
+              .class("ellipsis-menu-link")
+              .style {
+                textDecoration(.none)
+                width(perc(100))
+              }
+            }
+            .class("ellipsis-section")
+            .style { EllipsisMenuView.sectionCSS() }
+          }
         }
       }
       .class("navbar-wrapper")

@@ -21,6 +21,7 @@
     let navbar: [Node]?
     let sidebar: [Node]?
     let content: [Node]
+    let signOutUrl: String?
 
     public init(
       siteName: String = "Admin Console",
@@ -30,6 +31,7 @@
       showNavbar: Bool = false,
       showSidebar: Bool = false,
       showFooter: Bool = false,
+      signOutUrl: String? = nil,
       @HTMLBuilder content: () -> [Node]
     ) {
       self.siteName = siteName
@@ -39,6 +41,7 @@
       self.showNavbar = showNavbar
       self.showSidebar = showSidebar
       self.showFooter = showFooter
+      self.signOutUrl = signOutUrl ?? "\(Configuration.shared.baseRoute)/sign-out"
       self.content = content()
     }
 
@@ -54,7 +57,7 @@
           if let navbar = navbar {
             navbar
           } else if showNavbar {
-            NavbarView(siteName: siteName, username: username)
+            NavbarView(siteName: siteName, username: username, signOutUrl: signOutUrl)
           }
 
           main {
