@@ -28,7 +28,7 @@
       self.config = config
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       return section {
         // Header
         header {

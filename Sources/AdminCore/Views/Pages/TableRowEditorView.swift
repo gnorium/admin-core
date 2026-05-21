@@ -42,7 +42,7 @@
       self.config = config
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       let rowID = data.id ?? ""
 
       return section {

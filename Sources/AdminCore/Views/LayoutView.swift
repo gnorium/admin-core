@@ -45,7 +45,7 @@
       self.content = content()
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       div {
         if let sidebar = sidebar {
           sidebar

@@ -19,7 +19,7 @@
       self.rows = rows
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       TableView(
         captionContent: "",
         hideCaption: true,

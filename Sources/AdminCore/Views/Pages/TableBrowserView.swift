@@ -67,7 +67,7 @@
       self.config = config
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       let tableColumns: [TableView.Column] =
         [
           TableView.Column(id: "#", label: "#", width: px(50))

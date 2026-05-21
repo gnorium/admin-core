@@ -38,12 +38,12 @@
           SidebarItem(
             label: "Back to site", url: "/",
             icon: { size in
-              [PreviousIconView(width: size, height: size).render()]
+              [PreviousIconView(width: size, height: size).build()]
             })
         ]
     }
 
-    public func render() -> Node {
+    public func build() -> Node {
       aside {
         div {
           nav {
