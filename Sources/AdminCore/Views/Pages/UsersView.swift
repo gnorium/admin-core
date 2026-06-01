@@ -113,7 +113,7 @@
       self.totalPages = totalPages
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       section {
         // Header
         header {
@@ -255,7 +255,7 @@
     }
 
     @HTMLBuilder
-    private func renderStatBadge(_ label: String, _ value: Int) -> [Node] {
+    private func renderStatBadge(_ label: String, _ value: Int) -> [DOM.Node] {
       div {
         span { label }
           .style {
@@ -292,7 +292,7 @@
 
   /// Hydration for UsersView - enables bulk action buttons based on selection
   public class UsersHydration: @unchecked Sendable {
-    private var actionButtons: [Element] = []
+    private var actionButtons: [DOM.Element] = []
     private var baseURL: String = "/admin-console/users"
 
     public init() {
@@ -341,11 +341,11 @@
 
     private func updateButtonStates() {
       let checkboxes = document.querySelectorAll("[name='row-selection']")
-      let selectedCount = checkboxes.filter { ($0 as? HTMLInputElement)?.checked ?? false }.count
+      let selectedCount = checkboxes.filter { ($0 as? HTML.HTMLInputElement)?.checked ?? false }.count
       let hasSelection = selectedCount > 0
 
       for button in actionButtons {
-        (button as? HTMLButtonElement)?.disabled = !hasSelection
+        (button as? HTML.HTMLButtonElement)?.disabled = !hasSelection
       }
     }
   }

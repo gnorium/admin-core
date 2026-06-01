@@ -67,7 +67,7 @@
       self.config = config
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       let tableColumns: [TableView.Column] =
         [
           TableView.Column(id: "#", label: "#", width: px(50))
@@ -256,9 +256,9 @@
   /// Hydration for TableBrowserView — extends TableView's built-in selection with
   /// bulk action buttons, row click navigation, and selection count display.
   public class TableBrowserHydration: @unchecked Sendable {
-    private var selectionCountEl: Element?
-    private var editButton: Element?
-    private var deleteButton: Element?
+    private var selectionCountEl: DOM.Element?
+    private var editButton: DOM.Element?
+    private var deleteButton: DOM.Element?
     private var selectedRowIDs: [String] = []
     private var tableName: String = ""
     private var baseURL: String = ""
@@ -348,11 +348,11 @@
       }
 
       if let btn = editBtn {
-        (btn as? HTMLButtonElement)?.disabled = (count != 1)
+        (btn as? HTML.HTMLButtonElement)?.disabled = (count != 1)
       }
 
       if let btn = deleteBtn {
-        (btn as? HTMLButtonElement)?.disabled = (count == 0)
+        (btn as? HTML.HTMLButtonElement)?.disabled = (count == 0)
       }
     }
   }

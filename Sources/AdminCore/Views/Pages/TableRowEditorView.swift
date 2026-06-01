@@ -42,7 +42,7 @@
       self.config = config
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       let rowID = data.id ?? ""
 
       return section {
@@ -151,7 +151,7 @@
     }
 
     @HTMLBuilder
-    private func renderFieldGroup(labelText: String, name: String, value: String) -> [Node] {
+    private func renderFieldGroup(labelText: String, name: String, value: String) -> [DOM.Node] {
       div {
         label { labelText }
           .for("field-\(name)")

@@ -18,21 +18,21 @@
     let showNavbar: Bool
     let showSidebar: Bool
     let showFooter: Bool
-    let navbar: [Node]?
-    let sidebar: [Node]?
-    let content: [Node]
+    let navbar: [DOM.Node]?
+    let sidebar: [DOM.Node]?
+    let content: [DOM.Node]
     let signOutUrl: String?
 
     public init(
       siteName: String = "Admin Console",
       username: String = "",
-      navbar: [Node]? = nil,
-      sidebar: [Node]? = nil,
+      navbar: [DOM.Node]? = nil,
+      sidebar: [DOM.Node]? = nil,
       showNavbar: Bool = false,
       showSidebar: Bool = false,
       showFooter: Bool = false,
       signOutUrl: String? = nil,
-      @HTMLBuilder content: () -> [Node]
+      @HTMLBuilder content: () -> [DOM.Node]
     ) {
       self.siteName = siteName
       self.username = username
@@ -45,7 +45,7 @@
       self.content = content()
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       div {
         if let sidebar = sidebar {
           sidebar
@@ -96,7 +96,7 @@
   }
 
   @CSSBuilder
-  public func tableHeaderCSS() -> [CSSRule] {
+  public func tableHeaderCSS() -> [CSSOM.CSSRule] {
     backgroundColor(backgroundColorNeutralSubtle)
     color(colorBase)
     textTransform(.uppercase)
@@ -113,7 +113,7 @@
   }
 
   @CSSBuilder
-  public func tableRowCSS() -> [CSSRule] {
+  public func tableRowCSS() -> [CSSOM.CSSRule] {
     selector("td") {
       padding(spacing16, px(20))
       verticalAlign(.middle)

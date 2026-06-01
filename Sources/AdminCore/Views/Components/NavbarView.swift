@@ -25,7 +25,7 @@
       self.signOutUrl = signOutUrl ?? "\(Configuration.shared.baseRoute)/sign-out"
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       div {
         nav {
           div {

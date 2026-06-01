@@ -18,7 +18,7 @@
       self.error = error
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       div {
         // verificationCard
         div {

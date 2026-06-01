@@ -86,7 +86,7 @@
   // MARK: - Convenience Initializers
 
   extension FieldConfig {
-    /// Text field shorthand
+    /// DOM.Text field shorthand
     public static func text(
       _ name: String,
       label: String,

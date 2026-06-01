@@ -28,7 +28,7 @@
       self.config = config
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       section {
         // Header
         header {
@@ -129,7 +129,7 @@
     }
 
     @HTMLBuilder
-    private func renderFieldGroup(labelText: String, name: String, value: String) -> [Node] {
+    private func renderFieldGroup(labelText: String, name: String, value: String) -> [DOM.Node] {
       div {
         label { labelText }
           .for("field-\(name)")

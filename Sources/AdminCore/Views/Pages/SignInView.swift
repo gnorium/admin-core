@@ -17,7 +17,7 @@
       self.errorMessage = errorMessage
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       div {
         div {
           div {

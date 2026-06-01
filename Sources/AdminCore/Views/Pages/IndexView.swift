@@ -19,7 +19,7 @@
       self.rows = rows
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       TableView(
         captionContent: "",
         hideCaption: true,
@@ -101,8 +101,8 @@
 
   /// Hydration for IndexView - extends TableView's selection with bulk action buttons
   public class IndexHydration: @unchecked Sendable {
-    private var editBtn: Element?
-    private var deleteBtn: Element?
+    private var editBtn: DOM.Element?
+    private var deleteBtn: DOM.Element?
     private var baseRoute: String = ""
     private var urlPath: String = ""
 
@@ -138,19 +138,19 @@
 
     private func updateButtonStates() {
       let checkboxes = document.querySelectorAll("[name='row-selection']")
-      let selectedCount = checkboxes.filter { ($0 as? HTMLInputElement)?.checked ?? false }.count
+      let selectedCount = checkboxes.filter { ($0 as? HTML.HTMLInputElement)?.checked ?? false }.count
       let hasSelection = selectedCount > 0
       let singleSelection = selectedCount == 1
 
-      (editBtn as? HTMLButtonElement)?.disabled = !singleSelection
-      (deleteBtn as? HTMLButtonElement)?.disabled = !hasSelection
+      (editBtn as? HTML.HTMLButtonElement)?.disabled = !singleSelection
+      (deleteBtn as? HTML.HTMLButtonElement)?.disabled = !hasSelection
     }
 
     private func getSelectedIDs() -> [String] {
       let checkboxes = document.querySelectorAll("[name='row-selection']")
       return checkboxes.compactMap { checkbox in
-        (checkbox as? HTMLInputElement)?.checked == true
-          ? (checkbox as? HTMLInputElement)?.value : nil
+        (checkbox as? HTML.HTMLInputElement)?.checked == true
+          ? (checkbox as? HTML.HTMLInputElement)?.value : nil
       }
     }
 

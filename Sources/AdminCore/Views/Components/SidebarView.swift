@@ -11,9 +11,9 @@
   public struct SidebarItem: Sendable {
     public let label: String
     public let url: String
-    public let icon: (@Sendable (Length) -> [Node])?
+    public let icon: (@Sendable (CSS.Length) -> [DOM.Node])?
 
-    public init(label: String, url: String, icon: (@Sendable (Length) -> [Node])? = nil) {
+    public init(label: String, url: String, icon: (@Sendable (CSS.Length) -> [DOM.Node])? = nil) {
       self.label = label
       self.url = url
       self.icon = icon
@@ -43,7 +43,7 @@
         ]
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       aside {
         div {
           nav {
@@ -124,7 +124,7 @@
     }
 
     @HTMLBuilder
-    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> [Node] {
+    private func renderItem(_ item: SidebarItem, linkClass: String = "sidebar-link") -> [DOM.Node] {
       li {
         if let icon = item.icon {
           LinkView(url: item.url, weight: .plain, class: linkClass) {

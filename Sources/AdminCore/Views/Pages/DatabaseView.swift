@@ -48,7 +48,7 @@
       self.config = config
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       section {
         // Header
         header {
@@ -160,7 +160,7 @@
     }
 
     @HTMLBuilder
-    private func renderStatBadge(_ label: String, _ value: Int) -> [Node] {
+    private func renderStatBadge(_ label: String, _ value: Int) -> [DOM.Node] {
       div {
         span { label }
           .style {

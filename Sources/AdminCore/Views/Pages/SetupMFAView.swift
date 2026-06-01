@@ -28,7 +28,7 @@
       self.username = username
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       div {
         // setupCard
         div {

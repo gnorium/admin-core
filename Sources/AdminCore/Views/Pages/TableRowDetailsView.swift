@@ -28,7 +28,7 @@
       self.config = config
     }
 
-    public func build() -> Node {
+    public func build() -> DOM.Node {
       return section {
         // Header
         header {
@@ -176,12 +176,12 @@
   import WebTypes
 
   private class TableRowDetailInstance: @unchecked Sendable {
-    private var container: Element
+    private var container: DOM.Element
     private var tableName: String = ""
     private var rowID: String = ""
     private var baseURL: String = ""
 
-    init(container: Element) {
+    init(container: DOM.Element) {
       self.container = container
 
       if let actions = container.querySelector(".row-detail-actions") {
