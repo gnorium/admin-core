@@ -23,8 +23,9 @@
   public struct SidebarView: HTMLContent {
     let items: [SidebarItem]
     let bottomItems: [SidebarItem]
+    let collapsed: Bool
 
-    public init(items: [SidebarItem]? = nil, bottomItems: [SidebarItem]? = nil) {
+    public init(items: [SidebarItem]? = nil, bottomItems: [SidebarItem]? = nil, collapsed: Bool = false) {
       self.items =
         items ?? [
           SidebarItem(label: "Dashboard", url: baseRoute),
@@ -41,10 +42,11 @@
               [PreviousIconView(width: size, height: size).build()]
             })
         ]
+      self.collapsed = collapsed
     }
 
     public func build() -> DOM.Node {
-      aside {
+      WebComponents.SidebarView(class: "sidebar-view", collapsed: collapsed) {
         div {
           nav {
             ul {
@@ -59,10 +61,6 @@
                     color(colorSubtle)
                     textTransform(.uppercase)
                     letterSpacing(em(0.05))
-                    margin(0)
-                    media(minWidth(minWidthBreakpointTablet)) {
-                      paddingBlockStart(spacing16)
-                    }
                   }
               }
 
@@ -88,7 +86,7 @@
               margin(0)
               display(.flex)
               flexDirection(.column)
-              gap(spacing8)
+              gap(spacing16)
 
               descendant(".sidebar-back-link") {
                 paddingInline(0).important()
@@ -100,27 +98,6 @@
           padding(0)
         }
       }
-      .class("sidebar-view")
-      .data("sidebar", true)
-      .style {
-        // Mobile: hidden — content cloned into navbar slide menu by NavbarHydration
-        display(.none)
-
-        // Desktop: visible as sticky sidebar column
-        media(minWidth(minWidthBreakpointTablet)) {
-          display(.flex).important()
-          flexDirection(.column)
-          width(px(256))
-          minWidth(px(256))
-          height(vh(100))
-          position(.sticky)
-          top(0)
-          left(0)
-          backgroundColor(backgroundColorBase)
-          overflowY(.auto)
-        }
-      }
-
     }
 
     @HTMLBuilder
