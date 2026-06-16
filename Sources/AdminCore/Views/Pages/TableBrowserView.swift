@@ -73,7 +73,7 @@
           TableView.Column(id: "#", label: "#", width: px(50))
         ]
         + columns.map { column in
-          TableView.Column(id: column, label: column)
+          TableView.Column(id: column, label: column, width: px(150))
         }
 
       let tableRows: [TableView.Row] = rows.enumerated().map { (index, row) in
@@ -132,30 +132,13 @@
                   fontFamily(typographyFontMono)
                 }
 
-              div {
-                ButtonView(
-                  label: "Edit",
-                  buttonColor: .gray,
-                  weight: .subtle,
-                  size: .large,
-                  disabled: true,
-                  class: "action-edit"
-                )
-
-                ButtonView(
-                  label: "Delete",
-                  buttonColor: .gray,
-                  weight: .subtle,
-                  size: .large,
-                  disabled: true,
-                  class: "action-delete"
-                )
-              }
-              .class("action-buttons")
-              .style {
-                display(.flex)
-                gap(spacing8)
-              }
+              ButtonGroupView(
+                buttons: [
+                  .init(value: "edit", label: "Edit", disabled: true, class: "action-edit"),
+                  .init(value: "delete", label: "Delete", disabled: true, class: "action-delete"),
+                ],
+                class: "action-buttons"
+              )
             }
             .class("table-action-toolbar")
             .data("table", tableName)

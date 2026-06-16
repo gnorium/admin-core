@@ -81,32 +81,25 @@
           }
 
           // Action buttons
-          div {
-            ButtonView(
-              label: "Create",
-              buttonColor: .blue,
-              weight: .solid,
-              size: .large,
-              type: .submit,
-              class: "btn-save"
-            )
-
-            ButtonView(
-              label: "Cancel",
-              buttonColor: .gray,
-              weight: .subtle,
-              size: .large,
-              url: config.backURL,
-              class: "btn-cancel"
-            )
-          }
-          .class("form-actions")
-          .style {
-            display(.flex)
-            gap(spacing16)
-            paddingTop(spacing24)
-            borderTop(borderWidthBase, .solid, borderColorSubtle)
-          }
+          ButtonGroupView(
+            buttons: [
+              .init(
+                value: "create", label: "Create",
+                buttonColor: .blue, weight: .solid, type: .submit, class: "btn-save"
+              ),
+              .init(
+                value: "cancel", label: "Cancel",
+                url: config.backURL, class: "btn-cancel"
+              ),
+            ],
+            class: "form-actions",
+            style: {
+              width(perc(100))
+              gap(spacing16)
+              paddingTop(spacing24)
+              borderTop(borderWidthBase, .solid, borderColorSubtle)
+            }
+          )
         }
         .action("\(config.baseURL)/\(tableName)")
         .method(.post)

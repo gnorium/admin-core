@@ -41,32 +41,29 @@
       ) {
         // Custom header with title and action buttons
         div {
-          div {
-            // Bulk action buttons
-            ButtonView(label: "Edit", buttonColor: .gray, weight: .subtle, size: .large, disabled: true, class: "bulk-edit-btn")
-            ButtonView(label: "Delete", buttonColor: .gray, weight: .subtle, size: .large, disabled: true, class: "bulk-delete-btn")
-
-            a {
-              ButtonView(label: "Add \(admin.modelName)", buttonColor: .blue, weight: .solid, size: .large)
+          ButtonGroupView(
+            buttons: [
+              .init(value: "edit", label: "Edit", disabled: true, class: "bulk-edit-btn"),
+              .init(value: "delete", label: "Delete", disabled: true, class: "bulk-delete-btn"),
+              .init(
+                value: "add", label: "Add \(admin.modelName)",
+                url: "\(baseRoute)/\(admin.urlPath)/new",
+                buttonColor: .blue, weight: .solid
+              ),
+            ],
+            class: "index-actions",
+            data: ["base-route": baseRoute, "url-path": admin.urlPath],
+            style: {
+              width(perc(100))
+              justifyContent(.flexEnd)
             }
-            .href("\(baseRoute)/\(admin.urlPath)/new")
-            .style { textDecoration(.none) }
-          }
-          .class("index-actions")
-          .data("base-route", baseRoute)
-          .data("url-path", admin.urlPath)
-          .style {
-            display(.flex)
-            gap(spacing8)
-            alignItems(.center)
-          }
+          )
         }
         .style {
           display(.flex)
           justifyContent(.flexEnd)
           alignItems(.center)
           width(perc(100))
-          marginBottom(spacing24)
         }
       } thead: {
         // Use default thead from TableView
@@ -79,7 +76,6 @@
           .style {
             fontSize(fontSizeLarge18)
             fontWeight(600)
-            marginBottom(spacing8)
           }
         div { "Click 'Add \(admin.modelName)' above to create one" }
           .style {

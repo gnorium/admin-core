@@ -17,7 +17,6 @@
     let username: String
     let showNavbar: Bool
     let showSidebar: Bool
-    let showFooter: Bool
     let navbar: [DOM.Node]?
     let sidebar: [DOM.Node]?
     let content: [DOM.Node]
@@ -30,7 +29,6 @@
       sidebar: [DOM.Node]? = nil,
       showNavbar: Bool = false,
       showSidebar: Bool = false,
-      showFooter: Bool = false,
       signOutUrl: String? = nil,
       @HTMLBuilder content: () -> [DOM.Node]
     ) {
@@ -40,7 +38,6 @@
       self.sidebar = sidebar
       self.showNavbar = showNavbar
       self.showSidebar = showSidebar
-      self.showFooter = showFooter
       self.signOutUrl = signOutUrl ?? "\(Configuration.shared.baseRoute)/sign-out"
       self.content = content()
     }
@@ -67,7 +64,6 @@
             flex(1)
             overflow(.auto)
             minWidth(0)
-            padding(spacing32, spacing32, spacing32, spacing48)
             boxSizing(.borderBox)
           }
         }
@@ -78,7 +74,7 @@
           flex(1)
           minWidth(0)
           media(minWidth(minWidthBreakpointTablet)) {
-            borderInlineStart(borderWidthBase, borderStyleBase, borderColorSubtle)
+            padding(spacing32)
           }
         }
       }
@@ -86,7 +82,8 @@
       .style {
         display(.flex)
         flexDirection(.row)
-        minHeight(perc(100))
+        flex(1)
+        minHeight(0)
         width(perc(100))
         overflow(.hidden)
         fontFamily(typographyFontSans)
