@@ -97,6 +97,13 @@
 
   /// Hydration for IndexView - extends TableView's selection with bulk action buttons
   public class IndexHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: IndexHydration?
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".index-view") != nil else { return }
+      instance = IndexHydration()
+    }
+
     private var editBtn: DOM.Element?
     private var deleteBtn: DOM.Element?
     private var baseRoute: String = ""

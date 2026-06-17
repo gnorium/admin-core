@@ -292,6 +292,13 @@
 
   /// Hydration for UsersView - enables bulk action buttons based on selection
   public class UsersHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: UsersHydration?
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".users-view") != nil else { return }
+      instance = UsersHydration()
+    }
+
     private var actionButtons: [DOM.Element] = []
     private var baseURL: String = "/admin-console/users"
 

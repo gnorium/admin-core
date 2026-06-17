@@ -239,6 +239,13 @@
   /// Hydration for TableBrowserView — extends TableView's built-in selection with
   /// bulk action buttons, row click navigation, and selection count display.
   public class TableBrowserHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: TableBrowserHydration?
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".table-browser-view") != nil else { return }
+      instance = TableBrowserHydration()
+    }
+
     private var selectionCountEl: DOM.Element?
     private var editButton: DOM.Element?
     private var deleteButton: DOM.Element?

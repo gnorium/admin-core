@@ -198,6 +198,13 @@
 
   /// WASM Hydration for VerifyMFAView
   public class VerifyMFAHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: VerifyMFAHydration?
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".verify-mfa-view") != nil else { return }
+      instance = VerifyMFAHydration()
+    }
+
     public init() {
       hydrate()
     }

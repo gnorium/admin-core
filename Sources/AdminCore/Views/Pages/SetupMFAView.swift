@@ -320,6 +320,13 @@
 
   /// WASM Hydration for SetupMFAView
   public class SetupMFAHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: SetupMFAHydration?
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".setup-mfa-view") != nil else { return }
+      instance = SetupMFAHydration()
+    }
+
     public init() {
       hydrate()
     }

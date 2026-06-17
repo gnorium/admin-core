@@ -205,10 +205,16 @@
   }
 
   public class TableRowDetailHydration: @unchecked Sendable {
+    public static nonisolated(unsafe) var instance: TableRowDetailHydration?
     private var instances: [TableRowDetailInstance] = []
 
     public init() {
       hydrateAll()
+    }
+
+    public static func hydrateIfPresent() {
+      guard document.querySelector(".table-row-detail-view") != nil else { return }
+      instance = TableRowDetailHydration()
     }
 
     private func hydrateAll() {
