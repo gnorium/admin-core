@@ -334,7 +334,7 @@
 
         _ = row.addEventListener(.click) { (event: Event) in
           if let target = event.target {
-            let typeAttr = target.getAttribute(.type) ?? ""
+            let typeAttr = target.getAttribute(HTMLAttributeName.type) ?? ""
             if stringEquals(typeAttr, "checkbox") {
               return
             }
