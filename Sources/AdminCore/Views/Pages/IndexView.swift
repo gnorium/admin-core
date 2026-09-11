@@ -8,12 +8,16 @@
 
   private let baseRoute = Configuration.shared.baseRoute
 
-  /// Admin index view for listing model records with selection and bulk actions.
-  /// Uses TableView with row selection for consistent component usage.
+  /// List view for a registered model: selectable rows and bulk edit/delete/add actions.
+  ///
+  /// Backed by `TableView` with multi-select; pair with `IndexHydration` on the WASM client.
   public struct IndexView: HTMLContent {
     let admin: AnyModelAdmin
     let rows: [ListRow]
 
+    /// - Parameters:
+    ///   - admin: Type-erased model admin (columns and labels).
+    ///   - rows: Rows to display.
     public init(admin: AnyModelAdmin, rows: [ListRow]) {
       self.admin = admin
       self.rows = rows
@@ -54,16 +58,21 @@
             class: "index-actions",
             data: ["base-route": baseRoute, "url-path": admin.urlPath],
             style: {
-              width(perc(100))
-              justifyContent(.flexEnd)
+              selector("&") {
+                width(perc(100))
+                justifyContent(.flexEnd)
+              }
             }
           )
         }
+        .class("index-header")
         .style {
-          display(.flex)
-          justifyContent(.flexEnd)
-          alignItems(.center)
-          width(perc(100))
+          selector("&") {
+            display(.flex)
+            justifyContent(.flexEnd)
+            alignItems(.center)
+            width(perc(100))
+          }
         }
       } thead: {
         // Use default thead from TableView
@@ -72,15 +81,22 @@
       } tfoot: {
       } footer: {
       } emptyState: {
-        div { "No \(admin.modelNamePlural.lowercased()) found" }
-          .style {
+        div {
+          div { "No \(admin.modelNamePlural.lowercased()) found" }
+            .class("index-empty-title")
+          div { "Click 'Add \(admin.modelName)' above to create one" }
+            .class("index-empty-description")
+        }
+        .class("index-empty-state")
+        .style {
+          selector(".index-empty-title") {
             fontSize(fontSizeLarge18)
             fontWeight(600)
           }
-        div { "Click 'Add \(admin.modelName)' above to create one" }
-          .style {
+          selector(".index-empty-description") {
             color(colorSubtle)
           }
+        }
       }
       .render()
 
@@ -95,7 +111,7 @@
   import WebAPIs
   import WebTypes
 
-  /// Hydration for IndexView - extends TableView's selection with bulk action buttons
+  /// Client hydration for ``IndexView``: enables bulk actions from table selection.
   public class IndexHydration: @unchecked Sendable {
     public static nonisolated(unsafe) var instance: IndexHydration?
 

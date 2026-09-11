@@ -60,60 +60,43 @@
           main {
             content
           }
+          .class("admin-core-content")
           .style {
-            flex(1)
-            overflow(.auto)
-            minWidth(0)
-            boxSizing(.borderBox)
+            selector("&") {
+              flex(1)
+              overflow(.auto)
+              minWidth(0)
+              boxSizing(.borderBox)
+            }
           }
         }
-        .class("admin-core layout-inner-div")
+        .class("layout-inner-div admin-core")
         .style {
-          display(.flex)
-          flexDirection(.column)
-          flex(1)
-          minWidth(0)
+          selector("&") {
+            display(.flex)
+            flexDirection(.column)
+            flex(1)
+            minWidth(0)
+          }
           media(minWidth(minWidthBreakpointTablet)) {
             padding(spacing32)
           }
         }
       }
-      .class("admin-core layout-view")
+      .class("layout-view admin-core")
       .style {
-        display(.flex)
-        flexDirection(.row)
-        flex(1)
-        minHeight(0)
-        width(perc(100))
-        overflow(.hidden)
-        fontFamily(typographyFontSans)
+        selector("&") {
+          display(.flex)
+          flexDirection(.row)
+          flex(1)
+          minHeight(0)
+          width(perc(100))
+          overflow(.hidden)
+          fontFamily(typographyFontSans)
+        }
       }
 
     }
   }
 
-  @CSSBuilder
-  public func tableHeaderCSS() -> [CSSOM.CSSRule] {
-    backgroundColor(backgroundColorNeutralSubtle)
-    color(colorBase)
-    textTransform(.uppercase)
-    fontSize(fontSizeXSmall12)
-    letterSpacing(em(0.05))
-    fontWeight(fontWeightBold)
-    padding(px(14), px(20)).important()
-    borderBottom(px(1), .solid, rgba(0, 0, 0, 0.05))
-
-    selector("a") {
-      color(colorBase).important()
-      textDecoration(.none)
-    }
-  }
-
-  @CSSBuilder
-  public func tableRowCSS() -> [CSSOM.CSSRule] {
-    selector("td") {
-      padding(spacing16, px(20))
-      verticalAlign(.middle)
-    }
-  }
 #endif

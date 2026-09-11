@@ -6,7 +6,7 @@
   import WebComponents
   import WebTypes
 
-  /// View for creating a new database table row
+  /// Create form for inserting a new database table row.
   public struct TableRowCreatorView: HTMLContent {
     let tableName: String
     let data: FormData
@@ -14,6 +14,12 @@
     let admin: AnyModelAdmin?
     let config: TableBrowserConfig
 
+    /// - Parameters:
+    ///   - tableName: Target table name.
+    ///   - data: Initial form values (usually empty for create).
+    ///   - columns: Column names when not using a ``ModelAdmin``.
+    ///   - admin: Optional model admin for field configs.
+    ///   - config: Browser URLs and primary key.
     public init(
       tableName: String,
       data: FormData,
@@ -33,30 +39,12 @@
         // Header
         header {
           h1 { "New Row" }
-            .style {
-              fontFamily(typographyFontSans)
-              fontSize(fontSizeXXLarge24)
-              fontWeight(fontWeightSemiBold)
-              color(colorBase)
-              margin(0)
-            }
+            .class("table-editor-title")
 
           p { "Creating a new row in \(tableName)" }
-            .style {
-              fontFamily(typographyFontMono)
-              fontSize(fontSizeSmall14)
-              color(colorSubtle)
-              margin(0)
-            }
+            .class("table-editor-subtitle")
         }
         .class("table-editor-header")
-        .style {
-          display(.flex)
-          flexDirection(.column)
-          gap(spacing8)
-          paddingBottom(spacing24)
-          borderBottom(borderWidthBase, .solid, borderColorSubtle)
-        }
 
         // Creation form
         form {
@@ -92,32 +80,62 @@
                 url: config.backURL, class: "btn-cancel"
               ),
             ],
-            class: "form-actions",
-            style: {
-              width(perc(100))
-              gap(spacing16)
-              paddingTop(spacing24)
-              borderTop(borderWidthBase, .solid, borderColorSubtle)
-            }
+            class: "form-actions"
           )
         }
         .action("\(config.baseURL)/\(tableName)")
         .method(.post)
         .class("table-editor-form")
-        .style {
+      }
+      .class("table-editor-container")
+      .style {
+        selector("&") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing24)
+          maxWidth(px(1000))
+          margin(0, .auto)
+          padding(spacing48, spacing24)
+        }
+        descendant(".table-editor-header") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing8)
+          paddingBottom(spacing24)
+          borderBottom(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".table-editor-title") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeXXLarge24)
+          fontWeight(fontWeightSemiBold)
+          color(colorBase)
+          margin(0)
+        }
+        descendant(".table-editor-subtitle") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          margin(0)
+        }
+        descendant(".table-editor-form") {
           display(.flex)
           flexDirection(.column)
           gap(spacing24)
         }
-      }
-      .class("table-editor-container")
-      .style {
-        display(.flex)
-        flexDirection(.column)
-        gap(spacing24)
-        maxWidth(px(1000))
-        margin(0, .auto)
-        padding(spacing48, spacing24)
+        descendant(".form-actions") {
+          width(perc(100))
+          gap(spacing16)
+          paddingTop(spacing24)
+          borderTop(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".field-group label") {
+          display(.block)
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeSmall14)
+          fontWeight(fontWeightSemiBold)
+          color(colorBase)
+          marginBottom(spacing8)
+        }
       }
     }
 
@@ -126,14 +144,6 @@
       div {
         label { labelText }
           .for("field-\(name)")
-          .style {
-            display(.block)
-            fontFamily(typographyFontSans)
-            fontSize(fontSizeSmall14)
-            fontWeight(fontWeightSemiBold)
-            color(colorBase)
-            marginBottom(spacing8)
-          }
 
         let isLongText = name == "content" || name == "description"
 

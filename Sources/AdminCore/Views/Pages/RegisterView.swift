@@ -8,10 +8,14 @@
 
   private let baseRoute = Configuration.shared.baseRoute
 
+  /// Invite-token registration form for creating an admin account.
   public struct RegisterView: HTMLContent {
     let token: String
     let errorMessage: String?
 
+    /// - Parameters:
+    ///   - token: Invite token submitted with the form.
+    ///   - errorMessage: Optional error banner text.
     public init(token: String, errorMessage: String? = nil) {
       self.token = token
       self.errorMessage = errorMessage
@@ -21,27 +25,11 @@
       div {
         div {
           h1 { "Create Admin Account" }
-            .style {
-              fontSize(fontSizeXXLarge24)
-              marginBottom(spacing32)
-              textAlign(.center)
-              fontFamily(typographyFontSans)
-              fontWeight(600)
-              color(colorBase)
-            }
+            .class("register-title")
 
           if let error = errorMessage {
             div { error }
-              .style {
-                color(colorRed)
-                backgroundColor(backgroundColorRedSubtle)
-                padding(spacing12, spacing16)
-                borderRadius(borderRadiusBase)
-                marginBottom(spacing24)
-                textAlign(.center)
-                fontSize(fontSizeSmall14)
-                fontWeight(500)
-              }
+              .class("register-error")
           }
 
           form {
@@ -53,7 +41,7 @@
                   id: "username", name: "username", placeholder: "Username", required: true)
               }
             }
-            .style { marginBottom(spacing24) }
+            .class("register-field register-field-standard")
 
             div {
               FieldView(id: "email") {
@@ -64,7 +52,7 @@
                   required: true)
               }
             }
-            .style { marginBottom(spacing24) }
+            .class("register-field register-field-standard")
 
             div {
               FieldView(id: "password") {
@@ -75,7 +63,7 @@
                   type: .password, required: true)
               }
             }
-            .style { marginBottom(spacing32) }
+            .class("register-field register-field-last")
 
             ButtonView(
               label: "Complete Registration", buttonColor: .blue, weight: .solid, type: .submit,
@@ -84,7 +72,18 @@
           .action("\(baseRoute)/register/\(token)")
           .method(.post)
         }
-        .style {
+        .class("register-card")
+      }
+      .class("register-view")
+      .style {
+        selector("&") {
+          display(.flex)
+          justifyContent(.center)
+          alignItems(.center)
+          backgroundColor(backgroundColorNeutralSubtle)
+          fontFamily(typographyFontSans)
+        }
+        descendant(".register-card") {
           width(perc(100))
           maxWidth(px(480))
           padding(spacing48)
@@ -92,14 +91,26 @@
           borderRadius(borderRadiusBase)
           boxShadow(boxShadowLarge)
         }
-      }
-      .class("register-view")
-      .style {
-        display(.flex)
-        justifyContent(.center)
-        alignItems(.center)
-        backgroundColor(backgroundColorNeutralSubtle)
-        fontFamily(typographyFontSans)
+        descendant(".register-title") {
+          fontSize(fontSizeXXLarge24)
+          marginBottom(spacing32)
+          textAlign(.center)
+          fontFamily(typographyFontSans)
+          fontWeight(600)
+          color(colorBase)
+        }
+        descendant(".register-error") {
+          color(colorRed)
+          backgroundColor(backgroundColorRedSubtle)
+          padding(spacing12, spacing16)
+          borderRadius(borderRadiusBase)
+          marginBottom(spacing24)
+          textAlign(.center)
+          fontSize(fontSizeSmall14)
+          fontWeight(500)
+        }
+        descendant(".register-field-standard") { marginBottom(spacing24) }
+        descendant(".register-field-last") { marginBottom(spacing32) }
       }
 
     }

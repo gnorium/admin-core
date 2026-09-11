@@ -6,15 +6,21 @@
   import WebComponents
   import WebTypes
 
-  /// Navbar component for admin pages.
-  /// Shows the site name, username, and sign out link.
   private let baseRoute = Configuration.shared.baseRoute
 
+  /// Top navigation bar for authenticated admin pages.
+  ///
+  /// Shows the site name, greeting with `username`, and a sign-out control.
   public struct NavbarView: HTMLContent {
     let siteName: String
     let username: String
     let signOutUrl: String?
 
+    /// Creates a navbar.
+    /// - Parameters:
+    ///   - siteName: Brand / product name in the bar.
+    ///   - username: Display name of the signed-in user.
+    ///   - signOutUrl: Sign-out endpoint; defaults to `{baseRoute}/sign-out`.
     public init(
       siteName: String = "Admin Console",
       username: String,
@@ -31,59 +37,25 @@
           div {
             a { siteName }
               .href(baseRoute)
-              .style {
-                fontFamily(typographyFontSans)
-                fontSize(fontSizeLarge18)
-                fontWeight(700)
-                color(colorBase)
-                textDecoration(.none)
-                letterSpacing(px(0.5))
-                textTransform(.uppercase)
-              }
+              .class("navbar-brand")
           }
-          .style {
-            display(.flex)
-            alignItems(.center)
-          }
+          .class("navbar-brand-wrapper")
 
           div {
             div {
               span { "Welcome, " }
-                .style {
-                  fontSize(fontSizeSmall14)
-                  color(colorSubtle)
-                }
+                .class("navbar-welcome")
               span { username }
-                .style {
-                  fontSize(fontSizeSmall14)
-                  fontWeight(600)
-                  color(colorBase)
-                }
+                .class("navbar-username")
             }
-            .style {
-              display(.flex)
-              alignItems(.center)
-              gap(spacing4)
-            }
+            .class("navbar-user-details")
 
             // Ellipsis settings button
             EllipsisMenuButtonView()
           }
-          .style {
-            display(.flex)
-            gap(spacing16)
-            alignItems(.center)
-          }
+          .class("navbar-actions")
         }
         .class("navbar-view")
-        .style {
-          backgroundColor(backgroundColorBase)
-          padding(spacing16, spacing32)
-          display(.flex)
-          justifyContent(.spaceBetween)
-          alignItems(.center)
-          borderBottom(borderWidthBase, borderStyleBase, borderColorSubtle)
-        }
 
         // Ellipsis overlay menu
         EllipsisMenuView {
@@ -91,28 +63,23 @@
           div {
             span { "Color Scheme" }
               .class("ellipsis-section-header")
-              .style { EllipsisMenuView.sectionHeaderCSS() }
 
             ColorSchemeButtonGroupView()
           }
           .class("ellipsis-section")
-          .style { EllipsisMenuView.sectionCSS() }
 
           // Contrast
           div {
             span { "Contrast" }
               .class("ellipsis-section-header")
-              .style { EllipsisMenuView.sectionHeaderCSS() }
 
             ContrastButtonGroupView()
           }
           .class("ellipsis-section")
-          .style { EllipsisMenuView.sectionCSS() }
 
           if let signOutUrl = signOutUrl {
             div {}
               .class("ellipsis-divider")
-              .style { EllipsisMenuView.dividerCSS() }
 
             div {
               a {
@@ -128,20 +95,77 @@
               }
               .href(signOutUrl)
               .class("ellipsis-menu-link")
-              .style {
-                textDecoration(.none)
-                width(perc(100))
-              }
             }
             .class("ellipsis-section")
-            .style { EllipsisMenuView.sectionCSS() }
           }
         }
       }
       .class("navbar-wrapper")
       .style {
-        display(.flex)
-        flexDirection(.column)
+        selector("&") {
+          display(.flex)
+          flexDirection(.column)
+        }
+        selector(".navbar-view") {
+          backgroundColor(backgroundColorBase)
+          padding(spacing16, spacing32)
+          display(.flex)
+          justifyContent(.spaceBetween)
+          alignItems(.center)
+          borderBottom(borderWidthBase, borderStyleBase, borderColorSubtle)
+        }
+        selector(".navbar-brand-wrapper") {
+          display(.flex)
+          alignItems(.center)
+        }
+        selector(".navbar-brand") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeLarge18)
+          fontWeight(700)
+          color(colorBase)
+          textDecoration(.none)
+          letterSpacing(px(0.5))
+          textTransform(.uppercase)
+        }
+        selector(".navbar-actions") {
+          display(.flex)
+          gap(spacing16)
+          alignItems(.center)
+        }
+        selector(".navbar-user-details") {
+          display(.flex)
+          alignItems(.center)
+          gap(spacing4)
+        }
+        selector(".navbar-welcome") {
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+        }
+        selector(".navbar-username") {
+          fontSize(fontSizeSmall14)
+          fontWeight(600)
+          color(colorBase)
+        }
+        selector(".ellipsis-section") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing8)
+        }
+        selector(".ellipsis-section-header") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeXSmall12)
+          fontWeight(fontWeightSemiBold)
+          color(colorSubtle)
+          letterSpacing(px(0.5))
+        }
+        selector(".ellipsis-divider") {
+          height(px(1))
+          backgroundColor(borderColorSubtle)
+        }
+        selector(".ellipsis-menu-link") {
+          textDecoration(.none)
+          width(perc(100))
+        }
       }
     }
   }

@@ -6,7 +6,7 @@
   import WebComponents
   import WebTypes
 
-  /// Read-only detail view for a single database table row
+  /// Read-only detail page for a single database table row.
   public struct TableRowDetailsView: HTMLContent {
     let tableName: String
     let columns: [String]
@@ -14,6 +14,12 @@
     let rowID: String
     let config: TableBrowserConfig
 
+    /// - Parameters:
+    ///   - tableName: Table name shown in the header.
+    ///   - columns: Column order for display.
+    ///   - rowData: Column → value map.
+    ///   - rowID: Primary key value for this row.
+    ///   - config: Browser URLs and editability.
     public init(
       tableName: String,
       columns: [String],
@@ -34,26 +40,12 @@
         header {
           div {
             h1 { tableName }
-              .style {
-                fontFamily(typographyFontMono)
-                fontSize(fontSizeXXLarge24)
-                color(colorBase)
-                margin(0)
-              }
+              .class("row-detail-title")
 
             p { "Row \(rowID)" }
-              .style {
-                fontFamily(typographyFontMono)
-                fontSize(fontSizeSmall14)
-                color(colorSubtle)
-                margin(0)
-              }
+              .class("row-detail-subtitle")
           }
-          .style {
-            display(.flex)
-            flexDirection(.column)
-            gap(spacing4)
-          }
+          .class("row-detail-heading")
 
           // Action buttons
           div {
@@ -78,18 +70,8 @@
           .data("table", tableName)
           .data("row-id", rowID)
           .data("base-url", config.baseURL)
-          .style {
-            display(.flex)
-            gap(spacing8)
-          }
         }
-        .style {
-          display(.flex)
-          justifyContent(.spaceBetween)
-          alignItems(.flexStart)
-          paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
-        }
+        .class("row-detail-header")
 
         // Field list
         div {
@@ -100,69 +82,104 @@
 
             div {
               div { column }
-                .style {
-                  fontFamily(typographyFontMono)
-                  fontSize(fontSizeXSmall12)
-                  fontWeight(fontWeightSemiBold)
-                  color(colorSubtle)
-                  textTransform(.uppercase)
-                  letterSpacing(px(0.5))
-                }
+                .class("row-detail-field-label")
 
               if value.isEmpty {
                 span { "NULL" }
-                  .style {
-                    fontFamily(typographyFontMono)
-                    fontSize(fontSizeSmall14)
-                    color(colorSubtle)
-                    fontStyle(.italic)
-                  }
+                  .class("row-detail-null")
               } else if isLong || isJSON {
                 pre { value }
-                  .style {
-                    margin(0)
-                    padding(spacing12)
-                    backgroundColor(backgroundColorNeutralSubtle)
-                    border(borderWidthBase, .solid, borderColorSubtle)
-                    borderRadius(borderRadiusBase)
-                    fontFamily(typographyFontMono)
-                    fontSize(fontSizeSmall14)
-                    lineHeight(1.618)
-                    whiteSpace(.preWrap)
-                    wordBreak(.breakAll)
-                    maxHeight(px(400))
-                    overflow(.auto)
-                  }
+                  .class("row-detail-code")
               } else {
                 span { value }
-                  .style {
-                    fontFamily(typographyFontMono)
-                    fontSize(fontSizeSmall14)
-                    color(colorBase)
-                  }
+                  .class("row-detail-value")
               }
             }
-            .style {
-              display(.flex)
-              flexDirection(.column)
-              gap(spacing8)
-              paddingBlock(spacing16)
-              borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
-            }
+            .class("row-detail-field")
           }
         }
         .class("row-detail-fields")
-        .style {
-          display(.flex)
-          flexDirection(.column)
-        }
       }
       .class("table-row-detail-view")
       .data("hydrate", "table-row-detail")
       .style {
-        display(.flex)
-        flexDirection(.column)
-        gap(spacing24)
+        selector("&") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing24)
+        }
+        descendant(".row-detail-header") {
+          display(.flex)
+          justifyContent(.spaceBetween)
+          alignItems(.flexStart)
+          paddingBlockEnd(spacing24)
+          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".row-detail-heading") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing4)
+        }
+        descendant(".row-detail-title") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeXXLarge24)
+          color(colorBase)
+          margin(0)
+        }
+        descendant(".row-detail-subtitle") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          margin(0)
+        }
+        descendant(".row-detail-actions") {
+          display(.flex)
+          gap(spacing8)
+        }
+        descendant(".row-detail-fields") {
+          display(.flex)
+          flexDirection(.column)
+        }
+        descendant(".row-detail-field") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing8)
+          paddingBlock(spacing16)
+          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".row-detail-field-label") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeXSmall12)
+          fontWeight(fontWeightSemiBold)
+          color(colorSubtle)
+          textTransform(.uppercase)
+          letterSpacing(px(0.5))
+        }
+        descendant(".row-detail-null") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          fontStyle(.italic)
+        }
+        descendant(".row-detail-value") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          color(colorBase)
+        }
+        descendant(".row-detail-code") {
+          margin(0)
+          padding(spacing12)
+          backgroundColor(backgroundColorNeutralSubtle)
+          border(borderWidthBase, .solid, borderColorSubtle)
+          borderRadius(borderRadiusBase)
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          lineHeight(1.618)
+          whiteSpace(.preWrap)
+          wordBreak(.breakAll)
+          maxHeight(px(400))
+          overflow(.auto)
+        }
       }
     }
   }
@@ -204,6 +221,7 @@
     }
   }
 
+  /// Client hydration for ``TableRowDetailsView`` (e.g. copy / delete affordances).
   public class TableRowDetailHydration: @unchecked Sendable {
     public static nonisolated(unsafe) var instance: TableRowDetailHydration?
     private var instances: [TableRowDetailInstance] = []

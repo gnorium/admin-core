@@ -11,6 +11,7 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.5.0"),
     .package(url: "https://github.com/gnorium/design-tokens", branch: "main"),
     .package(url: "https://github.com/gnorium/embedded-swift-utilities", branch: "main"),
     .package(url: "https://github.com/gnorium/web-apis", branch: "main"),
@@ -19,6 +20,14 @@ let package = Package(
     .package(url: "https://github.com/gnorium/web-types", branch: "main"),
   ],
   targets: [
+    .executableTarget(
+      name: "StyleSheetEmitter",
+      dependencies: [
+        "AdminCore",
+        .product(name: "CSSBuilder", package: "web-builders"),
+      ],
+      path: "Sources/Executables/StyleSheetEmitter"
+    ),
     .target(
       name: "AdminCore",
       dependencies: [
@@ -36,6 +45,9 @@ let package = Package(
       path: "Sources/AdminCore",
       swiftSettings: [
         .enableExperimentalFeature("Embedded", .when(platforms: [.wasi])),
+        // CLIENT only for WASM — host/server builds must not compile browser APIs
+        // (document/window). DocC on macOS is SERVER-only; hydrations are covered in
+        // Guides (ClientHydration) as prose, not symbol links.
         .define("CLIENT", .when(platforms: [.wasi])),
         .define("SERVER", .when(platforms: [.macOS, .linux, .windows])),
       ]

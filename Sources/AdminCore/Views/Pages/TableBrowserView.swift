@@ -6,14 +6,20 @@
   import WebComponents
   import WebTypes
 
-  /// Configuration for TableBrowserView
+  /// Routing and behavior options for ``TableBrowserView`` and related row pages.
   public struct TableBrowserConfig: Sendable {
+    /// Base URL for this table’s browser routes.
     public let baseURL: String
+    /// URL for the “back” control.
     public let backURL: String
+    /// Label for the “back” control.
     public let backLabel: String
+    /// When `true`, bulk edit/delete and row edit affordances are shown.
     public let editable: Bool
+    /// Column name used as the row primary key (default `"id"`).
     public let primaryKey: String
 
+    /// Creates table browser configuration.
     public init(
       baseURL: String = "/admin-console/database",
       backURL: String = "/admin-console/database",
@@ -29,17 +35,20 @@
     }
   }
 
-  /// Data for a single table row in browser
+  /// One row of cell values for ``TableBrowserView``.
   public struct TableRowData: Sendable {
+    /// Column name → display value.
     public let cells: [String: String]
 
+    /// Creates a browser row.
     public init(cells: [String: String]) {
       self.cells = cells
     }
   }
 
-  /// Generic Table browser view for admin consoles
-  /// Displays rows from a database table with pagination
+  /// Paginated browser for a single database table (columns + rows).
+  ///
+  /// Pair with `TableBrowserHydration` on the WASM client for selection-driven bulk actions.
   public struct TableBrowserView: HTMLContent {
     let tableName: String
     let columns: [String]
@@ -49,6 +58,14 @@
     let totalPages: Int
     let config: TableBrowserConfig
 
+    /// - Parameters:
+    ///   - tableName: Table name shown in the header.
+    ///   - columns: Column names (order defines column order).
+    ///   - rows: Current page of rows.
+    ///   - totalCount: Total row count across pages.
+    ///   - currentPage: 1-based page index.
+    ///   - totalPages: Total number of pages.
+    ///   - config: URLs and editability.
     public init(
       tableName: String,
       columns: [String],
@@ -89,29 +106,12 @@
         // Header
         header {
           h1 { tableName }
-            .style {
-              fontFamily(typographyFontMono)
-              fontSize(fontSizeXXLarge24)
-              color(colorBase)
-              margin(0)
-            }
+            .class("table-browser-title")
 
           p { "\(totalCount) rows" }
-            .style {
-              fontFamily(typographyFontSans)
-              fontSize(fontSizeSmall14)
-              color(colorSubtle)
-              margin(0)
-            }
+            .class("table-browser-subtitle")
         }
         .class("table-browser-header")
-        .style {
-          display(.flex)
-          flexDirection(.column)
-          gap(spacing8)
-          paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
-        }
 
         TableView(
           captionContent: tableName,
@@ -126,11 +126,6 @@
             div {
               span { "0 selected" }
                 .class("selection-count")
-                .style {
-                  fontSize(fontSizeSmall14)
-                  color(colorSubtle)
-                  fontFamily(typographyFontMono)
-                }
 
               ButtonGroupView(
                 buttons: [
@@ -144,24 +139,12 @@
             .data("table", tableName)
             .data("base-url", config.baseURL)
             .data("primary-key", config.primaryKey)
-            .style {
-              display(.flex)
-              justifyContent(.spaceBetween)
-              alignItems(.center)
-              width(perc(100))
-            }
           }
         } emptyState: {
           div { "No data" }
-            .style {
-              fontSize(fontSizeLarge18)
-              fontWeight(fontWeightSemiBold)
-              marginBlockEnd(spacing8)
-            }
+            .class("table-browser-empty-title")
           div { "This table has no rows" }
-            .style {
-              color(colorSubtle)
-            }
+            .class("table-browser-empty-description")
         }.render()
 
         // Pagination
@@ -178,9 +161,48 @@
       }
       .class("table-browser-view")
       .style {
-        display(.flex)
-        flexDirection(.column)
-        gap(spacing24)
+        selector("&") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing24)
+        }
+        descendant(".table-browser-header") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing8)
+          paddingBlockEnd(spacing24)
+          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".table-browser-title") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeXXLarge24)
+          color(colorBase)
+          margin(0)
+        }
+        descendant(".table-browser-subtitle") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          margin(0)
+        }
+        descendant(".selection-count") {
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          fontFamily(typographyFontMono)
+        }
+        descendant(".table-action-toolbar") {
+          display(.flex)
+          justifyContent(.spaceBetween)
+          alignItems(.center)
+          width(perc(100))
+        }
+        descendant(".table-browser-empty-title") {
+          fontSize(fontSizeLarge18)
+          fontWeight(fontWeightSemiBold)
+          marginBlockEnd(spacing8)
+        }
+        descendant(".table-browser-empty-description") { color(colorSubtle) }
+        descendant(".table-browser-data .table-row") { cursor(.pointer) }
       }
     }
 
@@ -236,8 +258,7 @@
   import WebAPIs
   import WebTypes
 
-  /// Hydration for TableBrowserView — extends TableView's built-in selection with
-  /// bulk action buttons, row click navigation, and selection count display.
+  /// Client hydration for ``TableBrowserView`` (bulk actions, row navigation, selection count).
   public class TableBrowserHydration: @unchecked Sendable {
     public static nonisolated(unsafe) var instance: TableBrowserHydration?
 
@@ -310,7 +331,6 @@
       // Clickable rows — navigate to row detail view
       let rows = tableView.querySelectorAll(".table-row")
       for row in rows {
-        row.style.cursor(.pointer)
         _ = row.addEventListener(.click) { [self] (event: Event) in
           if let target = event.target {
             let tag = target.tagName

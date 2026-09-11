@@ -6,6 +6,7 @@
   import WebComponents
   import WebTypes
 
+  /// Edit form for an existing database table row.
   public struct TableRowEditorView: HTMLContent {
     let tableName: String
     let data: FormData
@@ -13,6 +14,12 @@
     let admin: AnyModelAdmin?
     let config: TableBrowserConfig
 
+    /// - Parameters:
+    ///   - tableName: Database table name (display and form routing).
+    ///   - data: Current field values (must include id when editing).
+    ///   - columns: Column names when not using a ``ModelAdmin``.
+    ///   - admin: Optional model admin for richer field configs.
+    ///   - config: Browser URLs and primary key settings.
     public init(
       tableName: String,
       data: FormData,
@@ -27,7 +34,7 @@
       self.config = config
     }
 
-    /// Convenience init for raw row data
+    /// Builds an editor from a flat column → value map.
     public init(
       tableName: String,
       columns: [String],
@@ -49,30 +56,12 @@
         // Header
         header {
           h1 { "Edit Row" }
-            .style {
-              fontFamily(typographyFontSans)
-              fontSize(fontSizeXXLarge24)
-              fontWeight(fontWeightSemiBold)
-              color(colorBase)
-              margin(0)
-            }
+            .class("table-editor-title")
 
           p { "Editing row \(rowID) in \(tableName)" }
-            .style {
-              fontFamily(typographyFontMono)
-              fontSize(fontSizeSmall14)
-              color(colorSubtle)
-              margin(0)
-            }
+            .class("table-editor-subtitle")
         }
         .class("table-editor-header")
-        .style {
-          display(.flex)
-          flexDirection(.column)
-          gap(spacing8)
-          paddingBottom(spacing24)
-          borderBottom(borderWidthBase, .solid, borderColorSubtle)
-        }
 
         // Edit form
         form {
@@ -114,31 +103,61 @@
                 url: config.backURL, class: "btn-cancel"
               ),
             ],
-            class: "form-actions",
-            style: {
-              width(perc(100))
-              gap(spacing16)
-              paddingTop(spacing24)
-              borderTop(borderWidthBase, .solid, borderColorSubtle)
-            }
+            class: "form-actions"
           )
         }
         .action("\(config.baseURL)/\(tableName)/\(rowID)")
         .method(.post)
         .class("table-editor-form")
-        .style {
+      }
+      .class("table-row-editor-view")
+      .style {
+        selector("&") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing24)
+          maxWidth(px(1000))
+          margin(0, .auto)
+        }
+        descendant(".table-editor-header") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing8)
+          paddingBottom(spacing24)
+          borderBottom(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".table-editor-title") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeXXLarge24)
+          fontWeight(fontWeightSemiBold)
+          color(colorBase)
+          margin(0)
+        }
+        descendant(".table-editor-subtitle") {
+          fontFamily(typographyFontMono)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          margin(0)
+        }
+        descendant(".table-editor-form") {
           display(.flex)
           flexDirection(.column)
           gap(spacing24)
         }
-      }
-      .class("table-row-editor-view")
-      .style {
-        display(.flex)
-        flexDirection(.column)
-        gap(spacing24)
-        maxWidth(px(1000))
-        margin(0, .auto)
+        descendant(".form-actions") {
+          width(perc(100))
+          gap(spacing16)
+          paddingTop(spacing24)
+          borderTop(borderWidthBase, .solid, borderColorSubtle)
+        }
+        descendant(".field-group label") {
+          display(.block)
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeSmall14)
+          fontWeight(fontWeightSemiBold)
+          color(colorBase)
+          marginBottom(spacing8)
+        }
       }
     }
 
@@ -147,14 +166,6 @@
       div {
         label { labelText }
           .for("field-\(name)")
-          .style {
-            display(.block)
-            fontFamily(typographyFontSans)
-            fontSize(fontSizeSmall14)
-            fontWeight(fontWeightSemiBold)
-            color(colorBase)
-            marginBottom(spacing8)
-          }
 
         let isLongText = value.count > 100 || name == "content" || name == "description"
         let isJSON = value.hasPrefix("[") || value.hasPrefix("{")

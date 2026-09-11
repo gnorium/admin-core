@@ -1,31 +1,33 @@
 #if SERVER
   import Foundation
 
-  /// Represents a single row in a generic model list view
+  /// One row in a model list table (``IndexView``).
   public struct ListRow: Sendable, Identifiable {
-    /// Unique identifier for the model instance
+    /// Stable identifier for the model instance (used as the table row id).
     public let id: String
 
-    /// Values for each column, indexed by field name
+    /// Column values keyed by field name (must match ``ModelAdmin/listFields``).
     public let values: [String: String]
 
+    /// Creates a list row.
     public init(id: String, values: [String: String]) {
       self.id = id
       self.values = values
     }
   }
 
-  /// Represents the data for a generic model edit/create form
+  /// Field values for a create/edit form.
   public struct FormData: Sendable {
-    /// Unique identifier for the model instance (nil for new items)
+    /// Instance id when editing; `nil` when creating.
     public let id: String?
 
-    /// Values for each field, indexed by field name
+    /// Single-value fields keyed by field name.
     public let values: [String: String]
 
-    /// Multi-valued fields (e.g., tags), indexed by field name
+    /// Multi-value fields (e.g. tags) keyed by field name.
     public let multiValues: [String: [String]]
 
+    /// Creates form data for create or edit.
     public init(
       id: String? = nil,
       values: [String: String] = [:],

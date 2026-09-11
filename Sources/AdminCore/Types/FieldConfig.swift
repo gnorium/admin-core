@@ -1,63 +1,68 @@
 #if SERVER
   import Foundation
 
-  /// Field types supported in auto-generated admin forms
+  /// Input control kinds for admin create/edit forms.
   public enum FieldType: String, Sendable {
-    /// Single-line text input
+    /// Single-line text input.
     case text
-    /// Multi-line textarea
+    /// Multi-line textarea.
     case textarea
-    /// Email field with validation
+    /// Email field with validation.
     case email
-    /// URL field
+    /// URL field.
     case url
-    /// Password field (masked)
+    /// Password field (masked).
     case password
-    /// Number input
+    /// Number input.
     case number
-    /// Date picker
+    /// Date picker.
     case date
-    /// DateTime picker
+    /// Date-time picker.
     case datetime
-    /// Checkbox (boolean)
+    /// Checkbox (boolean).
     case checkbox
-    /// Select dropdown
+    /// Select dropdown.
     case select
-    /// Multi-select
+    /// Multi-select control.
     case multiSelect
-    /// Hidden field
+    /// Hidden field (not shown to the user).
     case hidden
-    /// Slug field (auto-generated from another field)
+    /// Slug field, optionally derived from another field.
     case slug
-    /// Tags/chips input
+    /// Tags / chips input.
     case tags
-    /// Markdown/rich text editor
+    /// Markdown / rich text editor.
     case markdown
   }
 
-  /// Configuration for a form field in the admin interface
+  /// Configuration for one form field in the admin interface.
+  ///
+  /// Prefer the factory methods (``text(_:label:required:placeholder:helpText:)``,
+  /// ``slug(_:label:from:required:placeholder:helpText:)``,
+  /// ``select(_:label:options:required:)``, and others) when defining ``ModelAdmin/editFields``.
   public struct FieldConfig: Sendable {
-    /// Field name (matches model property)
+    /// Field name (matches the model property / form name).
     public let name: String
-    /// Display label
+    /// Human-readable label shown next to the control.
     public let label: String
-    /// Field type determines the input component
+    /// Control type rendered in the form.
     public let fieldType: FieldType
-    /// Whether the field is required
+    /// Whether the field is required.
     public let required: Bool
-    /// Help text shown below the field
+    /// Optional help text shown below the field.
     public let helpText: String?
-    /// Placeholder text
+    /// Optional placeholder text.
     public let placeholder: String?
-    /// For select fields: options as (value, label) pairs
+    /// For select fields: options as `(value, label)` pairs.
     public let options: [(String, String)]?
-    /// For slug fields: source field to generate from
+    /// For slug fields: name of the source field used to generate the slug.
     public let slugSource: String?
-    /// Default value
+    /// Default value as a string (booleans use `"true"` / `"false"`).
     public let defaultValue: String?
-    /// Whether field is read-only
+    /// When `true`, the field is shown but not editable.
     public let readOnly: Bool
 
+    /// Creates a field configuration.
     public init(
       name: String,
       label: String,
@@ -83,10 +88,10 @@
     }
   }
 
-  // MARK: - Convenience Initializers
+  // MARK: - Convenience factories
 
   extension FieldConfig {
-    /// DOM.Text field shorthand
+    /// Single-line text field.
     public static func text(
       _ name: String,
       label: String,
@@ -104,7 +109,7 @@
       )
     }
 
-    /// Textarea shorthand
+    /// Multi-line text field.
     public static func textarea(
       _ name: String,
       label: String,
@@ -122,7 +127,7 @@
       )
     }
 
-    /// Checkbox shorthand
+    /// Boolean checkbox.
     public static func checkbox(
       _ name: String,
       label: String,
@@ -137,7 +142,13 @@
       )
     }
 
-    /// Select dropdown shorthand
+    /// Dropdown select.
+    ///
+    /// - Parameters:
+    ///   - name: Field name (form / model key).
+    ///   - label: Display label.
+    ///   - options: `(value, label)` pairs for each option.
+    ///   - required: Whether the field is required.
     public static func select(
       _ name: String,
       label: String,
@@ -153,22 +164,35 @@
       )
     }
 
-    /// Slug field shorthand
+    /// URL-safe slug, optionally derived from another field.
+    ///
+    /// - Parameters:
+    ///   - name: Field name (form / model key).
+    ///   - label: Display label (default `"Slug"`).
+    ///   - source: Name of the source field used to generate the slug (e.g. `"title"`); call site: `from:`.
+    ///   - required: Whether the field is required (default `true`).
+    ///   - placeholder: Optional placeholder text.
+    ///   - helpText: Optional help text below the field.
     public static func slug(
       _ name: String,
       label: String = "Slug",
-      from source: String
+      from source: String,
+      required: Bool = true,
+      placeholder: String? = nil,
+      helpText: String? = nil
     ) -> FieldConfig {
       FieldConfig(
         name: name,
         label: label,
         fieldType: .slug,
-        required: true,
+        required: required,
+        helpText: helpText,
+        placeholder: placeholder,
         slugSource: source
       )
     }
 
-    /// Tags field shorthand
+    /// Tag / chip list field.
     public static func tags(
       _ name: String,
       label: String,
@@ -183,7 +207,7 @@
       )
     }
 
-    /// Markdown editor shorthand
+    /// Markdown body field.
     public static func markdown(
       _ name: String,
       label: String,
@@ -197,7 +221,7 @@
       )
     }
 
-    /// Hidden field shorthand
+    /// Hidden field with a fixed default value.
     public static func hidden(_ name: String, value: String) -> FieldConfig {
       FieldConfig(
         name: name,

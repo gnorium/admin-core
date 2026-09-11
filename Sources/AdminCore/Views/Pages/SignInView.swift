@@ -8,11 +8,13 @@
 
   private let baseRoute = Configuration.shared.baseRoute
 
-  /// Sign in form component for admin authentication.
-  /// Use with AdminCore.LayoutView for the full page.
+  /// Username/password sign-in form for the admin console.
+  ///
+  /// Compose with ``LayoutView`` for the full page chrome.
   public struct SignInView: HTMLContent {
     let errorMessage: String?
 
+    /// - Parameter errorMessage: Optional error banner text.
     public init(errorMessage: String? = nil) {
       self.errorMessage = errorMessage
     }
@@ -22,46 +24,19 @@
         div {
           div {
             h1 { "Sign In" }
-              .style {
-                fontFamily(typographyFontSans)
-                fontSize(fontSizeXXXLarge28)
-                fontWeight(fontWeightNormal)
-                color(colorBase)
-                margin(0)
-              }
+              .class("admin-sign-in-title")
 
             p { "Sign in to manage content" }
-              .style {
-                fontFamily(typographyFontSans)
-                fontSize(fontSizeSmall14)
-                color(colorSubtle)
-                margin(0)
-              }
+              .class("admin-sign-in-subtitle")
           }
-          .style {
-            display(.flex)
-            flexDirection(.column)
-            gap(spacing12)
-            textAlign(.center)
-          }
+          .class("admin-sign-in-heading")
 
           if let error = errorMessage, !error.isEmpty {
             div {
               p { error }
-                .style {
-                  fontFamily(typographyFontSans)
-                  margin(0)
-                  fontSize(fontSizeSmall14)
-                  color(colorRed)
-                }
+                .class("admin-sign-in-error-message")
             }
             .class("error-banner")
-            .style {
-              backgroundColor(backgroundColorRedSubtle)
-              border(borderWidthBase, .solid, borderColorRed)
-              borderRadius(borderRadiusBase)
-              padding(spacing12, spacing16)
-            }
           }
 
           form {
@@ -91,32 +66,25 @@
             div {
               a { "← Back to Site" }
                 .href("/")
-                .style {
-                  display(.inlineBlock)
-                  fontSize(fontSizeSmall14)
-                  color(colorSubtle)
-                  textDecoration(.none)
-                  fontFamily(typographyFontSans)
-                  fontWeight(500)
-
-                  pseudoClass(.hover) {
-                    color(colorBase)
-                  }
-                }
+                .class("admin-sign-in-back-link")
             }
-            .style {
-              textAlign(.center)
-            }
+            .class("admin-sign-in-back")
           }
           .action("\(baseRoute)/sign-in")
           .method(.post)
-          .style {
-            display(.flex)
-            flexDirection(.column)
-            gap(spacing24)
-          }
+          .class("admin-sign-in-form")
         }
-        .style {
+        .class("admin-sign-in-card")
+      }
+      .class("sign-in-view")
+      .style {
+        selector("&") {
+          display(.flex)
+          justifyContent(.center)
+          alignItems(.center)
+          flex(1)
+        }
+        descendant(".admin-sign-in-card") {
           display(.flex)
           flexDirection(.column)
           gap(spacing32)
@@ -127,13 +95,52 @@
           borderRadius(borderRadiusBase)
           padding(spacing40)
         }
-      }
-      .class("sign-in-view")
-      .style {
-        display(.flex)
-        justifyContent(.center)
-        alignItems(.center)
-        flex(1)
+        descendant(".admin-sign-in-heading") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing12)
+          textAlign(.center)
+        }
+        descendant(".admin-sign-in-title") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeXXXLarge28)
+          fontWeight(fontWeightNormal)
+          color(colorBase)
+          margin(0)
+        }
+        descendant(".admin-sign-in-subtitle") {
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          margin(0)
+        }
+        descendant(".error-banner") {
+          backgroundColor(backgroundColorRedSubtle)
+          border(borderWidthBase, .solid, borderColorRed)
+          borderRadius(borderRadiusBase)
+          padding(spacing12, spacing16)
+        }
+        descendant(".admin-sign-in-error-message") {
+          fontFamily(typographyFontSans)
+          margin(0)
+          fontSize(fontSizeSmall14)
+          color(colorRed)
+        }
+        descendant(".admin-sign-in-form") {
+          display(.flex)
+          flexDirection(.column)
+          gap(spacing24)
+        }
+        descendant(".admin-sign-in-back") { textAlign(.center) }
+        descendant(".admin-sign-in-back-link") {
+          display(.inlineBlock)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
+          textDecoration(.none)
+          fontFamily(typographyFontSans)
+          fontWeight(500)
+          pseudoClass(.hover) { color(colorBase) }
+        }
       }
     }
   }
