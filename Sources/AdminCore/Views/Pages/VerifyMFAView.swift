@@ -74,7 +74,7 @@
                 label: "Verify & Login",
                 buttonColor: .blue,
                 weight: .solid,
-                size: .large,
+                size: .medium,
                 type: .submit,
                 fullWidth: true,
                 class: "verify-mfa-button"

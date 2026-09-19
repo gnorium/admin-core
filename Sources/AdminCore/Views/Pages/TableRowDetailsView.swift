@@ -53,7 +53,7 @@
               label: "Edit",
               buttonColor: .gray,
               weight: .subtle,
-              size: .large,
+              size: .medium,
               url: "\(config.baseURL)/\(tableName)/\(rowID)/edit",
               class: "btn-edit-row"
             )
@@ -62,7 +62,7 @@
               label: "Delete",
               buttonColor: .gray,
               weight: .subtle,
-              size: .large,
+              size: .medium,
               class: "btn-delete-row"
             )
           }

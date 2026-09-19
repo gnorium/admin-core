@@ -60,7 +60,7 @@
             }
 
             ButtonView(
-              label: "Sign In", buttonColor: .blue, weight: .solid, size: .large, type: .submit,
+              label: "Sign In", buttonColor: .blue, weight: .solid, size: .medium, type: .submit,
               fullWidth: true)
 
             div {

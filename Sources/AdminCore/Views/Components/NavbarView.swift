@@ -87,7 +87,7 @@
                   label: "Sign Out",
                   icon: IconView(icon: { s in LogOutIconView(width: s, height: s) }, size: .medium),
                   weight: .subtle,
-                  size: .large,
+                  size: .medium,
                   fullWidth: true,
                   labelFontWeight: fontWeightNormal,
                   contentJustifyContent: .flexStart

@@ -124,7 +124,7 @@
                     label: "Enable MFA",
                     buttonColor: .blue,
                     weight: .solid,
-                    size: .large,
+                    size: .medium,
                     type: .submit,
                     class: "setup-mfa-enable-button"
                   )

@@ -183,7 +183,7 @@
                 label: action.label,
                 buttonColor: .gray,
                 weight: .subtle,
-                size: .large,
+                size: .medium,
                 disabled: true,
                 class: action.cssClass
               )
