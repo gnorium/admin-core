@@ -10,7 +10,7 @@
 
   /// Username/password sign-in form for the admin console.
   ///
-  /// Compose with ``LayoutView`` for the full page chrome.
+  /// Compose with ``AdminCoreLayoutView`` for the full page chrome.
   public struct SignInView: HTMLContent {
     let errorMessage: String?
 

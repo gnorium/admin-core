@@ -12,7 +12,10 @@
   /// Shared layout fragment for the admin panel.
   /// Provides the Sidebar + Navbar + Content structure.
   /// Designed to be nested inside an app-level LayoutView.
-  public struct LayoutView: HTMLContent {
+  /// Named for its package: the emitter names each stylesheet after the TYPE,
+  /// so two `LayoutView`s in two packages emitted into one `layout-view.css`
+  /// and AdminCore's rules shipped to every Gnorium page.
+  public struct AdminCoreLayoutView: HTMLContent {
     let siteName: String
     let username: String
     let showNavbar: Bool
@@ -83,7 +86,10 @@
           }
         }
       }
-      .class("layout-view admin-core")
+      // NOT "layout-view": gnorium-web's own LayoutView owns that class, and
+      // stylesheets are global — this block's `overflow: hidden` was landing on
+      // every Gnorium page's root element and clipping it, so nothing scrolled.
+      .class("admin-core-layout-view admin-core")
       .style {
         selector("&") {
           display(.flex)
