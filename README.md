@@ -82,9 +82,11 @@ Apache License 2.0 — see [LICENSE](LICENSE).
 - [diff-engine](https://github.com/gnorium/diff-engine) — Platform-agnostic character-level diff engine
 - [embedded-swift-utilities](https://github.com/gnorium/embedded-swift-utilities) — Utility functions for Embedded Swift environments
 - [markdown-utilities](https://github.com/gnorium/markdown-utilities) — Markdown rendering with media attribution support
+- [tex-utilities](https://github.com/gnorium/tex-utilities) — TeX formula rendering with locally served KaTeX
 - [web-apis](https://github.com/gnorium/web-apis) — Web API implementations for Swift WebAssembly
 - [web-builders](https://github.com/gnorium/web-builders) — HTML, CSS, JS, and SVG DSL builders
 - [web-components](https://github.com/gnorium/web-components) — Reusable UI components for web applications
 - [web-formats](https://github.com/gnorium/web-formats) — Structured data format builders
 - [web-security](https://github.com/gnorium/web-security) — Portable security utilities for web applications
+- [web-tests](https://github.com/gnorium/web-tests) — Swift browser testing across Chrome and Safari
 - [web-types](https://github.com/gnorium/web-types) — Shared web types for web applications
