@@ -272,7 +272,7 @@
           color(colorSubtle)
           textTransform(.uppercase)
           letterSpacing(px(0.5))
-          fontWeight(fontWeightBold)
+          fontWeight(fontWeightSemiBold)
         }
         descendant(".users-stat-value") {
           fontSize(fontSizeMedium16)

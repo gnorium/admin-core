@@ -93,7 +93,7 @@
           selector(".sidebar-title") {
             fontSize(fontSizeXSmall12)
             fontFamily(typographyFontSans)
-            fontWeight(fontWeightBold)
+            fontWeight(fontWeightSemiBold)
             color(colorSubtle)
             textTransform(.uppercase)
             letterSpacing(em(0.05))

@@ -124,7 +124,7 @@
         selector(".navbar-brand") {
           fontFamily(typographyFontSans)
           fontSize(fontSizeLarge18)
-          fontWeight(700)
+          fontWeight(fontWeightSemiBold)
           color(colorBase)
           textDecoration(.none)
           letterSpacing(px(0.5))
