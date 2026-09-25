@@ -82,18 +82,21 @@
               .class("ellipsis-divider")
 
             div {
-              a {
+              // A form, never a link: signing out is a POST.
+              form {
                 ButtonView(
                   label: "Sign Out",
                   icon: IconView(icon: { s in LogOutIconView(width: s, height: s) }, size: .medium),
                   weight: .subtle,
                   size: .medium,
+                  type: .submit,
                   fullWidth: true,
                   labelFontWeight: fontWeightNormal,
                   contentJustifyContent: .flexStart
                 )
               }
-              .href(signOutUrl)
+              .action(signOutUrl)
+              .method(.post)
               .class("ellipsis-menu-link")
             }
             .class("ellipsis-section")

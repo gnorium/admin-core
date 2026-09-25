@@ -20,14 +20,14 @@ LayoutView(
 | --- | --- |
 | `navbar` / `sidebar` | Custom nodes; when non-`nil`, replace defaults |
 | `showNavbar` / `showSidebar` | When true and custom is `nil`, render ``NavbarView`` / ``SidebarView`` |
-| `signOutUrl` | Defaults to `{baseRoute}/sign-out` |
+| `signOutUrl` | Defaults to `{baseRoute}/sign-out`; the navbar POSTs to it (a form, never a link), so the route must be POST |
 
 Base path for links comes from ``Configuration/shared``.
 
 ## Sidebar and navbar
 
 - ``SidebarView`` — default destinations (dashboard, users, database, …) or pass ``SidebarItem`` arrays.
-- ``NavbarView`` — site name, welcome line, sign out.
+- ``NavbarView`` — site name, welcome line, sign out (a POST form).
 
 ## Auth pages
 
