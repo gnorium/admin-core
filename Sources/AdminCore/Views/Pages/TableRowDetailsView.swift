@@ -214,7 +214,12 @@
       if let deleteBtn = container.querySelector(".btn-delete-row") {
         _ = deleteBtn.addEventListener(.click) { [self] (event: Event) in
           if window.confirm("Are you sure you want to delete this row?") {
-            window.location.href = "\(self.baseURL)/\(self.tableName)/delete?ids=\(self.rowID)"
+            // A POST, never a link: a GET that deletes can be triggered from
+            // another site, which the sign-in cookie (SameSite=Lax) follows.
+            let tableURL = "\(self.baseURL)/\(self.tableName)"
+            window.fetch("\(tableURL)/delete", method: "POST", body: "ids=\(self.rowID)") { _ in
+              window.location.href = tableURL
+            }
           }
         }
       }

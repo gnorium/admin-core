@@ -192,7 +192,12 @@
       let confirmed = window.confirm(message)
       if confirmed {
         let idsParam = stringJoin(ids, separator: ",")
-        window.location.href = "\(baseRoute)/\(urlPath)/delete?ids=\(idsParam)"
+        // A POST, never a link: a GET that deletes can be triggered from
+        // another site, which the sign-in cookie (SameSite=Lax) follows.
+        let listURL = "\(baseRoute)/\(urlPath)"
+        window.fetch("\(listURL)/delete", method: "POST", body: "ids=\(idsParam)") { _ in
+          window.location.href = listURL
+        }
       }
     }
   }
