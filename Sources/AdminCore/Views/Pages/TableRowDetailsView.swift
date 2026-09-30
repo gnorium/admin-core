@@ -100,16 +100,19 @@
         }
         .class("row-detail-fields")
       }
-      .class("table-row-detail-view")
-      .data("hydrate", "table-row-detail")
+      .class("table-row-details-view")
+      .data("hydrate", "table-row-details")
       .style {
         selector("&") {
           display(.flex)
           flexDirection(.column)
           gap(spacing24)
         }
+        // The actions wrap under the title on a phone.
         descendant(".row-detail-header") {
           display(.flex)
+          flexWrap(.wrap)
+          gap(spacing16)
           justifyContent(.spaceBetween)
           alignItems(.flexStart)
           paddingBlockEnd(spacing24)
@@ -119,6 +122,8 @@
           display(.flex)
           flexDirection(.column)
           gap(spacing4)
+          minWidth(0)
+          overflowWrap(.anywhere)
         }
         descendant(".row-detail-title") {
           fontFamily(typographyFontMono)
@@ -236,12 +241,12 @@
     }
 
     public static func hydrateIfPresent() {
-      guard document.querySelector(".table-row-detail-view") != nil else { return }
+      guard document.querySelector(".table-row-details-view") != nil else { return }
       instance = TableRowDetailHydration()
     }
 
     private func hydrateAll() {
-      let containers = document.querySelectorAll(".table-row-detail-view")
+      let containers = document.querySelectorAll(".table-row-details-view")
       for container in containers {
         let instance = TableRowDetailInstance(container: container)
         instances.append(instance)

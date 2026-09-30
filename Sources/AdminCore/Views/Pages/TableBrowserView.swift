@@ -145,7 +145,7 @@
             .class("table-browser-empty-title")
           div { "This table has no rows" }
             .class("table-browser-empty-description")
-        }.render()
+        }
 
         // Pagination
         if totalPages > 1 {
@@ -188,7 +188,8 @@
         descendant(".selection-count") {
           fontSize(fontSizeSmall14)
           color(colorSubtle)
-          fontFamily(typographyFontMono)
+          fontFamily(typographyFontSans)
+          whiteSpace(.nowrap)
         }
         descendant(".table-action-toolbar") {
           display(.flex)

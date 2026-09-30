@@ -208,7 +208,6 @@
           div { "Users will appear here when accounts are created" }
             .class("users-empty-description")
         }
-        .render()
       }
       .class("users-view")
       .style {

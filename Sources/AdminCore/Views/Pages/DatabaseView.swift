@@ -41,7 +41,8 @@
     }
   }
 
-  /// Database explorer: grid of tables with navigation into ``TableBrowserView``.
+  /// Database explorer: every table, numbered, with its row count, each
+  /// linking to its ``TableBrowserView``.
   public struct DatabaseView: HTMLContent {
     let tables: [TableDisplayInfo]
     let config: DatabaseViewConfig
@@ -59,7 +60,6 @@
 
     public func build() -> DOM.Node {
       section {
-        // Header
         header {
           h1 { config.title }
             .class("database-title")
@@ -69,145 +69,64 @@
         }
         .class("database-header")
 
-        // Stats row
-        div {
-          renderStatBadge("Tables", tables.count)
-        }
-        .class("database-stats")
-
-        // Table grid
-        div {
-          for (index, table) in tables.enumerated() {
-            a {
-              div {
-                div {
-                  span { "\(index + 1)" }
-                    .class("database-table-index")
-                  span { table.name }
-                    .class("database-table-name")
-                  span { "(\(table.rowCount))" }
-                    .class("database-table-count")
-                }
-                .class("database-table-summary")
-
-                span { "\u{2192}" }
-                  .class("database-table-arrow")
-              }
-              .class("database-table-card")
-            }
-            .href("\(config.baseURL)/\(table.name)")
-            .class("database-table-link")
+        TableView(
+          captionContent: "Tables",
+          hideCaption: true,
+          columns: [
+            TableView.Column(id: "index", label: "#", align: .number, width: px(56)),
+            TableView.Column(id: "table", label: "Table", priority: true),
+            TableView.Column(id: "rows", label: "Rows", align: .number, width: px(120)),
+          ],
+          data: tables.enumerated().map { index, table in
+            TableView.Row(
+              id: table.name,
+              cells: [
+                "index": DOM.Text("\(index + 1)"),
+                "table": LinkView(url: "\(config.baseURL)/\(table.name)") { table.name }.build(),
+                "rows": DOM.Text("\(table.rowCount)"),
+              ])
+          },
+          class: "database-tables",
+          emptyState: {
+            span { "No tables." }
+              .class("database-empty")
           }
-        }
-        .class("tables-grid")
+        )
       }
-      .class("database-container")
+      .class("database-view")
       .style {
         selector("&") {
           display(.flex)
           flexDirection(.column)
-          gap(spacing32)
+          gap(spacing24)
+          minWidth(0)
         }
         descendant(".database-header") {
           display(.flex)
           flexDirection(.column)
           gap(spacing8)
-          paddingBottom(spacing32)
-          borderBottom(borderWidthBase, .solid, borderColorSubtle)
+          paddingBlockEnd(spacing24)
+          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
         }
         descendant(".database-title") {
+          margin(0)
           fontFamily(typographyFontSans)
           fontSize(fontSizeXXXLarge28)
+          fontWeight(fontWeightNormal)
           color(colorBase)
-          margin(0)
         }
         descendant(".database-subtitle") {
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
-          color(colorSubtle)
           margin(0)
-        }
-        descendant(".database-stats") {
-          display(.flex)
-          gap(spacing16)
-        }
-        descendant(".tables-grid") {
-          display(.grid)
-          gridTemplateColumns("1fr")
-          gap(spacing16)
-        }
-        descendant(".database-table-link") {
-          textDecoration(.none)
-          display(.block)
-        }
-        descendant(".database-table-card") {
-          display(.flex)
-          justifyContent(.spaceBetween)
-          alignItems(.center)
-          padding(spacing16, spacing20)
-          backgroundColor(backgroundColorBase)
-          border(borderWidthBase, .solid, borderColorSubtle)
-          borderRadius(borderRadiusBase)
-          color(colorBase)
-          textDecoration(.none)
-          transition("all 0.15s ease")
-        }
-        descendant(".database-table-summary") {
-          display(.flex)
-          alignItems(.center)
-          gap(spacing12)
-        }
-        descendant(".database-table-index") {
+          fontFamily(typographyFontSans)
           fontSize(fontSizeSmall14)
           color(colorSubtle)
-          fontFamily(typographyFontMono)
-          minWidth(px(24))
         }
-        descendant(".database-table-name") {
-          fontWeight(fontWeightNormal)
-          fontSize(fontSizeMedium16)
-        }
-        descendant(".database-table-count") {
-          fontWeight(fontWeightNormal)
-          fontSize(fontSizeMedium16)
-          color(colorSubtle)
-        }
-        descendant(".database-table-arrow") {
-          color(colorSubtle)
-          fontSize(fontSizeMedium16)
-          fontFamily(typographyFontMono)
-        }
-        descendant(".database-stat") {
-          padding(spacing16, spacing24)
-          backgroundColor(backgroundColorBase)
-          border(borderWidthBase, .solid, borderColorSubtle)
-          borderRadius(borderRadiusBase)
-        }
-        descendant(".database-stat-label") {
-          fontSize(fontSizeXSmall12)
-          color(colorSubtle)
-          textTransform(.uppercase)
-          letterSpacing(px(0.5))
-          fontWeight(fontWeightSemiBold)
-        }
-        descendant(".database-stat-value") {
-          fontSize(fontSizeMedium16)
-          color(colorBase)
+        descendant(".database-empty") {
           fontFamily(typographyFontSans)
-          fontWeight(fontWeightNormal)
+          fontSize(fontSizeSmall14)
+          color(colorSubtle)
         }
       }
-    }
-
-    @HTMLBuilder
-    private func renderStatBadge(_ label: String, _ value: Int) -> [DOM.Node] {
-      div {
-        span { label }
-          .class("database-stat-label")
-        div { "\(value)" }
-          .class("database-stat-value")
-      }
-      .class("database-stat")
     }
   }
 #endif

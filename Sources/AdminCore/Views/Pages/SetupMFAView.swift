@@ -2,310 +2,155 @@
   import CSSBuilder
   import DesignTokens
   import DOMBuilder
+  import Foundation
   import HTMLBuilder
   import WebComponents
   import WebTypes
 
   private let baseRoute = Configuration.shared.baseRoute
 
-  /// MFA enrollment page: QR code / otpauth URL and shared secret for authenticator apps.
+  /// MFA enrollment: the QR code for an authenticator app, the shared secret
+  /// for one that can't scan, and the form that turns MFA on with the first
+  /// code the app shows.
+  ///
+  /// The body of the page only: set it in the site's own card (its title,
+  /// notice and links). The QR code is drawn on the client by
+  /// `SetupMFAHydration`, from the qrcodejs script the page loads.
   public struct SetupMFAView: HTMLContent {
     /// TOTP shared secret (base32).
     public let secret: String
     /// Full `otpauth://` URL for QR encoding.
     public let otpauthURL: String
-    /// Account label shown in authenticator apps.
-    public let accountName: String
-    /// Issuer label (e.g. product name).
-    public let issuer: String
-    /// Username shown in copy.
-    public let username: String
+    /// The local path to return to once MFA is on, if any.
+    public let redirect: String?
 
-    /// - Parameters:
-    ///   - secret: TOTP secret.
-    ///   - otpauthURL: Provisioning URI.
-    ///   - accountName: Account name in the authenticator.
-    ///   - issuer: Issuer string shown in authenticator apps (default `"Admin"`).
-    ///   - username: Display username for the page.
-    public init(
-      secret: String, otpauthURL: String, accountName: String, issuer: String = "Admin",
-      username: String
-    ) {
+    public init(secret: String, otpauthURL: String, redirect: String? = nil) {
       self.secret = secret
       self.otpauthURL = otpauthURL
-      self.accountName = accountName
-      self.issuer = issuer
-      self.username = username
+      self.redirect = redirect
     }
 
     public func build() -> DOM.Node {
-      div {
-        // setupCard
-        div {
-          div {
-            p {
-              "Setting up multi-factor authentication for @\(username). MFA adds an extra layer of security to your admin account."
-            }
-            .class("setup-mfa-subtitle")
-          }
-          .class("setup-mfa-header")
-
-          // setupContent
-          div {
-            // QR Code and Instructions Grid
-            div {
-              // QR Code (generated client-side)
-              div {
-                div()
-                  .id("qrcode")
-                  .class("setup-mfa-qrcode-canvas")
-              }
-              .class("setup-mfa-qrcode-container")
-
-              // Instructions
-              div {
-                h3 { "Step 1: Scan QR Code" }
-                  .class("setup-mfa-step-heading")
-                p {
-                  "Open your authenticator app (Google Authenticator, 1Password, Authy) and scan this QR code."
-                }
-                .class("setup-mfa-step-text")
-
-                h3 { "Step 2: Backup Secret" }
-                  .class("setup-mfa-step-heading")
-                p { "If you can't scan the QR code, enter this secret manually:" }
-                  .class("setup-mfa-step-text")
-
-                // Secret display
-                div {
-                  code { secret }
-                    .class("setup-mfa-secret-text")
-                  button {
-                    span {
-                      IconView { CopyIconView() }
-                    }
-                    .class("copy-icon")
-
-                    span {
-                      IconView { CheckIconView() }
-                    }
-                    .class("success-icon")
-                  }
-                  .class("setup-mfa-copy-button")
-                  .data("copied", false)
-                }
-                .class("setup-mfa-secret-container")
-              }
-            }
-            .class("setup-mfa-grid")
-
-            // Verification form
-            div {
-              form {
-                label { "Verify Setup" }
-                  .for("code")
-                  .class("setup-mfa-verify-label")
-
-                p { "Enter the 6-digit code from your app to confirm setup:" }
-                  .class("setup-mfa-verify-instructions")
-
-                div {
-                  input()
-                    .type(.text)
-                    .name("code")
-                    .id("code")
-                    .placeholder("000000")
-                    .required(true)
-                    .class("setup-mfa-verify-input")
-                }
-
-                div {
-                  ButtonView(
-                    label: "Enable MFA",
-                    buttonColor: .blue,
-                    weight: .solid,
-                    size: .medium,
-                    type: .submit,
-                    class: "setup-mfa-enable-button"
-                  )
-                }
-              }
-              .method(.post)
-              .action("\(baseRoute)/mfa/setup")
-              .class("setup-mfa-verify-form")
-            }
-            .class("setup-mfa-verify-section")
-          }
-          .class("setup-mfa-content")
-
-          // setupFooter
-          div {
-            a { "Cancel and return to dashboard" }
-              .href(baseRoute)
-              .class("setup-mfa-cancel-link")
-          }
-          .class("setup-mfa-footer")
+      let query =
+        redirect.flatMap { $0.addingPercentEncoding(withAllowedCharacters: .alphanumerics.union(.init(charactersIn: "-._~/"))) }
+        .map { "?redirect=\($0)" } ?? ""
+      return div {
+        section {
+          h2 { "Scan the QR code" }
+            .class("setup-mfa-step-title")
+          p { "Open an authenticator app, such as 1Password, Google Authenticator or Authy, and scan this code." }
+            .class("setup-mfa-step-text")
+          // Drawn here by the client; the children it draws are presentational.
+          div {}
+            .id("setup-mfa-qr-code")
+            .class("setup-mfa-qr-code")
+            .role(.img)
+            .ariaLabel("QR code to scan with an authenticator app")
         }
-        .class("setup-mfa-card")
+        .class("setup-mfa-step")
+
+        section {
+          h2 { "Or enter the secret" }
+            .class("setup-mfa-step-title")
+          p { "If the app can't scan the code, enter this secret in it instead." }
+            .class("setup-mfa-step-text")
+          div {
+            CodeView(secret, language: "plaintext", showLineNumbers: false)
+            ButtonView(
+              weight: .quiet, iconOnly: true, ariaLabel: "Copy secret", class: "setup-mfa-copy",
+              data: [("copied", "false")]
+            ) {
+              span { CopyIconView() }
+                .class("setup-mfa-copy-icon")
+              span { CheckIconView() }
+                .class("setup-mfa-copied-icon")
+            }
+          }
+          .class("setup-mfa-secret")
+        }
+        .class("setup-mfa-step")
+
+        form {
+          FieldView(id: "setup-mfa-code") {
+            "Code"
+          } description: {
+            "The 6-digit code the app shows."
+          } input: {
+            TextInputView(
+              id: "setup-mfa-code", name: "code", placeholder: "Code", required: true, inputMode: .numeric,
+              autocomplete: .oneTimeCode, minLength: 6, maxLength: 6, pattern: "[0-9]{6}",
+              messages: ConstraintMessages(
+                valueMissing: "Enter the code from your app.",
+                patternMismatch: "The code is 6 digits.",
+                length: "The code is 6 digits."))
+          }
+          ButtonView(
+            label: "Enable MFA", buttonColor: .blue, weight: .solid, size: .medium, type: .submit, fullWidth: true)
+        }
+        .action("\(baseRoute)/mfa/setup\(query)")
+        .method(.post)
+        .novalidate()
+        .class("setup-mfa-form")
       }
       .class("setup-mfa-view")
       .data("otpauth-url", otpauthURL)
       .style {
         selector("&") {
           display(.flex)
-          justifyContent(.center)
-          alignItems(.center)
-          minHeight(vh(80))
-        }
-        descendant(".setup-mfa-card") {
-          backgroundColor(backgroundColorBase)
-          border(borderWidthBase, borderStyleBase, borderColorBase)
-          borderRadius(borderRadiusBase)
-          padding(spacing48)
-          width(perc(100))
-          maxWidth(px(800))
-          boxShadow(boxShadowLarge)
-          display(.flex)
           flexDirection(.column)
           gap(spacing24)
-          margin(0, .auto)
         }
-        descendant(".setup-mfa-header") {
+        descendant(".setup-mfa-step") {
           display(.flex)
           flexDirection(.column)
-          gap(spacing8)
+          gap(spacing12)
         }
-        descendant(".setup-mfa-subtitle") {
+        descendant(".setup-mfa-step-title") {
+          margin(0)
           fontFamily(typographyFontSans)
           fontSize(fontSizeMedium16)
-          color(colorSubtle)
-          textAlign(.center)
-        }
-        descendant(".setup-mfa-content") {
-          display(.flex)
-          flexDirection(.column)
-          gap(spacing48)
-        }
-        descendant(".setup-mfa-grid") {
-          display(.flex)
-          flexDirection(.column)
-          gap(spacing48)
-          alignItems(.center)
-        }
-        descendant(".setup-mfa-qrcode-canvas") {
-          width(px(200))
-          height(px(200))
-        }
-        descendant(".setup-mfa-qrcode-container") {
-          backgroundColor(hex(0xFFFFFF))
-          padding(spacing16)
-          borderRadius(borderRadiusBase)
-          boxShadow(px(0), px(2), px(10), px(0), rgba(0, 0, 0, 0.05))
-          display(.flex)
-          justifyContent(.center)
-          alignItems(.center)
-        }
-        descendant(".setup-mfa-step-heading") {
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeMedium16)
-          fontWeight(fontWeightNormal)
+          fontWeight(fontWeightSemiBold)
+          lineHeight(lineHeightMedium26)
           color(colorBase)
-          marginBottom(spacing8)
-          marginTop(spacing24)
         }
         descendant(".setup-mfa-step-text") {
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
-          lineHeight(1.5)
-          color(colorSubtle)
           margin(0)
-        }
-        descendant(".setup-mfa-secret-container") {
-          display(.flex)
-          alignItems(.center)
-          backgroundColor(backgroundColorNeutralSubtle)
-          padding(spacing8, spacing12)
-          borderRadius(borderRadiusBase)
-          marginTop(spacing12)
-          border(borderWidthBase, borderStyleBase, borderColorBase)
-        }
-        descendant(".setup-mfa-secret-text") {
-          fontFamily(typographyFontMono)
-          fontSize(fontSizeSmall14)
-          color(colorBlue)
-          flexGrow(1)
-          wordBreak(.breakAll)
-          overflowWrap(.anywhere)
-          marginRight(spacing8)
-        }
-        descendant(".setup-mfa-copy-button") {
-          display(.flex)
-          alignItems(.center)
-          justifyContent(.center)
-          padding(spacing8)
-          backgroundColor(.transparent)
-          border(.none)
-          borderRadius(borderRadiusBase)
-          cursor(.pointer)
-          color(colorSubtle)
-          transition("all", ms(200))
-        }
-        descendant(".setup-mfa-copy-button .success-icon") { display(.none) }
-        descendant(".setup-mfa-copy-button[data-copied='true'] .copy-icon") { display(.none) }
-        descendant(".setup-mfa-copy-button[data-copied='true'] .success-icon") { display(.flex) }
-        descendant(".setup-mfa-copy-button:hover") {
-          backgroundColor(backgroundColorInteractiveSubtleHover).important()
-          color(colorBase).important()
-        }
-        descendant(".setup-mfa-verify-section") {
-          borderTop(borderWidthBase, borderStyleBase, borderColorBase)
-          paddingTop(spacing32)
-          textAlign(.center)
-          display(.flex)
-          flexDirection(.column)
-          alignItems(.center)
-          gap(spacing32)
-        }
-        descendant(".setup-mfa-verify-form") {
-          display(.flex)
-          flexDirection(.column)
-          alignItems(.center)
-          gap(spacing24)
-        }
-        descendant(".setup-mfa-verify-label") {
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeMedium16)
-          fontWeight(fontWeightNormal)
-          color(colorBase)
-          display(.block)
-        }
-        descendant(".setup-mfa-verify-instructions") {
           fontFamily(typographyFontSans)
           fontSize(fontSizeSmall14)
+          lineHeight(lineHeightSmall22)
           color(colorSubtle)
-          margin(0)
         }
-        descendant(".setup-mfa-verify-input") {
-          fontFamily(typographyFontMono)
-          width(px(200))
-          padding(spacing12)
-          fontSize(px(24))
-          textAlign(.center)
-          letterSpacing(px(4))
-          border(borderWidthBase, borderStyleBase, borderColorBase)
+        // The code sits on white whatever the color scheme: a scanner reads
+        // dark on light.
+        descendant(".setup-mfa-qr-code") {
+          alignSelf(.center)
+          display(.flex)
+          width(.fitContent)
+          padding(spacing16)
+          backgroundColor(backgroundColorBaseFixed)
+          border(borderWidthBase, .solid, borderColorSubtle)
           borderRadius(borderRadiusBase)
-          backgroundColor(backgroundColorNeutralSubtle)
-          color(colorBase)
         }
-        descendant(".setup-mfa-footer") { textAlign(.center) }
-        descendant(".setup-mfa-cancel-link") {
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
-          color(colorSubtle)
-          textDecoration(.none)
+        descendant(".setup-mfa-qr-code img") { display(.block) }
+        descendant(".setup-mfa-secret") {
+          display(.flex)
+          alignItems(.center)
+          justifyContent(.spaceBetween)
+          gap(spacing8)
+          paddingBlock(spacing4)
+          paddingInlineStart(spacing12)
+          paddingInlineEnd(spacing4)
+          border(borderWidthBase, .solid, borderColorSubtle)
+          borderRadius(borderRadiusBase)
         }
+        descendant(".setup-mfa-secret .code-view") {
+          minWidth(0)
+          overflowX(.auto)
+        }
+        descendant(".setup-mfa-copied-icon") { display(.none) }
+        descendant(".setup-mfa-copy[data-copied='true'] .setup-mfa-copy-icon") { display(.none) }
+        descendant(".setup-mfa-copy[data-copied='true'] .setup-mfa-copied-icon") { display(.flex) }
       }
-
     }
   }
 #endif
@@ -317,7 +162,7 @@
   import WebAPIs
   import WebTypes
 
-  /// Client hydration for ``SetupMFAView`` (QR render, copy secret).
+  /// Client hydration for ``SetupMFAView``: draws the QR code, copies the secret.
   public class SetupMFAHydration: @unchecked Sendable {
     public static nonisolated(unsafe) var instance: SetupMFAHydration?
 
@@ -331,29 +176,26 @@
     }
 
     public func hydrate() {
-      let container = document.querySelector(".setup-mfa-view")
-      guard let otpauthURL = container?.dataset["otpauth-url"] else { return }
+      guard let container = document.querySelector(".setup-mfa-view"),
+        let otpauthURL = container.getAttribute(data("otpauth-url")),
+        let qrCode = container.querySelector(".setup-mfa-qr-code")
+      else { return }
 
-      let qrcodeElement = document.getElementById("qrcode")
-      guard let element = qrcodeElement else { return }
+      QRCode(qrCode, text: otpauthURL, width: 176, height: 176)
+      // qrcodejs titles its element with the text it encodes: the secret,
+      // as a tooltip. The element is labeled already.
+      qrCode.removeAttribute("title")
 
-      QRCode(element, text: otpauthURL)
-
-      // Clipboard feedback
-      let copyButton = container?.querySelector(".setup-mfa-copy-button")
-      let secretText = container?.querySelector(".setup-mfa-secret-text")
-      copyButton?.addEventListener(.click) { (event: Event) in
-        guard let text = secretText?.textContent else { return }
-
-        // Copy to clipboard
-        window.navigator.clipboard.writeText(text)
-
-        // Show success feedback
-        copyButton?.setAttribute(data("copied"), true)
-
-        // Revert after 2 seconds
+      guard let copyButton = container.querySelector(".setup-mfa-copy"),
+        let secret = container.querySelector(".setup-mfa-secret code")
+      else { return }
+      _ = copyButton.addEventListener(.click) { (event: Event) in
+        window.navigator.clipboard.writeText(from: secret)
+        copyButton.setAttribute(data("copied"), true)
+        copyButton.setAttribute("aria-label", "Copied")
         _ = window.setTimeout(2000) {
-          copyButton?.setAttribute(data("copied"), false)
+          copyButton.setAttribute(data("copied"), false)
+          copyButton.setAttribute("aria-label", "Copy secret")
         }
       }
     }

@@ -117,14 +117,14 @@
           flexDirection(.column)
           gap(spacing24)
           maxWidth(px(1000))
-          margin(0, .auto)
+          marginInline(.auto)
         }
         descendant(".table-editor-header") {
           display(.flex)
           flexDirection(.column)
           gap(spacing8)
-          paddingBottom(spacing24)
-          borderBottom(borderWidthBase, .solid, borderColorSubtle)
+          paddingBlockEnd(spacing24)
+          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
         }
         descendant(".table-editor-title") {
           fontFamily(typographyFontSans)
@@ -147,50 +147,39 @@
         descendant(".form-actions") {
           width(perc(100))
           gap(spacing16)
-          paddingTop(spacing24)
-          borderTop(borderWidthBase, .solid, borderColorSubtle)
-        }
-        descendant(".field-group label") {
-          display(.block)
-          fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
-          fontWeight(fontWeightSemiBold)
-          color(colorBase)
-          marginBottom(spacing8)
+          paddingBlockStart(spacing24)
+          borderBlockStart(borderWidthBase, .solid, borderColorSubtle)
         }
       }
     }
 
+    /// One column's field: its name as the label (and the placeholder); a
+    /// long or JSON value in a text area.
     @HTMLBuilder
     private func renderFieldGroup(labelText: String, name: String, value: String) -> [DOM.Node] {
-      div {
-        label { labelText }
-          .for("field-\(name)")
-
-        let isLongText = value.count > 100 || name == "content" || name == "description"
-        let isJSON = value.hasPrefix("[") || value.hasPrefix("{")
-
+      let isLongText = value.count > 100 || name == "content" || name == "description"
+      let isJSON = value.hasPrefix("[") || value.hasPrefix("{")
+      FieldView(id: "field-\(name)") {
+        labelText
+      } input: {
         if isLongText || isJSON {
           TextAreaView(
             id: "field-\(name)",
             name: name,
-            placeholder: "Enter \(labelText.lowercased())...",
+            placeholder: labelText,
             value: value,
             rows: isJSON ? 8 : 12,
-            autosize: true,
-            class: "field-input"
+            autosize: true
           )
         } else {
           TextInputView(
             id: "field-\(name)",
             name: name,
-            placeholder: "Enter \(labelText.lowercased())...",
-            value: value,
-            class: "field-input"
+            placeholder: labelText,
+            value: value
           )
         }
       }
-      .class("field-group")
     }
   }
 #endif
