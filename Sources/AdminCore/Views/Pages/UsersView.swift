@@ -221,7 +221,7 @@
           flexDirection(.column)
           gap(spacing8)
           paddingBottom(spacing32)
-          borderBottom(borderWidthBase, .solid, borderColorSubtle)
+          borderBottom(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".users-title") {
           fontFamily(typographyFontSans)
@@ -263,7 +263,7 @@
         descendant(".users-stat") {
           padding(spacing16, spacing24)
           backgroundColor(backgroundColorBase)
-          border(borderWidthBase, .solid, borderColorSubtle)
+          border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
         }
         descendant(".users-stat-label") {

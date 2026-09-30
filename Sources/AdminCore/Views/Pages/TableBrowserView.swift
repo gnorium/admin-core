@@ -195,7 +195,7 @@
           flexDirection(.column)
           gap(spacing8)
           paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockEnd(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".table-browser-title") {
           fontFamily(typographyFontMono)
@@ -375,7 +375,7 @@
         }
       }
 
-      // Clickable rows — navigate to row detail view
+      // Clickable rows—navigate to row detail view
       let rows = tableView.querySelectorAll(".table-row")
       for row in rows {
         _ = row.addEventListener(.click) { [self] (event: Event) in

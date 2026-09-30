@@ -106,7 +106,7 @@
           flexDirection(.column)
           gap(spacing8)
           paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockEnd(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".database-title") {
           margin(0)

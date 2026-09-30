@@ -109,7 +109,7 @@
             letterSpacing(em(0.05))
           }
           selector(".admin-sidebar-divider") {
-            borderBlockStart(borderWidthBase, borderStyleBase, borderColorSubtle)
+            borderBlockStart(borderWidthBase, borderStyleBase, borderColorBase)
             marginInlineEnd(calc(spacing0 - spacing16))
           }
           selector(".admin-sidebar-list") {

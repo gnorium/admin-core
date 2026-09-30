@@ -13,7 +13,7 @@ struct StyleSheetEmitter {
       publicDir = "Public"
     }
     StaticStyleSheetEmitter.begin(publicDirectory: publicDir)
-    // AdminCore catalog — import AdminCore views to warm their style sheets.
+    // AdminCore catalog—import AdminCore views to warm their style sheets.
     // Add representative instances as needed; one per owner is enough now that
     // variants use data-attributes.
     // Example: _ = AdminConsoleDashboardView(...).build()

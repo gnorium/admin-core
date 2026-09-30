@@ -116,7 +116,7 @@
           justifyContent(.spaceBetween)
           alignItems(.flexStart)
           paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockEnd(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".row-detail-heading") {
           display(.flex)
@@ -150,7 +150,7 @@
           flexDirection(.column)
           gap(spacing8)
           paddingBlock(spacing16)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockEnd(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".row-detail-field-label") {
           fontFamily(typographyFontMono)
@@ -175,7 +175,7 @@
           margin(0)
           padding(spacing12)
           backgroundColor(backgroundColorNeutralSubtle)
-          border(borderWidthBase, .solid, borderColorSubtle)
+          border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
           fontFamily(typographyFontMono)
           fontSize(fontSizeSmall14)

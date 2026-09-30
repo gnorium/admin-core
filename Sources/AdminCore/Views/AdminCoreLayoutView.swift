@@ -87,7 +87,7 @@
         }
       }
       // NOT "layout-view": gnorium-web's own LayoutView owns that class, and
-      // stylesheets are global — this block's `overflow: hidden` was landing on
+      // stylesheets are global—this block's `overflow: hidden` was landing on
       // every Gnorium page's root element and clipping it, so nothing scrolled.
       .class("admin-core-layout-view admin-core")
       .style {

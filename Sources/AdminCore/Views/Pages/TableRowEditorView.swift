@@ -73,14 +73,14 @@
 
           // Fields
           if let admin = admin {
-            // Managed mode — use FieldConfig but keep it simple
+            // Managed mode—use FieldConfig but keep it simple
             for field in admin.editFields {
               renderFieldGroup(
                 labelText: field.label, name: field.name,
                 value: data.values[field.name] ?? field.defaultValue ?? "")
             }
           } else {
-            // Raw mode — loop through columns
+            // Raw mode—loop through columns
             let systemFields = Set([
               "submission_schema_version", "content_hash", "created_at", "updated_at",
             ])
@@ -124,7 +124,7 @@
           flexDirection(.column)
           gap(spacing8)
           paddingBlockEnd(spacing24)
-          borderBlockEnd(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockEnd(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".table-editor-title") {
           fontFamily(typographyFontSans)
@@ -148,7 +148,7 @@
           width(perc(100))
           gap(spacing16)
           paddingBlockStart(spacing24)
-          borderBlockStart(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockStart(borderWidthBase, .solid, borderColorBase)
         }
       }
     }

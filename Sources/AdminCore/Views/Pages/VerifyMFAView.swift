@@ -95,7 +95,7 @@
         }
         descendant(".verify-mfa-recovery-form") {
           paddingBlockStart(spacing24)
-          borderBlockStart(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockStart(borderWidthBase, .solid, borderColorBase)
         }
       }
     }

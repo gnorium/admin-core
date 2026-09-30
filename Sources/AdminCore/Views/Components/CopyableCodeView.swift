@@ -47,7 +47,7 @@
           paddingBlock(spacing4)
           paddingInlineStart(spacing12)
           paddingInlineEnd(spacing4)
-          border(borderWidthBase, .solid, borderColorSubtle)
+          border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
         }
         descendant(".code-view") {

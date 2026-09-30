@@ -91,7 +91,7 @@
           width(perc(100))
           maxWidth(px(480))
           backgroundColor(backgroundColorBase)
-          border(borderWidthBase, borderStyleBase, borderColorSubtle)
+          border(borderWidthBase, borderStyleBase, borderColorBase)
           borderRadius(borderRadiusBase)
           padding(spacing40)
         }

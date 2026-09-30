@@ -115,7 +115,7 @@
           display(.flex)
           justifyContent(.spaceBetween)
           alignItems(.center)
-          borderBottom(borderWidthBase, borderStyleBase, borderColorSubtle)
+          borderBottom(borderWidthBase, borderStyleBase, borderColorBase)
         }
         selector(".navbar-brand-wrapper") {
           display(.flex)
@@ -163,7 +163,7 @@
         }
         selector(".ellipsis-divider") {
           height(px(1))
-          backgroundColor(borderColorSubtle)
+          backgroundColor(borderColorBase)
         }
         selector(".ellipsis-menu-link") {
           textDecoration(.none)

@@ -91,7 +91,7 @@
         }
         selector("& .manage-mfa-section + .manage-mfa-section") {
           paddingBlockStart(spacing24)
-          borderBlockStart(borderWidthBase, .solid, borderColorSubtle)
+          borderBlockStart(borderWidthBase, .solid, borderColorBase)
         }
         descendant(".manage-mfa-disable-form") {
           display(.flex)

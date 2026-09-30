@@ -116,7 +116,7 @@
           width(.fitContent)
           padding(spacing16)
           backgroundColor(backgroundColorBaseFixed)
-          border(borderWidthBase, .solid, borderColorSubtle)
+          border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
         }
         descendant(".setup-mfa-qr-code img") { display(.block) }
