@@ -36,7 +36,7 @@
           .class("manage-mfa-section-text")
           form {
             ButtonView(
-              label: "Regenerate recovery codes", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
+              label: "Regenerate Recovery Codes", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/mfa/regenerate-recovery")
@@ -67,7 +67,7 @@
                   length: "The code is 6 digits."))
             }
             ButtonView(
-              label: "Turn off MFA", buttonColor: .red, weight: .solid, size: .medium, type: .submit,
+              label: "Turn Off MFA", buttonColor: .red, weight: .solid, size: .medium, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/mfa/disable")

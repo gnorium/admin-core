@@ -73,7 +73,7 @@
                 length: "A recovery code is 8 letters and digits, like ABCD-EFGH."))
           }
           ButtonView(
-            label: "Use recovery code", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
+            label: "Use Recovery Code", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
             fullWidth: true)
         }
         .action("\(baseRoute)/mfa/verify")
