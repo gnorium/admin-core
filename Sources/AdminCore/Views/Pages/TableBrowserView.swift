@@ -404,9 +404,10 @@
         el.textContent = "\(count) selected"
       }
 
-      // The attribute itself: the elements a query returns are plain
-      // `DOM.Element`s, so a cast to `HTMLButtonElement` never succeeded and
-      // the buttons stayed disabled whatever was selected.
+      // A disabled ButtonView carries both `disabled` and `aria-disabled`,
+      // so both change: this set only the `disabled` property before, the
+      // `aria-disabled` mark stayed, and the buttons stayed disabled
+      // whatever was selected.
       if let btn = editBtn {
         Self.setDisabled(btn, count != 1)
       }
@@ -418,9 +419,11 @@
 
     private static func setDisabled(_ button: DOM.Element, _ disabled: Bool) {
       if disabled {
-        _ = button.setAttribute("disabled", "")
+        _ = button.setAttribute("disabled", "disabled")
+        _ = button.setAttribute("aria-disabled", "true")
       } else {
         button.removeAttribute("disabled")
+        button.removeAttribute("aria-disabled")
       }
     }
   }
