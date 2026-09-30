@@ -147,6 +147,30 @@
             .class("table-browser-empty-description")
         }
 
+        // Delete is a POST, never a link: a GET that deletes could be set off
+        // from another site, which the sign-in cookie (SameSite=Lax) follows.
+        // The dialog asks first; its Delete sends the form.
+        if config.editable {
+          form {
+            input()
+              .type(.hidden)
+              .name("ids")
+              .class("table-browser-delete-ids")
+            DialogView(
+              title: "Delete rows?",
+              primaryAction: .init(label: "Delete", color: .red),
+              defaultAction: .init(label: "Cancel"),
+              class: "table-browser-delete-dialog"
+            ) {
+              p { "They can't be restored." }
+                .class("table-browser-delete-note")
+            }
+          }
+          .action("\(config.baseURL)/\(tableName)/delete")
+          .method(.post)
+          .class("table-browser-delete-form")
+        }
+
         // Pagination
         if totalPages > 1 {
           PaginationView(
@@ -204,6 +228,16 @@
         }
         descendant(".table-browser-empty-description") { color(colorSubtle) }
         descendant(".table-browser-data .table-row") { cursor(.pointer) }
+        // No box of its own: the dialog is an overlay, so the form takes no
+        // place (and no gap) in the page's column.
+        descendant(".table-browser-delete-form") { display(.contents) }
+        descendant(".table-browser-delete-note") {
+          margin(0)
+          fontFamily(typographyFontSans)
+          fontSize(fontSizeMedium16)
+          lineHeight(lineHeightSmall22)
+          color(colorBase)
+        }
       }
     }
 
@@ -313,19 +347,31 @@
         }
       }
 
-      // Delete button
-      if let deleteBtn = deleteButton {
+      // Delete: the dialog asks, naming how many; its Delete posts the form.
+      if let deleteBtn = deleteButton,
+        let form = document.querySelector(".table-browser-delete-form"),
+        let ids = form.querySelector(".table-browser-delete-ids"),
+        let dialog = form.querySelector(".table-browser-delete-dialog")
+      {
+        let close: @Sendable () -> Void = {
+          dialog.setAttribute(data("open"), "false")
+          document.body.setAttribute(data("dialog-open"), "false")
+        }
         _ = deleteBtn.addEventListener(.click) { [self] (event: Event) in
           guard !self.selectedRowIDs.isEmpty else { return }
           let count = self.selectedRowIDs.count
-          let message =
-            count == 1
-            ? "Are you sure you want to delete this row?"
-            : "Are you sure you want to delete \(count) rows?"
-          if window.confirm(message) {
-            let idsParam = stringJoin(self.selectedRowIDs, separator: ",")
-            window.location.href = "\(self.baseURL)/\(self.tableName)/delete?ids=\(idsParam)"
-          }
+          (ids as? HTML.HTMLInputElement)?.value = stringJoin(self.selectedRowIDs, separator: ",")
+          dialog.querySelector(".dialog-header-title")?.textContent =
+            count == 1 ? "Delete 1 row?" : "Delete \(count) rows?"
+          dialog.setAttribute(data("open"), "true")
+          document.body.setAttribute(data("dialog-open"), "true")
+        }
+        _ = dialog.addEventListener("dialog-primary") { _ in
+          close()
+          (form as? HTML.HTMLFormElement)?.submit()
+        }
+        _ = dialog.addEventListener("dialog-default") { _ in
+          close()
         }
       }
 
@@ -358,12 +404,23 @@
         el.textContent = "\(count) selected"
       }
 
+      // The attribute itself: the elements a query returns are plain
+      // `DOM.Element`s, so a cast to `HTMLButtonElement` never succeeded and
+      // the buttons stayed disabled whatever was selected.
       if let btn = editBtn {
-        (btn as? HTML.HTMLButtonElement)?.disabled = (count != 1)
+        Self.setDisabled(btn, count != 1)
       }
 
       if let btn = deleteBtn {
-        (btn as? HTML.HTMLButtonElement)?.disabled = (count == 0)
+        Self.setDisabled(btn, count == 0)
+      }
+    }
+
+    private static func setDisabled(_ button: DOM.Element, _ disabled: Bool) {
+      if disabled {
+        _ = button.setAttribute("disabled", "")
+      } else {
+        button.removeAttribute("disabled")
       }
     }
   }

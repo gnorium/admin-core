@@ -54,19 +54,7 @@
             .class("setup-mfa-step-title")
           p { "If the app can't scan the code, enter this secret in it instead." }
             .class("setup-mfa-step-text")
-          div {
-            CodeView(secret, language: "plaintext", showLineNumbers: false)
-            ButtonView(
-              weight: .quiet, iconOnly: true, ariaLabel: "Copy secret", class: "setup-mfa-copy",
-              data: [("copied", "false")]
-            ) {
-              span { CopyIconView() }
-                .class("setup-mfa-copy-icon")
-              span { CheckIconView() }
-                .class("setup-mfa-copied-icon")
-            }
-          }
-          .class("setup-mfa-secret")
+          CopyableCodeView(secret, copyLabel: "Copy secret", class: "setup-mfa-secret")
         }
         .class("setup-mfa-step")
 
@@ -132,24 +120,6 @@
           borderRadius(borderRadiusBase)
         }
         descendant(".setup-mfa-qr-code img") { display(.block) }
-        descendant(".setup-mfa-secret") {
-          display(.flex)
-          alignItems(.center)
-          justifyContent(.spaceBetween)
-          gap(spacing8)
-          paddingBlock(spacing4)
-          paddingInlineStart(spacing12)
-          paddingInlineEnd(spacing4)
-          border(borderWidthBase, .solid, borderColorSubtle)
-          borderRadius(borderRadiusBase)
-        }
-        descendant(".setup-mfa-secret .code-view") {
-          minWidth(0)
-          overflowX(.auto)
-        }
-        descendant(".setup-mfa-copied-icon") { display(.none) }
-        descendant(".setup-mfa-copy[data-copied='true'] .setup-mfa-copy-icon") { display(.none) }
-        descendant(".setup-mfa-copy[data-copied='true'] .setup-mfa-copied-icon") { display(.flex) }
       }
     }
   }
@@ -162,7 +132,8 @@
   import WebAPIs
   import WebTypes
 
-  /// Client hydration for ``SetupMFAView``: draws the QR code, copies the secret.
+  /// Client hydration for ``SetupMFAView``: draws the QR code (the secret
+  /// is copied by `CopyableCodeHydration`).
   public class SetupMFAHydration: @unchecked Sendable {
     public static nonisolated(unsafe) var instance: SetupMFAHydration?
 
@@ -185,19 +156,6 @@
       // qrcodejs titles its element with the text it encodes: the secret,
       // as a tooltip. The element is labeled already.
       qrCode.removeAttribute("title")
-
-      guard let copyButton = container.querySelector(".setup-mfa-copy"),
-        let secret = container.querySelector(".setup-mfa-secret code")
-      else { return }
-      _ = copyButton.addEventListener(.click) { (event: Event) in
-        window.navigator.clipboard.writeText(from: secret)
-        copyButton.setAttribute(data("copied"), true)
-        copyButton.setAttribute("aria-label", "Copied")
-        _ = window.setTimeout(2000) {
-          copyButton.setAttribute(data("copied"), false)
-          copyButton.setAttribute("aria-label", "Copy secret")
-        }
-      }
     }
   }
 #endif

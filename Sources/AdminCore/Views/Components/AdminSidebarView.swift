@@ -8,7 +8,7 @@
 
   private let baseRoute = Configuration.shared.baseRoute
 
-  /// One navigation entry in ``SidebarView``.
+  /// One navigation entry in ``AdminSidebarView``.
   public struct SidebarItem: Sendable {
     /// Visible label.
     public let label: String
@@ -25,21 +25,28 @@
     }
   }
 
-  /// Left sidebar navigation for the admin console.
+  /// Left sidebar navigation for the admin console, in the design system's
+  /// `WebComponents.SidebarView` (whose `.sidebar-view` the navbar looks
+  /// for). Its own root class is `admin-sidebar-view`, and its styles are its
+  /// own sheet, apart from the shared sidebar's.
   ///
   /// When `items` / `bottomItems` are omitted, a default set of admin destinations is used
   /// (dashboard, users, database, invites, MFA setup, back to site).
-  public struct SidebarView: HTMLContent {
+  public struct AdminSidebarView: HTMLContent {
     let items: [SidebarItem]
     let bottomItems: [SidebarItem]
     let collapsed: Bool
+    let `class`: String
 
     /// Creates a sidebar.
     /// - Parameters:
     ///   - items: Primary nav items; `nil` uses built-in defaults.
     ///   - bottomItems: Footer nav items; `nil` uses “Back to site”.
     ///   - collapsed: Whether the sidebar starts collapsed.
-    public init(items: [SidebarItem]? = nil, bottomItems: [SidebarItem]? = nil, collapsed: Bool = false) {
+    ///   - class: The site's own class for it, beside `admin-sidebar-view`.
+    public init(
+      items: [SidebarItem]? = nil, bottomItems: [SidebarItem]? = nil, collapsed: Bool = false, class: String = ""
+    ) {
       self.items =
         items ?? [
           SidebarItem(label: "Dashboard", url: baseRoute),
@@ -57,10 +64,13 @@
             })
         ]
       self.collapsed = collapsed
+      self.class = `class`
     }
 
     public func build() -> DOM.Node {
-      WebComponents.SidebarView(class: "sidebar-view", collapsed: collapsed) {
+      WebComponents.SidebarView(
+        class: `class`.isEmpty ? "admin-sidebar-view" : "admin-sidebar-view \(`class`)", collapsed: collapsed
+      ) {
         div {
           nav {
             ul {

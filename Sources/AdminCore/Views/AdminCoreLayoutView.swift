@@ -50,7 +50,7 @@
         if let sidebar = sidebar {
           sidebar
         } else if showSidebar {
-          SidebarView()
+          AdminSidebarView()
         }
 
         div {
