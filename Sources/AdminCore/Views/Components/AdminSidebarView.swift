@@ -60,7 +60,7 @@
           SidebarItem(
             label: "Back to site", url: "/",
             icon: { size in
-              [PreviousIconView(width: size, height: size).build()]
+              [PreviousIconView(size: size).build()]
             })
         ]
       self.collapsed = collapsed
@@ -132,7 +132,7 @@
       li {
         if let icon = item.icon {
           LinkView(url: item.url, weight: .plain, class: linkClass) {
-            icon(px(20))
+            icon(sizeIconSmall)
             span { item.label }
           }
         } else {
