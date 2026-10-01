@@ -38,7 +38,7 @@
         div {
           ButtonView(
             label: "Download as text file",
-            icon: IconView(icon: { s in DownloadIconView(size: s) }, size: sizeIconSmall),
+            icon: IconView(icon: { s in DownloadIconView(size: s) }, size: sizeIconXSmall),
             buttonColor: .gray, weight: .subtle, size: .medium, url: "data:text/plain;charset=utf-8,\(encoded)",
             fullWidth: true, class: "recovery-codes-download"
           )

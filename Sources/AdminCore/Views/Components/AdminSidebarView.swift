@@ -132,7 +132,7 @@
       li {
         if let icon = item.icon {
           LinkView(url: item.url, weight: .plain, class: linkClass) {
-            icon(sizeIconSmall)
+            icon(sizeIconXSmall)
             span { item.label }
           }
         } else {

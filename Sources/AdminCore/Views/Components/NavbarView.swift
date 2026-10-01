@@ -86,7 +86,7 @@
               form {
                 ButtonView(
                   label: "Sign Out",
-                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: sizeIconSmall),
+                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: sizeIconXSmall),
                   weight: .subtle,
                   size: .medium,
                   type: .submit,
