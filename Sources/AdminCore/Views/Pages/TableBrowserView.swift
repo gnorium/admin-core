@@ -174,11 +174,12 @@
         // Pagination
         if totalPages > 1 {
           PaginationView(
+            currentPage: currentPage,
+            totalPages: totalPages,
             previousUrl: currentPage > 1
               ? "\(config.baseURL)/\(tableName)?page=\(currentPage - 1)" : nil,
             nextUrl: currentPage < totalPages
               ? "\(config.baseURL)/\(tableName)?page=\(currentPage + 1)" : nil,
-            pageNumbers: buildPageNumbers(),
             class: "table-browser-pagination"
           )
         }
@@ -239,42 +240,6 @@
           color(colorBase)
         }
       }
-    }
-
-    private func buildPageNumbers() -> [PaginationView.PageNumber] {
-      var pages: [PaginationView.PageNumber] = []
-      let baseUrl = "\(config.baseURL)/\(tableName)?page="
-
-      // Show up to 7 page numbers with ellipsis-like windowing
-      let windowSize = 2
-      let start = max(1, currentPage - windowSize)
-      let end = min(totalPages, currentPage + windowSize)
-
-      if start > 1 {
-        pages.append(
-          PaginationView.PageNumber(label: "1", url: "\(baseUrl)1", isActive: currentPage == 1))
-        if start > 2 {
-          pages.append(PaginationView.PageNumber(label: "…", url: "", isActive: false))
-        }
-      }
-
-      for p in start...end {
-        pages.append(
-          PaginationView.PageNumber(
-            label: "\(p)", url: "\(baseUrl)\(p)", isActive: p == currentPage))
-      }
-
-      if end < totalPages {
-        if end < totalPages - 1 {
-          pages.append(PaginationView.PageNumber(label: "…", url: "", isActive: false))
-        }
-        pages.append(
-          PaginationView.PageNumber(
-            label: "\(totalPages)", url: "\(baseUrl)\(totalPages)",
-            isActive: currentPage == totalPages))
-      }
-
-      return pages
     }
 
     private func truncateValue(_ value: String) -> String {
