@@ -145,12 +145,16 @@
           display(.flex)
           flexDirection(.column)
         }
+        // A long unbroken value (a migration's name, an id) wraps where it
+        // must, so a phone never scrolls sideways.
         descendant(".row-detail-field") {
           display(.flex)
           flexDirection(.column)
           gap(spacing8)
           paddingBlock(spacing16)
           borderBlockEnd(borderWidthBase, .solid, borderColorBase)
+          minWidth(0)
+          overflowWrap(.anywhere)
         }
         descendant(".row-detail-field-label") {
           fontFamily(typographyFontMono)
