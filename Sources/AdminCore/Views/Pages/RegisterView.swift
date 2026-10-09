@@ -88,8 +88,8 @@
           maxWidth(px(480))
           padding(spacing48)
           backgroundColor(backgroundColorBase)
+          border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
-          boxShadow(boxShadowLarge)
         }
         descendant(".register-title") {
           fontSize(fontSizeXXLarge24)
