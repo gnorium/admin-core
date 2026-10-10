@@ -111,7 +111,7 @@
         }
         selector(".navbar-view") {
           backgroundColor(backgroundColorBase)
-          padding(spacing16, spacing32)
+          padding(spacing16)
           display(.flex)
           justifyContent(.spaceBetween)
           alignItems(.center)

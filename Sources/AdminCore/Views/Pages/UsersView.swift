@@ -261,7 +261,7 @@
         }
         descendant(".users-empty-description") { color(colorSubtle) }
         descendant(".users-stat") {
-          padding(spacing16, spacing24)
+          padding(spacing16)
           backgroundColor(backgroundColorBase)
           border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)

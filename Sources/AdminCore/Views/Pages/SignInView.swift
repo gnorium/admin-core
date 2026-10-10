@@ -118,7 +118,7 @@
           backgroundColor(backgroundColorRedSubtle)
           border(borderWidthBase, .solid, borderColorRed)
           borderRadius(borderRadiusBase)
-          padding(spacing12, spacing16)
+          padding(spacing16)
         }
         descendant(".admin-sign-in-error-message") {
           fontFamily(typographyFontSans)

@@ -95,7 +95,7 @@
           gap(spacing24)
           maxWidth(px(1000))
           margin(0, .auto)
-          padding(spacing48, spacing24)
+          padding(spacing24)
         }
         descendant(".table-editor-header") {
           display(.flex)

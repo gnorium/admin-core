@@ -102,7 +102,7 @@
         descendant(".register-error") {
           color(colorRed)
           backgroundColor(backgroundColorRedSubtle)
-          padding(spacing12, spacing16)
+          padding(spacing16)
           borderRadius(borderRadiusBase)
           marginBottom(spacing24)
           textAlign(.center)
