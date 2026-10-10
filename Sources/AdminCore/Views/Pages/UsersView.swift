@@ -231,7 +231,7 @@
         }
         descendant(".users-subtitle") {
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           margin(0)
         }
@@ -251,7 +251,7 @@
           paddingTop(spacing16)
         }
         descendant(".users-pagination-label") {
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
         }
         descendant(".users-empty-title") {
@@ -267,7 +267,7 @@
           borderRadius(borderRadiusBase)
         }
         descendant(".users-stat-label") {
-          fontSize(fontSizeXSmall12)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           textTransform(.uppercase)
           letterSpacing(px(0.5))

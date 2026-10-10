@@ -101,7 +101,7 @@
         .style {
           selector("&") { padding(0) }
           selector(".sidebar-title") {
-            fontSize(fontSizeXSmall12)
+            fontSize(fontSizeMedium16)
             fontFamily(typographyFontSans)
             fontWeight(fontWeightSemiBold)
             color(colorSubtle)
@@ -132,7 +132,7 @@
       li {
         if let icon = item.icon {
           LinkView(url: item.url, weight: .plain, class: linkClass) {
-            icon(sizeIconXSmall)
+            icon(sizeIconSmall)
             span { item.label }
           }
         } else {

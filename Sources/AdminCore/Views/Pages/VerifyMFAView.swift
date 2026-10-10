@@ -45,7 +45,7 @@
                 length: "The code is 6 digits."))
           }
           ButtonView(
-            label: "Verify", buttonColor: .blue, weight: .solid, size: .medium, type: .submit, fullWidth: true)
+            label: "Verify", buttonColor: .blue, weight: .solid, size: .large, type: .submit, fullWidth: true)
         }
         .action("\(baseRoute)/authentication/verify")
         .method(.post)
@@ -73,7 +73,7 @@
                 length: "A recovery code is 8 letters and digits, like ABCD-EFGH."))
           }
           ButtonView(
-            label: "Use Recovery Code", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
+            label: "Use Recovery Code", buttonColor: .gray, weight: .subtle, size: .large, type: .submit,
             fullWidth: true)
         }
         .action("\(baseRoute)/authentication/verify")

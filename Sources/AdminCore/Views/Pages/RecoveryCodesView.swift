@@ -38,13 +38,13 @@
         div {
           ButtonView(
             label: "Download as text file",
-            icon: IconView(icon: { s in DownloadIconView(size: s) }, size: sizeIconXSmall),
-            buttonColor: .gray, weight: .subtle, size: .medium, url: "data:text/plain;charset=utf-8,\(encoded)",
+            icon: IconView(icon: { s in DownloadIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize),
+            buttonColor: .gray, weight: .subtle, size: .large, url: "data:text/plain;charset=utf-8,\(encoded)",
             fullWidth: true, class: "recovery-codes-download"
           )
           .download("gnorium-recovery-codes.txt")
           ButtonView(
-            label: "Continue", buttonColor: .blue, weight: .solid, size: .medium, url: continueURL, fullWidth: true,
+            label: "Continue", buttonColor: .blue, weight: .solid, size: .large, url: continueURL, fullWidth: true,
             class: "recovery-codes-continue")
         }
         .class("recovery-codes-actions")
@@ -59,7 +59,7 @@
         descendant(".recovery-codes-text") {
           margin(0)
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           lineHeight(lineHeightSmall22)
           color(colorSubtle)
         }

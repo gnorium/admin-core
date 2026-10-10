@@ -66,7 +66,7 @@
             .class("register-field register-field-last")
 
             ButtonView(
-              label: "Complete Registration", buttonColor: .blue, weight: .solid, type: .submit,
+              label: "Complete Registration", buttonColor: .blue, weight: .solid, size: .large, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/register/\(token)")
@@ -106,7 +106,7 @@
           borderRadius(borderRadiusBase)
           marginBottom(spacing24)
           textAlign(.center)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           fontWeight(500)
         }
         descendant(".register-field-standard") { marginBottom(spacing24) }

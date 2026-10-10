@@ -73,7 +73,7 @@
                 length: "The code is 6 digits."))
           }
           ButtonView(
-            label: "Enable MFA", buttonColor: .blue, weight: .solid, size: .medium, type: .submit, fullWidth: true)
+            label: "Enable MFA", buttonColor: .blue, weight: .solid, size: .large, type: .submit, fullWidth: true)
         }
         .action("\(baseRoute)/authentication/setup\(query)")
         .method(.post)
@@ -104,7 +104,7 @@
         descendant(".setup-mfa-step-text") {
           margin(0)
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           lineHeight(lineHeightSmall22)
           color(colorSubtle)
         }

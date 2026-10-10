@@ -60,7 +60,7 @@
             }
 
             ButtonView(
-              label: "Sign In", buttonColor: .blue, weight: .solid, size: .medium, type: .submit,
+              label: "Sign In", buttonColor: .blue, weight: .solid, size: .large, type: .submit,
               fullWidth: true)
 
             div {
@@ -110,7 +110,7 @@
         }
         descendant(".admin-sign-in-subtitle") {
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           margin(0)
         }
@@ -123,7 +123,7 @@
         descendant(".admin-sign-in-error-message") {
           fontFamily(typographyFontSans)
           margin(0)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorRed)
         }
         descendant(".admin-sign-in-form") {
@@ -134,7 +134,7 @@
         descendant(".admin-sign-in-back") { textAlign(.center) }
         descendant(".admin-sign-in-back-link") {
           display(.inlineBlock)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           textDecoration(.none)
           fontFamily(typographyFontSans)

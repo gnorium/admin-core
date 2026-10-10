@@ -206,12 +206,12 @@
         }
         descendant(".table-browser-subtitle") {
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           margin(0)
         }
         descendant(".selection-count") {
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           fontFamily(typographyFontSans)
           whiteSpace(.nowrap)

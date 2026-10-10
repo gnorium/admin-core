@@ -135,7 +135,7 @@
         }
         descendant(".table-editor-subtitle") {
           fontFamily(typographyFontMono)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           margin(0)
         }

@@ -53,7 +53,7 @@
               label: "Edit",
               buttonColor: .gray,
               weight: .subtle,
-              size: .medium,
+              size: .large,
               url: "\(config.baseURL)/\(tableName)/\(rowID)/edit",
               class: "btn-edit-row"
             )
@@ -62,7 +62,7 @@
               label: "Delete",
               buttonColor: .gray,
               weight: .subtle,
-              size: .medium,
+              size: .large,
               class: "btn-delete-row"
             )
           }
@@ -133,7 +133,7 @@
         }
         descendant(".row-detail-subtitle") {
           fontFamily(typographyFontMono)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           margin(0)
         }
@@ -158,7 +158,7 @@
         }
         descendant(".row-detail-field-label") {
           fontFamily(typographyFontMono)
-          fontSize(fontSizeXSmall12)
+          fontSize(fontSizeMedium16)
           fontWeight(fontWeightSemiBold)
           color(colorSubtle)
           textTransform(.uppercase)
@@ -166,13 +166,13 @@
         }
         descendant(".row-detail-null") {
           fontFamily(typographyFontMono)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
           fontStyle(.italic)
         }
         descendant(".row-detail-value") {
           fontFamily(typographyFontMono)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorBase)
         }
         descendant(".row-detail-code") {

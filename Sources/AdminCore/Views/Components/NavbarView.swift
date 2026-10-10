@@ -86,7 +86,7 @@
               form {
                 ButtonView(
                   label: "Sign Out",
-                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: sizeIconXSmall),
+                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: sizeIconSmall),
                   weight: .subtle,
                   size: .medium,
                   type: .submit,
@@ -141,11 +141,11 @@
           gap(spacing4)
         }
         selector(".navbar-welcome") {
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
         }
         selector(".navbar-username") {
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           fontWeight(600)
           color(colorBase)
         }
@@ -156,7 +156,7 @@
         }
         selector(".ellipsis-section-header") {
           fontFamily(typographyFontSans)
-          fontSize(fontSizeXSmall12)
+          fontSize(fontSizeMedium16)
           fontWeight(fontWeightSemiBold)
           color(colorSubtle)
           letterSpacing(px(0.5))

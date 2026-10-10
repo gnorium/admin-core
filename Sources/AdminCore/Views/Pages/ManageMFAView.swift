@@ -46,7 +46,7 @@
           form {
             codeField(id: "manage-mfa-regenerate-code", error: regenerateError)
             ButtonView(
-              label: "Regenerate Recovery Codes", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
+              label: "Regenerate Recovery Codes", buttonColor: .gray, weight: .subtle, size: .large, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/authentication/regenerate-recovery")
@@ -66,7 +66,7 @@
           form {
             codeField(id: "manage-mfa-code", error: disableError)
             ButtonView(
-              label: "Turn Off MFA", buttonColor: .red, weight: .solid, size: .medium, type: .submit,
+              label: "Turn Off MFA", buttonColor: .red, weight: .solid, size: .large, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/authentication/disable")
@@ -108,7 +108,7 @@
         descendant(".manage-mfa-section-text") {
           margin(0)
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           lineHeight(lineHeightSmall22)
           color(colorSubtle)
         }

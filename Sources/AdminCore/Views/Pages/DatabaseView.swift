@@ -118,12 +118,12 @@
         descendant(".database-subtitle") {
           margin(0)
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
         }
         descendant(".database-empty") {
           fontFamily(typographyFontSans)
-          fontSize(fontSizeSmall14)
+          fontSize(fontSizeMedium16)
           color(colorSubtle)
         }
       }
