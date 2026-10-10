@@ -28,7 +28,7 @@
       div {
         CodeView(text, language: "plaintext", showLineNumbers: false)
         ButtonView(
-          weight: .quiet, iconOnly: true, ariaLabel: copyLabel, class: "copyable-code-copy",
+          weight: .quiet, size: .small, iconOnly: true, ariaLabel: copyLabel, class: "copyable-code-copy",
           data: [("copied", "false"), ("copy-label", copyLabel)]
         ) {
           span { CopyIconView(size: sizeIconSmall) }
@@ -44,9 +44,8 @@
           alignItems(.center)
           justifyContent(.spaceBetween)
           gap(spacing8)
-          paddingBlock(spacing4)
-          paddingInlineStart(spacing12)
-          paddingInlineEnd(spacing4)
+          // 8 on every side, round the code and its small copy button.
+          padding(spacing8)
           border(borderWidthBase, .solid, borderColorBase)
           borderRadius(borderRadiusBase)
         }
