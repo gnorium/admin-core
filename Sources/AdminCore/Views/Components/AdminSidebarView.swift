@@ -53,7 +53,7 @@
           SidebarItem(label: "Users", url: "\(baseRoute)/users"),
           SidebarItem(label: "Database", url: "\(baseRoute)/database"),
           SidebarItem(label: "Invites", url: "\(baseRoute)/invites"),
-          SidebarItem(label: "Security", url: "\(baseRoute)/mfa/setup"),
+          SidebarItem(label: "Security", url: "\(baseRoute)/authentication/setup"),
         ]
       self.bottomItems =
         bottomItems ?? [

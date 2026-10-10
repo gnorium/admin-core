@@ -49,7 +49,7 @@
               label: "Regenerate Recovery Codes", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
               fullWidth: true)
           }
-          .action("\(baseRoute)/mfa/regenerate-recovery")
+          .action("\(baseRoute)/authentication/regenerate-recovery")
           .method(.post)
           .novalidate()
           .class("manage-mfa-form manage-mfa-regenerate-form")
@@ -69,7 +69,7 @@
               label: "Turn Off MFA", buttonColor: .red, weight: .solid, size: .medium, type: .submit,
               fullWidth: true)
           }
-          .action("\(baseRoute)/mfa/disable")
+          .action("\(baseRoute)/authentication/disable")
           .method(.post)
           .novalidate()
           .class("manage-mfa-form manage-mfa-disable-form")

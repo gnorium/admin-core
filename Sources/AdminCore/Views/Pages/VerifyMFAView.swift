@@ -47,7 +47,7 @@
           ButtonView(
             label: "Verify", buttonColor: .blue, weight: .solid, size: .medium, type: .submit, fullWidth: true)
         }
-        .action("\(baseRoute)/mfa/verify")
+        .action("\(baseRoute)/authentication/verify")
         .method(.post)
         .novalidate()
         .class("verify-mfa-form")
@@ -76,7 +76,7 @@
             label: "Use Recovery Code", buttonColor: .gray, weight: .subtle, size: .medium, type: .submit,
             fullWidth: true)
         }
-        .action("\(baseRoute)/mfa/verify")
+        .action("\(baseRoute)/authentication/verify")
         .method(.post)
         .novalidate()
         .class("verify-mfa-recovery-form")

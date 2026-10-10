@@ -75,7 +75,7 @@
           ButtonView(
             label: "Enable MFA", buttonColor: .blue, weight: .solid, size: .medium, type: .submit, fullWidth: true)
         }
-        .action("\(baseRoute)/mfa/setup\(query)")
+        .action("\(baseRoute)/authentication/setup\(query)")
         .method(.post)
         .novalidate()
         .class("setup-mfa-form")
