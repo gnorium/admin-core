@@ -50,8 +50,9 @@
             }
             .class("navbar-user-details")
 
-            // Ellipsis settings button
-            EllipsisMenuButtonView()
+            // Ellipsis settings button: quiet, as every navbar's icon
+            // buttons are (user, 2026-10-11).
+            EllipsisMenuButtonView(weight: .quiet)
           }
           .class("navbar-actions")
         }
