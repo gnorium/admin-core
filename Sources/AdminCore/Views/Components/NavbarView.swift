@@ -65,7 +65,8 @@
             span { "Color Scheme" }
               .class("ellipsis-section-header")
 
-            ColorSchemeButtonGroupView()
+            // Every button in the menu is large (user, 2026-10-12).
+            ColorSchemeButtonGroupView(size: .large)
           }
           .class("ellipsis-section")
 
@@ -74,7 +75,7 @@
             span { "Contrast" }
               .class("ellipsis-section-header")
 
-            ContrastButtonGroupView()
+            ContrastButtonGroupView(size: .large)
           }
           .class("ellipsis-section")
 
@@ -87,9 +88,9 @@
               form {
                 ButtonView(
                   label: "Sign Out",
-                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: sizeIconSmall),
+                  icon: IconView(icon: { s in LogOutIconView(size: s) }, size: ButtonView.ButtonSize.large.iconSize),
                   weight: .subtle,
-                  size: .medium,
+                  size: .large,
                   type: .submit,
                   fullWidth: true,
                   labelFontWeight: fontWeightNormal,
