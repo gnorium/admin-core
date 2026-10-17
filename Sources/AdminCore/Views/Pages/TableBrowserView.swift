@@ -256,6 +256,7 @@
   import EmbeddedSwiftUtilities
   import HTMLBuilder
   import WebAPIs
+  import WebComponents
   import WebTypes
 
   /// Client hydration for ``TableBrowserView`` (bulk actions, row navigation, selection count).
@@ -318,18 +319,14 @@
         let ids = form.querySelector(".table-browser-delete-ids"),
         let dialog = form.querySelector(".table-browser-delete-dialog")
       {
-        let close: @Sendable () -> Void = {
-          dialog.setAttribute(data("open"), "false")
-          document.body.setAttribute(data("dialog-open"), "false")
-        }
+        let close: @Sendable () -> Void = { DialogView.close(dialog) }
         _ = deleteBtn.addEventListener(.click) { [self] (event: Event) in
           guard !self.selectedRowIDs.isEmpty else { return }
           let count = self.selectedRowIDs.count
           (ids as? HTML.HTMLInputElement)?.value = stringJoin(self.selectedRowIDs, separator: ",")
           dialog.querySelector(".dialog-header-title")?.textContent =
             count == 1 ? "Delete 1 row?" : "Delete \(count) rows?"
-          dialog.setAttribute(data("open"), "true")
-          document.body.setAttribute(data("dialog-open"), "true")
+          DialogView.showModal(dialog, opener: deleteBtn)
         }
         _ = dialog.addEventListener("dialog-primary") { _ in
           close()
