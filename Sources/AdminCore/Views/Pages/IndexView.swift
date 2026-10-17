@@ -56,13 +56,7 @@
               ),
             ],
             class: "index-actions",
-            data: ["base-route": baseRoute, "url-path": admin.urlPath],
-            style: {
-              selector("&") {
-                width(perc(100))
-                justifyContent(.flexEnd)
-              }
-            }
+            data: ["base-route": baseRoute, "url-path": admin.urlPath]
           )
         }
         .class("index-header")
@@ -72,6 +66,12 @@
             justifyContent(.flexEnd)
             alignItems(.center)
             width(perc(100))
+          }
+          // The actions group: the header's own full-width, end-aligned row
+          // (a button group takes no style of its own).
+          descendant(".index-actions") {
+            width(perc(100))
+            justifyContent(.flexEnd)
           }
         }
       } thead: {
