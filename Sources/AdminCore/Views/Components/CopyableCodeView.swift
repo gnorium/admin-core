@@ -31,9 +31,9 @@
           weight: .quiet, size: .medium, iconOnly: true, ariaLabel: copyLabel, class: "copyable-code-copy",
           data: [("copied", "false"), ("copy-label", copyLabel)]
         ) {
-          span { CopyIconView(size: sizeIconSmall) }
+          span { CopyIconView(size: ButtonView.ButtonSize.medium.iconSize) }
             .class("copyable-code-copy-icon")
-          span { CheckIconView(size: sizeIconSmall) }
+          span { CheckIconView(size: ButtonView.ButtonSize.medium.iconSize) }
             .class("copyable-code-copied-icon")
         }
       }
