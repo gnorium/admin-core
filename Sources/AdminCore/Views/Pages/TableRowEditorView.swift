@@ -100,6 +100,7 @@
               ),
               .init(
                 value: "cancel", label: "Cancel",
+                icon: IconView(icon: { s in XIconView(size: s) }, size: ButtonView.ButtonSize.medium.labelIconSize).build(),
                 url: config.backURL, class: "btn-cancel"
               ),
             ],
