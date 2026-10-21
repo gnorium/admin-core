@@ -50,7 +50,7 @@
           // Action buttons
           div {
             ButtonView(
-              label: "Edit",
+              label: "Edit", icon: IconView(icon: { s in EditIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize),
               buttonColor: .gray,
               weight: .subtle,
               size: .large,
@@ -59,7 +59,7 @@
             )
 
             ButtonView(
-              label: "Delete",
+              label: "Delete", icon: IconView(icon: { s in Trash2IconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize),
               buttonColor: .gray,
               weight: .subtle,
               size: .large,

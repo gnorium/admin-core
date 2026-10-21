@@ -66,7 +66,7 @@
             .class("register-field register-field-last")
 
             ButtonView(
-              label: "Complete Registration", buttonColor: .blue, weight: .solid, size: .large, type: .submit,
+              label: "Complete Registration", icon: IconView(icon: { s in UserPlusIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize), buttonColor: .blue, weight: .solid, size: .large, type: .submit,
               fullWidth: true)
           }
           .action("\(baseRoute)/register/\(token)")

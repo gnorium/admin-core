@@ -44,7 +44,7 @@
           )
           .download("gnorium-recovery-codes.txt")
           ButtonView(
-            label: "Continue", buttonColor: .blue, weight: .solid, size: .large, url: continueURL, fullWidth: true,
+            label: "Continue", icon: IconView(icon: { s in ArrowNextIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize), buttonColor: .blue, weight: .solid, size: .large, url: continueURL, fullWidth: true,
             class: "recovery-codes-continue")
         }
         .class("recovery-codes-actions")

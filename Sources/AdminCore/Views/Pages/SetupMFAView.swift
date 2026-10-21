@@ -73,7 +73,7 @@
                 length: "The code is 6 digits."))
           }
           ButtonView(
-            label: "Enable MFA", buttonColor: .blue, weight: .solid, size: .large, type: .submit, fullWidth: true)
+            label: "Enable MFA", icon: IconView(icon: { s in LockIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize), buttonColor: .blue, weight: .solid, size: .large, type: .submit, fullWidth: true)
         }
         .action("\(baseRoute)/authentication/setup\(query)")
         .method(.post)
