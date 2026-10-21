@@ -159,7 +159,7 @@
             DialogView(
               title: "Delete rows?",
               primaryAction: .init(label: "Delete", color: .red),
-              defaultAction: .init(label: "Cancel"),
+              defaultAction: .cancel,
               class: "table-browser-delete-dialog"
             ) {
               p { "They can't be restored." }
