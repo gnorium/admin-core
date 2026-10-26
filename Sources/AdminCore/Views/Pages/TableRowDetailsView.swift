@@ -50,7 +50,7 @@
           // Action buttons
           div {
             ButtonView(
-              label: "Edit", icon: IconView(icon: { s in EditIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize),
+              label: "Edit", icon: IconView(icon: { s in PencilIconView(size: s) }, size: ButtonView.ButtonSize.large.labelIconSize),
               buttonColor: .gray,
               weight: .subtle,
               size: .large,

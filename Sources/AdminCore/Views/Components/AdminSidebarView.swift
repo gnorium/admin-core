@@ -60,7 +60,7 @@
           SidebarItem(
             label: "Back to site", url: "/",
             icon: { size in
-              [PreviousIconView(size: size).build()]
+              [ChevronLeftIconView(size: size).build()]
             })
         ]
       self.collapsed = collapsed
