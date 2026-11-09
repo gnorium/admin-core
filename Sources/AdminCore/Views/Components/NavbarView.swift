@@ -62,7 +62,7 @@
         EllipsisMenuView {
           // Color Scheme
           div {
-            span { "Color Scheme" }
+            span { "Colour Scheme" }
               .class("ellipsis-section-header")
 
             // Every button in the menu is large (user, 2026-10-12).
